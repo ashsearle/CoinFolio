@@ -1,26 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
-import Hello from './Hello';
+import { Provider } from 'react-redux';
+import AppRouter from './routers/AppRouter';
+import configureStore from './store/configureStore';
+
 import './style.css';
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: 'React'
-    };
-  }
+const store = configureStore();
 
-  render() {
-    return (
-      <div>
-        <Hello name={this.state.name} />
-        <p>
-          Start editing to see some magic happen :)
-        </p>
-      </div>
-    );
-  }
-}
-
-render(<App />, document.getElementById('root'));
+const app = (
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>
+);
+render(app, document.querySelector('.root'));
