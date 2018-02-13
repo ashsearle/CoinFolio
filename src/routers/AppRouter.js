@@ -7,6 +7,8 @@ import CurrenciesPage from '../components/CurrenciesPage';
 import PortfolioPage from '../components/PortfolioPage';
 import NotFoundPage from '../components/NotFoundPage';
 
+import PrivateRoute from './PrivateRoute';
+
 export const history = createHistory();
 
 const AppRouter = () => (
@@ -15,7 +17,7 @@ const AppRouter = () => (
       <MainNav />
       <Switch>
         <Route path="/" component={CurrenciesPage} exact={true} />
-        <Route path="/portfolio" component={PortfolioPage} />
+        <PrivateRoute path="/portfolio" component={PortfolioPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
