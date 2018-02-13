@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { doLogin, doLogout } from '../actions/auth';
 
+
 export class MainNav extends Component {
 
   onAuthClick = () => {
@@ -22,7 +23,7 @@ export class MainNav extends Component {
           <div className="collapse navbar-collapse" id="navbar-nav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/">Currencies</NavLink>
+                <NavLink className="nav-link" to="/" exact={true}>Currencies</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/portfolio">Portfolio</NavLink>
@@ -51,4 +52,4 @@ const mapDispatchToProps = (dispatch) => ({
   doLogout: () => dispatch(doLogout())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainNav);
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(MainNav);

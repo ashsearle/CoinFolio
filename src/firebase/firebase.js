@@ -1,12 +1,12 @@
 import * as firebase from 'firebase';
 
 const config = {
-  apiKey: "AIzaSyCegjs9WWYdgSznP0SAdMkcpTTMZXscHXI",
-  authDomain: "expensify-99c3e.firebaseapp.com",
-  databaseURL: "https://expensify-99c3e.firebaseio.com",
-  projectId: "expensify-99c3e",
-  storageBucket: "expensify-99c3e.appspot.com",
-  messagingSenderId: "598930902744"
+  apiKey: "AIzaSyA8mKgMWBw5ZrA2RAJhJtmVKoLlnFgkP8Y",
+  authDomain: "livecryptoportfolio.firebaseapp.com",
+  databaseURL: "https://livecryptoportfolio.firebaseio.com",
+  projectId: "livecryptoportfolio",
+  storageBucket: "livecryptoportfolio.appspot.com",
+  messagingSenderId: "986033857664"
 };
 
 firebase.initializeApp(config);
@@ -19,16 +19,3 @@ export {
   firebase,
   database as default
 }
-
-/*
-database.ref('expenses').on('value', (snapshot) => {
-  const expenses = [];
-  snapshot.forEach((child) => {
-    expenses.push({
-      id: child.key,
-      ...child.val()
-    });
-  });
-  console.log('expenses', expenses);
-});
-*/

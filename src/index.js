@@ -8,6 +8,7 @@ import './firebase/firebase';
 import { firebase } from './firebase/firebase';
 import { login, logout } from './actions/auth';
 
+import 'bootstrap/dist/css/bootstrap.css';
 import './style.css';
 
 const store = configureStore();
@@ -16,21 +17,15 @@ const app = (
     <AppRouter />
   </Provider>
 );
-render(app, document.querySelector('.root'));
-
 
 firebase.auth().onAuthStateChanged((user) => {
   console.log('onAuthStateChanged', user);
   if (user) {
     store.dispatch(login(user.uid));
-    /*
-    if (history.location.pathName === '/') {
-      history.push('/dashboard');
-    }
-    */
   }
   else {
     store.dispatch(logout())
     history.push('/');
   }
+  render(app, document.querySelector('.root'));
 });

@@ -6,3 +6,7 @@ body {
   padding-top: 100px;
 }
 
+.nav-link.active {
+  background: #eee;
+}
+
