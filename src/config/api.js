@@ -1,5 +1,5 @@
 export default {
-  markets: {
-    all: 'https://api.coinmarketcap.com/v1/ticker/'
+  currencies: {
+    all: 'https://api.coinmarketcap.com/v1/ticker/?limit=0'
   }
 }
