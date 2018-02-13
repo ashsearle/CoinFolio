@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-import { fetchMarkets } from '../actions/markets';
+import { fetchCurrencies } from '../actions/currencies';
 
-class MarketsPage extends Component {
+class CurrenciesPage extends Component {
 
   componentDidMount() {
-    this.props.fetchMarkets();
+    this.props.fetchCurrencies();
   }
 
   render() {
-    const data = this.props.markets;
+    const data = this.props.currencies;
     const columns = [{
       Header: 'Rank',
       accessor: 'rank'
@@ -54,11 +54,11 @@ class MarketsPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  markets: state.markets
+  currencies: state.currencies
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchMarkets: () => dispatch(fetchMarkets())
+  fetchCurrencies: () => dispatch(fetchCurrencies())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MarketsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CurrenciesPage);

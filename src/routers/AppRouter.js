@@ -3,9 +3,11 @@ import { Router, Switch, Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
 import MainNav from '../components/MainNav';
-import MarketsPage from '../components/MarketsPage';
+import CurrenciesPage from '../components/CurrenciesPage';
 import PortfolioPage from '../components/PortfolioPage';
 import NotFoundPage from '../components/NotFoundPage';
+
+import PrivateRoute from './PrivateRoute';
 
 export const history = createHistory();
 
@@ -14,8 +16,8 @@ const AppRouter = () => (
     <div>
       <MainNav />
       <Switch>
-        <Route path="/" component={MarketsPage} exact={true} />
-        <Route path="/portfolio" component={PortfolioPage} />
+        <Route path="/" component={CurrenciesPage} exact={true} />
+        <PrivateRoute path="/portfolio" component={PortfolioPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

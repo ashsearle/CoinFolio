@@ -3,6 +3,10 @@ body {
 }
 
 .container.content {
-  padding-top: 40px;
+  padding-top: 100px;
+}
+
+.nav-link.active {
+  background: #eee;
 }
 
