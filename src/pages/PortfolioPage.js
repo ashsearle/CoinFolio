@@ -6,7 +6,8 @@ import {
   ModalHeader,
   ModalBody } from 'reactstrap';
 
-import PortfolioForm from './forms/PortfolioForm';
+import PortfolioForm from '../components/forms/PortfolioForm';
+import PortfolioList from '../components/portfolio/PortfolioList';
 
 import { startAddPortfolio, startSetPortfolios } from '../actions/portfolio';
 
@@ -35,7 +36,7 @@ class PortfolioPage extends Component {
       <div className="container content">
         
         <nav className="navbar">
-          <h1>Portfolio {this.props.portfolio.length}</h1>
+          <h1>Portfolio</h1>
           <button
             className="btn btn-primary"
             type="button"
@@ -55,13 +56,21 @@ class PortfolioPage extends Component {
             </ModalBody>
         </Modal>
 
-        <div className="alert alert-dark" role="alert">
-          <h4 className="alert-heading">Oh noes!</h4>
-          <p>You don't have any portfolio yet.</p>
-          <hr />
-          <p>You can add as many portfolios as you like, as soon as you have they will show here.</p>
-          <button className="btn btn-secondary" onClick={this.toggleModal}>Add portfolio now</button>
-        </div>
+        {
+          this.props.portfolio.length
+
+          ? <PortfolioList />
+
+          : <div className="alert alert-dark" role="alert">
+              <h4 className="alert-heading">Oh noes!</h4>
+              <p>You don't have any portfolio yet.</p>
+              <hr />
+              <p>You can add as many portfolios as you like, as soon as you have they will show here.</p>
+              <button className="btn btn-secondary" onClick={this.toggleModal}>Add portfolio now</button>
+            </div>
+        }
+
+        
       </div>
     )
   }

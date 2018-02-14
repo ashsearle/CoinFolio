@@ -2,10 +2,10 @@ import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
-import MainNav from '../components/MainNav';
-import CurrenciesPage from '../components/CurrenciesPage';
-import PortfolioPage from '../components/PortfolioPage';
-import NotFoundPage from '../components/NotFoundPage';
+import MainNav from '../components/nav/MainNav';
+import CurrenciesPage from '../pages/CurrenciesPage';
+import PortfolioPage from '../pages/PortfolioPage';
+import NotFoundPage from '../pages/NotFoundPage';
 
 import PrivateRoute from './PrivateRoute';
 
