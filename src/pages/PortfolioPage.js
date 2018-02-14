@@ -61,7 +61,7 @@ class PortfolioPage extends Component {
 
           ? <PortfolioList />
 
-          : <div className="alert alert-dark" role="alert">
+          : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
               <h4 className="alert-heading">Oh noes!</h4>
               <p>You don't have any portfolio yet.</p>
               <hr />

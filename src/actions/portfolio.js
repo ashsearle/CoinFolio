@@ -58,23 +58,25 @@ export const startRemovePortfolio = ({ id } = {}) => {
   }
 };
 
-export const setPortfolios = (portfolios) => ({
-  type: 'SET_PORTFOLIOS',
-  portfolios
+export const setPortfolio = (portfolio) => ({
+  type: 'SET_PORTFOLIO',
+  portfolio
 });
 
 export const startSetPortfolios = () => {
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
+    const portfolio = getState().portfolio;
+    if (portfolio.length) return dispatch(setPortfolio(portfolio));
     database.ref(`users/${uid}/portfolios`).once('value', (snapshot) => {
-      const portfolios = [];
+      const portfolio = [];
       snapshot.forEach((child) => {
-        portfolios.push({
+        portfolio.push({
           id: child.key,
           ...child.val()
         });
       });
-      dispatch(setPortfolios(portfolios));
+      dispatch(setPortfolio(portfolio));
     });
   }
 };

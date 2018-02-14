@@ -52,12 +52,12 @@ class PortfolioList extends Component {
                   <div className="card-body">
                     <h4 className="card-title mb-0">{portfolioItem.name}</h4>
                     <p>
-                      <span class="badge badge-info">{portfolioItem.currency}</span>
-                      <span class="badge badge-info ml-1">{formatDate(portfolioItem.created)}</span>
+                      <span className="badge badge-info">{portfolioItem.currency.toUpperCase()}</span>
+                      <span className="badge badge-info ml-1">{formatDate(portfolioItem.created)}</span>
                     </p>
                     {portfolioItem.description && <p className="card-text">{portfolioItem.description}</p>}
                     <nav className="float-right">
-                    <Link to="/" className="btn btn-primary">View</Link>
+                    <Link to={`/portfolio/${portfolioItem.id}`} className="btn btn-primary">View</Link>
                     <button
                       type="button"
                       className="btn btn-secondary ml-2"

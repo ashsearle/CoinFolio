@@ -2,8 +2,8 @@
 const portfolioReducerDefaultState = [];
 const portfolioReducer = (state = portfolioReducerDefaultState, action) => {
   switch (action.type) {
-    case 'SET_PORTFOLIOS':
-      return action.portfolios;
+    case 'SET_PORTFOLIO':
+      return action.portfolio;
     case 'ADD_PORTFOLIO':
       return [
         ...state,

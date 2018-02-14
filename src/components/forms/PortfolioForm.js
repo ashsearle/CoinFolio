@@ -66,8 +66,8 @@ export default class PortfolioForm extends Component {
                 className="form-control custom-select"
                 value={this.state.currency}
                 onChange={this.onCurrencyChange}>
-                  <option>USD</option>
-                  <option>GBP</option>
+                  <option value="usd">USD</option>
+                  <option value="gbp">GBP</option>
               </select>
             </div>
           </div>
