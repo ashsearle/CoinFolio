@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 
 import { fetchCurrencies } from '../actions/currencies';
 

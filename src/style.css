@@ -13,3 +13,8 @@ body {
 .badge {
   font-weight: normal;
 }
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+}

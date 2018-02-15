@@ -23,6 +23,21 @@ const portfolioReducer = (state = portfolioReducerDefaultState, action) => {
       })
     case 'REMOVE_PORTFOLIO':
       return state.filter(({ id }) => id !== action.id)
+    case 'ADD_TRANSACTION':
+      return state.map((portfolio) => {
+        if (portfolio.id === action.portfolioId) {
+          return {
+            ...portfolio,
+            transactions: [
+              ...portfolio.transactions || {},
+              action.transaction
+            ]
+          }
+        }
+        else {
+          return portfolio;
+        }
+      })
     default:
       return state
   }

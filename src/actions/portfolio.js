@@ -6,7 +6,6 @@ export const addPortfolio = (portfolio) =>  ({
 });
 
 export const startAddPortfolio = (portfolioData = {}) => {
-  console.log('portfolioData', portfolioData)
   return (dispatch, getState) => {
     const uid = getState().auth.uid;
     const {
@@ -17,7 +16,6 @@ export const startAddPortfolio = (portfolioData = {}) => {
       isPublic = false
     } = portfolioData;
     const portfolio = {name, description, currency, created, isPublic};
-    console.log('portfolio', portfolio)
     database.ref(`users/${uid}/portfolios`).push(portfolio).then((ref) => {
       dispatch(addPortfolio({
         id: ref.key,
@@ -76,7 +74,53 @@ export const startSetPortfolios = () => {
           ...child.val()
         });
       });
+      portfolio.map((portfolioItem) => {
+        if (portfolioItem.transactions) {
+          const formattedTransactions = [];
+          Object.keys(portfolioItem.transactions).forEach((key) => {
+            formattedTransactions.push({
+              id: key,
+              ...portfolioItem.transactions[key]
+            });
+          });
+          portfolioItem.transactions = formattedTransactions;
+        }
+        return portfolioItem;
+      })
       dispatch(setPortfolio(portfolio));
     });
   }
 };
+
+export const addTransaction = (portfolioId, transaction) =>  ({
+  type: 'ADD_TRANSACTION',
+  portfolioId,
+  transaction
+});
+
+export const startAddTransaction = (portfolioId, transactionData = {}) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    const {
+      type = '',
+      coin = '',
+      amount = '',
+      price = '',
+      currency = '',
+      date = '',
+      description = ''
+    } = transactionData;
+    const transaction = {type, coin, amount, price, currency, date, description};
+    database.ref(`users/${uid}/portfolios/${portfolioId}/transactions`).push(transaction).then((ref) => {
+      dispatch(addTransaction(
+        portfolioId,
+      {
+        id: ref.key,
+        ...transaction
+      }))
+    }).catch((e) => {
+      console.log('error', e)
+    });
+    
+  }
+}

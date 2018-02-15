@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default class TransactionForm extends Component {
 
@@ -6,7 +10,11 @@ export default class TransactionForm extends Component {
     super(props);
     this.state = {
       type: props.transaction ? props.transaction.type : 'purchase',
-      coin: props.transaction ? props.transaction.coin : '',
+      coin: props.transaction ? props.transaction.coin : 'btc',
+      amount: props.transaction ? props.transaction.amount : '',
+      price: props.transaction ? props.transaction.price : '',
+      currency: props.transaction ? props.transaction.currency : 'usd',
+      date: props.transaction ? moment(props.transaction.date) : moment(),
       description: props.transaction ? props.transaction.description : '',
       errorState: false
     }
@@ -22,6 +30,29 @@ export default class TransactionForm extends Component {
     this.setState(() => ({ coin }));
   }
 
+  onAmountChange = (e) => {
+    const amount = e.target.value;
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState(() => ({ amount }));
+    }
+  }
+
+  onPriceChange = (e) => {
+    const price = e.target.value;
+    if (!price || price.match(/^\d{1,}(\.\d{0,2})?$/)) {
+      this.setState(() => ({ price }));
+    }
+  }
+
+  onCurrencyChange = (e) => {
+    const currency = e.target.value;
+    this.setState(() => ({ currency }));
+  }
+
+  onDateChange = (date) => {
+    this.setState({ date });
+  }
+
   onDescriptionChange = (e) => {
     const description = e.target.value;
     this.setState(() => ({ description }));
@@ -29,14 +60,21 @@ export default class TransactionForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (!this.state.coin) {
-      this.setState(() => ({ error: 'Please add a coin!' }));
+    if (this.state.type !== 'cost' && (!this.state.amount || !this.state.price)) {
+      this.setState(() => ({ error: 'Please add an amount and a price!' }));
+    }
+    else if (this.state.type === 'cost' && !this.state.price) {
+      this.setState(() => ({ error: 'Please add a price!' }));
     }
     else {
       this.setState(() => ({ error: '' }));
       this.props.onSubmit({
         type: this.state.type,
-        coin: this.state.coin,
+        coin: this.state.type !== 'cost' ? this.state.coin : '',
+        amount: this.state.type !== 'cost' ? this.state.amount : '',
+        price: this.state.price,
+        currency: this.state.currency,
+        date: this.state.date.toJSON(),
         description: this.state.description
       })
     }
@@ -63,17 +101,62 @@ export default class TransactionForm extends Component {
               </select>
             </div>
             <div className="form-group col-md-6">
-              <label htmlFor="inputCoin">Coin</label>
+              <label htmlFor="inputPrice">Price</label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputPrice"
+                placeholder="Price"
+                value={this.state.price}
+                onChange={this.onPriceChange}/>
+            </div>
+          </div>
+          {
+            this.state.type !== 'cost' &&
+            <div className="form-row">
+              <div className="form-group col-md-6">
+                <label htmlFor="inputCoin">Coin</label>
+                <select
+                  id="inputCoin"
+                  className="form-control custom-select"
+                  value={this.state.coin}
+                  onChange={this.onCoinChange}>
+                    <option value="btc">BTC</option>
+                    <option value="eth">ETH</option>
+                    <option value="ltc">LTC</option>
+                    <option value="zcl">ZCL</option>
+                </select>
+              </div>
+              <div className="form-group col-md-6">
+                <label htmlFor="inputAmount">Amount</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="inputAmount"
+                  placeholder="Amount"
+                  value={this.state.amount}
+                  onChange={this.onAmountChange}/>
+              </div>
+            </div>
+          }
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label htmlFor="inputCurrency">Currency</label>
               <select
-                id="inputCoin"
+                id="inputCurrency"
                 className="form-control custom-select"
-                value={this.state.coin}
-                onChange={this.onCoinChange}>
-                  <option value="btc">BTC</option>
-                  <option value="eth">ETH</option>
-                  <option value="ltc">LTC</option>
-                  <option value="zcl">ZCL</option>
+                value={this.state.currency}
+                onChange={this.onCurrencyChange}>
+                  <option value="gbp">GBP</option>
+                  <option value="usd">USD</option>
               </select>
+            </div>
+            <div className="form-group col-md-6">
+              <label htmlFor="inputDate">Date</label>
+              <DatePicker
+                className="form-control"
+                selected={this.state.date}
+                onChange={this.onDateChange} />
             </div>
           </div>
           <div className="form-group">
