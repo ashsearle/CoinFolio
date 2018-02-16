@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { Table, Modal } from 'antd';
 
 import { startSetPortfolios, startAddTransaction } from '../actions/portfolio';
 import TransactionForm from '../components/forms/TransactionForm';
-
-import { 
-  Modal,
-  ModalHeader,
-  ModalBody } from 'reactstrap';
-import { Table } from 'antd';
 
 class PortfolioItem extends Component {
 
@@ -24,7 +20,8 @@ class PortfolioItem extends Component {
       },{
         title: 'Coin',
         dataIndex: 'coin',
-        key: 'coin'
+        key: 'coin',
+        render: text => text.toUpperCase()
       }, {
         title: 'Amount',
         dataIndex: 'amount',
@@ -36,11 +33,13 @@ class PortfolioItem extends Component {
       }, {
         title: 'Currency',
         dataIndex: 'currency',
-        key: 'currency'
+        key: 'currency',
+        render: text => text.toUpperCase()
       }, {
         title: 'Date',
         dataIndex: 'date',
-        key: 'date'
+        key: 'date',
+        render: text => moment(text).format('Do MMM YYYY')
       }, {
         title: 'Description',
         dataIndex: 'description',
@@ -62,15 +61,17 @@ class PortfolioItem extends Component {
   render() {
     return (
       <div>
-        <Modal isOpen={this.state.modalOpen} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>Add transaction</ModalHeader>
-          <ModalBody>
-            <TransactionForm
-              onSubmit={(transaction) => {
-                this.props.addTransaction(this.props.portfolio.id, transaction);
-                this.toggleModal();
-              }}/>
-          </ModalBody>
+        <Modal
+          title="Add Transaction"
+          visible={this.state.modalOpen}
+          onCancel={this.toggleModal}
+          footer={null}
+        >
+          <TransactionForm
+            onSubmit={(transaction) => {
+              this.props.addTransaction(this.props.portfolio.id, transaction);
+              this.toggleModal();
+            }}/>
         </Modal>
         <div className="container content">
           { 
@@ -88,7 +89,10 @@ class PortfolioItem extends Component {
                 </nav>
                 {
                   this.props.portfolio.transactions && this.props.portfolio.transactions.length
-                  ? <Table dataSource={this.props.portfolio.transactions} columns={this.state.transactionsTableColumns} />
+                  ? <Table
+                    rowKey={record => record.id}
+                    dataSource={this.props.portfolio.transactions}
+                    columns={this.state.transactionsTableColumns} />
                   : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
                       <h4 className="alert-heading">Oh noes!</h4>
                       <p>You don't have any transactions in your portfolio.</p>

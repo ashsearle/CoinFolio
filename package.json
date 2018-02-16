@@ -9,12 +9,10 @@
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "react": "16.1.1",
-    "react-datepicker": "^1.1.0",
     "react-dom": "16.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.10",
-    "reactstrap": "^5.0.0-beta",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },

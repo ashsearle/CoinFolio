@@ -51,7 +51,10 @@ class CurrenciesPage extends Component {
     }];
     return (
       <div className="container content">
-        <Table dataSource={data} columns={columns} />
+        <Table
+          rowKey={record => record.id}
+          dataSource={data}
+          columns={columns} />
       </div>
     )
   }

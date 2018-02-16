@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { DatePicker } from 'antd';
 
-import 'react-datepicker/dist/react-datepicker.css';
+const dateFormat = 'DD-MM-YYYY';
 
 export default class TransactionForm extends Component {
 
@@ -10,7 +10,7 @@ export default class TransactionForm extends Component {
     super(props);
     this.state = {
       type: props.transaction ? props.transaction.type : 'purchase',
-      coin: props.transaction ? props.transaction.coin : 'btc',
+      coin: props.transaction ? props.transaction.coin.toUpperCase : 'btc',
       amount: props.transaction ? props.transaction.amount : '',
       price: props.transaction ? props.transaction.price : '',
       currency: props.transaction ? props.transaction.currency : 'usd',
@@ -74,7 +74,7 @@ export default class TransactionForm extends Component {
         amount: this.state.type !== 'cost' ? this.state.amount : '',
         price: this.state.price,
         currency: this.state.currency,
-        date: this.state.date.toJSON(),
+        date: moment(this.state.date).toJSON(),
         description: this.state.description
       })
     }
@@ -155,7 +155,8 @@ export default class TransactionForm extends Component {
               <label htmlFor="inputDate">Date</label>
               <DatePicker
                 className="form-control"
-                selected={this.state.date}
+                format={dateFormat}
+                defaultValue={moment(this.state.date, dateFormat)}
                 onChange={this.onDateChange} />
             </div>
           </div>
@@ -169,6 +170,7 @@ export default class TransactionForm extends Component {
             </textarea>
           </div>
           <button type="submit" className="btn btn-primary float-right">Submit</button>
+          <div className="clearfix"></div>
         </form>
       </div>
     )

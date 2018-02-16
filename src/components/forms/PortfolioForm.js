@@ -81,6 +81,7 @@ export default class PortfolioForm extends Component {
             </textarea>
           </div>
           <button type="submit" className="btn btn-primary float-right">Submit</button>
+          <div className="clearfix"></div>
         </form>
       </div>
     )

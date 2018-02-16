@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import { 
-  Modal,
-  ModalHeader,
-  ModalBody } from 'reactstrap';
+import { Modal } from 'antd';
 
 import PortfolioForm from '../components/forms/PortfolioForm';
 import PortfolioList from '../components/portfolio/PortfolioList';
@@ -45,15 +41,17 @@ class PortfolioPage extends Component {
           </button>
         </nav>
 
-        <Modal isOpen={this.state.modalOpen} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>Add portfolio</ModalHeader>
-          <ModalBody>
-            <PortfolioForm
-              onSubmit={(portfolio) => {
-                this.props.createPortfolio(portfolio);
-                this.toggleModal();
-              }}/>
-            </ModalBody>
+        <Modal
+          title="Add portfolio"
+          visible={this.state.modalOpen}
+          onCancel={this.toggleModal}
+          footer={null}
+        >
+          <PortfolioForm
+            onSubmit={(portfolio) => {
+              this.props.createPortfolio(portfolio);
+              this.toggleModal();
+            }}/>
         </Modal>
 
         {
