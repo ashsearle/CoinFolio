@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import { Table } from 'antd';
 
 import { fetchCurrencies } from '../actions/currencies';
 
@@ -13,39 +13,45 @@ class CurrenciesPage extends Component {
   render() {
     const data = this.props.currencies;
     const columns = [{
-      Header: 'Rank',
-      accessor: 'rank'
+      title: 'Rank',
+      dataIndex: 'rank',
+      key: 'rank'
     },{
-      Header: 'Name',
-      accessor: 'name'
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name'
     }, {
-      Header: 'Market Cap',
-      accessor: 'market_cap_usd'
+      title: 'Market Cap',
+      dataIndex: 'market_cap_usd',
+      key: 'market_cap_usd'
     }, {
-      Header: 'Price',
-      accessor: 'price_usd'
+      title: 'Price',
+      dataIndex: 'price_usd',
+      key: 'price_usd'
     }, {
-      Header: 'Volume (24h)',
-      accessor: '24h_volume_usd'
+      title: 'Volume (24h)',
+      dataIndex: '24h_volume_usd',
+      key: '24h_volume_usd'
     }, {
-      Header: 'Supply',
-      accessor: 'total_supply'
+      title: 'Supply',
+      dataIndex: 'total_supply',
+      key: 'total_supply'
     }, {
-      Header: 'Change (1h)',
-      accessor: 'percent_change_1h'
+      title: 'Change (1h)',
+      dataIndex: 'percent_change_1h',
+      key: 'percent_change_1h'
     }, {
-      Header: 'Change (24h)',
-      accessor: 'percent_change_24h'
+      title: 'Change (24h)',
+      dataIndex: 'percent_change_24h',
+      key: 'percent_change_24h'
     }, {
-      Header: 'Change (7d)',
-      accessor: 'percent_change_7d'
+      title: 'Change (7d)',
+      dataIndex: 'percent_change_7d',
+      key: 'percent_change_7d'
     }];
     return (
       <div className="container content">
-        <ReactTable
-          data={data}
-          columns={columns}
-        />
+        <Table dataSource={data} columns={columns} />
       </div>
     )
   }

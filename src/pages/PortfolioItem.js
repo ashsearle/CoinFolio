@@ -8,7 +8,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody } from 'reactstrap';
-import ReactTable from 'react-table';
+import { Table } from 'antd';
 
 class PortfolioItem extends Component {
 
@@ -18,26 +18,33 @@ class PortfolioItem extends Component {
     this.state = {
       modalOpen: false,
       transactionsTableColumns: [{
-        Header: 'Type',
-        accessor: 'type'
+        title: 'Type',
+        dataIndex: 'type',
+        key: 'type'
       },{
-        Header: 'Coin',
-        accessor: 'coin'
+        title: 'Coin',
+        dataIndex: 'coin',
+        key: 'coin'
       }, {
-        Header: 'Amount',
-        accessor: 'amount'
+        title: 'Amount',
+        dataIndex: 'amount',
+        key: 'amount'
       }, {
-        Header: 'Price',
-        accessor: 'price'
+        title: 'Price',
+        dataIndex: 'price',
+        key: 'price'
       }, {
-        Header: 'Currency',
-        accessor: 'currency'
+        title: 'Currency',
+        dataIndex: 'currency',
+        key: 'currency'
       }, {
-        Header: 'Date',
-        accessor: 'date'
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date'
       }, {
-        Header: 'Description',
-        accessor: 'description'
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description'
       }]
     };
   }
@@ -81,9 +88,7 @@ class PortfolioItem extends Component {
                 </nav>
                 {
                   this.props.portfolio.transactions && this.props.portfolio.transactions.length
-                  ? <ReactTable
-                      data={this.props.portfolio.transactions}
-                      columns={this.state.transactionsTableColumns} />
+                  ? <Table dataSource={this.props.portfolio.transactions} columns={this.state.transactionsTableColumns} />
                   : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
                       <h4 className="alert-heading">Oh noes!</h4>
                       <p>You don't have any transactions in your portfolio.</p>

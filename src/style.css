@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 body {
   font-family: 'Lato', sans-serif;
 }
@@ -17,4 +19,12 @@ body {
 .react-datepicker-wrapper,
 .react-datepicker__input-container {
   width: 100%;
+}
+
+.ant-table {
+  overflow: auto;
+}
+
+.ant-table-content {
+  min-width: 768px;
 }
