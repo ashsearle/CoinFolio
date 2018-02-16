@@ -29,14 +29,12 @@ const portfolioReducer = (state = portfolioReducerDefaultState, action) => {
           return {
             ...portfolio,
             transactions: [
-              ...portfolio.transactions || {},
+              ...portfolio.transactions || [],
               action.transaction
             ]
           }
         }
-        else {
-          return portfolio;
-        }
+        return portfolio;
       })
     default:
       return state

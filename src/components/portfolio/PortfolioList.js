@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Modal } from 'antd';
 
 import { startEditPortfolio } from '../../actions/portfolio';
-
 import { formatDate } from '../../utils/dates';
-
-import { 
-  Modal,
-  ModalHeader,
-  ModalBody } from 'reactstrap';
-
 import PortfolioForm from '../forms/PortfolioForm';
 
 class PortfolioList extends Component {
@@ -33,16 +27,17 @@ class PortfolioList extends Component {
   render() {
     return (
       <div>
-        <Modal isOpen={this.state.modalOpen} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>Edit portfolio</ModalHeader>
-          <ModalBody>
-            <PortfolioForm
-              portfolio={this.state.editing}
-              onSubmit={(portfolio) => {
-                this.props.editPortfolio(this.state.editing.id, portfolio);
-                this.toggleModal();
-              }}/>
-            </ModalBody>
+        <Modal
+          title="Edit portfolio"
+          visible={this.state.modalOpen}
+          onCancel={this.toggleModal}
+          footer={null}>
+          <PortfolioForm
+            portfolio={this.state.editing}
+            onSubmit={(portfolio) => {
+              this.props.editPortfolio(this.state.editing.id, portfolio);
+              this.toggleModal();
+            }}/>
         </Modal>
         <div className="row">
           {this.props.portfolio.map((portfolioItem) => {

@@ -5,6 +5,7 @@ import { Table, Modal } from 'antd';
 
 import { startSetPortfolios, startAddTransaction } from '../actions/portfolio';
 import TransactionForm from '../components/forms/TransactionForm';
+import PortfolioTotalCard from '../components/cards/PortfolioTotalCard'
 
 class PortfolioItem extends Component {
 
@@ -89,10 +90,13 @@ class PortfolioItem extends Component {
                 </nav>
                 {
                   this.props.portfolio.transactions && this.props.portfolio.transactions.length
-                  ? <Table
-                    rowKey={record => record.id}
-                    dataSource={this.props.portfolio.transactions}
-                    columns={this.state.transactionsTableColumns} />
+                  ? <div>
+                      <PortfolioTotalCard portfolioId={this.props.portfolio.id}/>
+                      <Table
+                        rowKey={record => record.id}
+                        dataSource={this.props.portfolio.transactions}
+                        columns={this.state.transactionsTableColumns} />
+                    </div>
                   : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
                       <h4 className="alert-heading">Oh noes!</h4>
                       <p>You don't have any transactions in your portfolio.</p>
