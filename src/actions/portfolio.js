@@ -124,3 +124,35 @@ export const startAddTransaction = (portfolioId, transactionData = {}) => {
     
   }
 }
+
+export const editTransaction = (portfolioId, transactionId, transaction) =>  ({
+  type: 'EDIT_TRANSACTION',
+  portfolioId,
+  transactionId,
+  transaction
+});
+
+export const startEditTransaction = (portfolioId, transactionId, transaction) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).update(transaction).then(() => {
+      dispatch(editTransaction(portfolioId, transactionId, transaction));
+    });
+  }
+};
+
+
+export const removeTransaction = (portfolioId, transactionId) =>  ({
+  type: 'REMOVE_TRANSACTION',
+  portfolioId,
+  transactionId
+});
+
+export const startRemoveTransaction = (portfolioId, transactionId) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).remove().then(() => {
+      dispatch(removeTransaction(portfolioId, transactionId));
+    });
+  }
+};

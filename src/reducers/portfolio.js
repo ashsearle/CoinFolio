@@ -36,6 +36,34 @@ const portfolioReducer = (state = portfolioReducerDefaultState, action) => {
         }
         return portfolio;
       })
+    case 'EDIT_TRANSACTION':
+      return state.map((portfolio) => {
+        if (portfolio.id === action.portfolioId) {
+          return {
+            ...portfolio,
+            transactions: portfolio.transactions.map((transaction) => {
+              if (transaction.id === action.transactionId) {
+                return {
+                  ...transaction,
+                  ...action.transaction
+                }
+              }
+              return transaction;
+            })
+          }
+        }
+        return portfolio;
+      })
+    case 'REMOVE_TRANSACTION':
+      return state.map((portfolio) => {
+        if (portfolio.id === action.portfolioId) {
+          return {
+            ...portfolio,
+            transactions: portfolio.transactions.filter(({ id }) => id !== action.transactionId)
+          }
+        }
+        return portfolio;
+      })
     default:
       return state
   }

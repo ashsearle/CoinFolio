@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 
 import { formatCurrency } from '../../utils/currency';
 import apiConfig from '../../config/api';
@@ -10,25 +10,38 @@ const { price: coinPriceEndpoint } = apiConfig.currencies;
 class PortfolioTotalCard extends Component {
 
   constructor(props) {
-    console.log('constructor')
     super(props);
     this.state = {
       total: 0,
       currency: 'GBP',
-      'currencySign': '£'
+      currencySign: '£',
+      prices: {},
+      coins: []
     }
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
-    const priceEndpoint = _.template(coinPriceEndpoint);
+    // Get coin prices
+    this.fetchCoinPrices();
+  }
+
+  fetchCoinPrices = (nextProps) => {
+    const transactions = nextProps ? nextProps.transactions : this.props.transactions;
+    // Sort coins
     const coins = [];
-    this.props.transactions.forEach(function(transaction) {
-      const { coin } = transaction;
+    transactions.forEach(function(transaction) {
+      let { coin } = transaction;
+      coin = coin.toUpperCase();
       if (coin && !coins.includes(coin)) {
-        coins.push(coin.toUpperCase());
+        coins.push(coin);
       }
     });
+    this.setState({
+      coins
+    });
+
+    // fetch coin prices
+    const priceEndpoint = _.template(coinPriceEndpoint);
     coins.forEach((coin) => {
       const endpoint = priceEndpoint({
         'coin': coin,
@@ -37,37 +50,41 @@ class PortfolioTotalCard extends Component {
       fetch(endpoint)
         .then(res => res.json())
         .then((json) => {
-          this.addCoinToTotal(coin, json[this.state.currency])
+          this.setState({
+            prices: {
+              ...this.state.prices,
+              [coin]: json[this.state.currency]
+            }
+          });
         });
     });
   }
 
-  componentDidUpdate () {
-    console.log('componentDidUpdate', this.props.transactions)
+  hasNewCoin = (transactions) => {
+    const propsCoins = _.uniq(transactions.map((transaction) => {
+      return transaction.coin.toUpperCase();
+    }));
+    return !_.isEqual(propsCoins, this.state.coins);
   }
 
-  addCoinToTotal = (coin, price) => {
-    const coinTransactions =
-      this.props.transactions.filter(transaction => (
-        transaction.coin.toLowerCase() === coin.toLowerCase()
-      ));
-    coinTransactions.forEach((transaction) => {
-      this.setState({
-        total: this.state.total + transaction.amount * price
-      });
-    });
+  componentWillReceiveProps(nextProps) {
+    // check we have prices for all coins
+    if (this.hasNewCoin(nextProps.transactions)) {
+      this.fetchCoinPrices(nextProps);
+    }
   }
 
   render() {
-    console.log('render')
     return (
       <div className="card bg-light mb-3 col-md-3">
         <div className="card-body">
           <div>
-            <h5 className="card-title">Portfolio Total {this.props.transactions.length}:</h5>
+            <h5 className="card-title">Portfolio Value:</h5>
             { 
-              this.state.total
-              ? <h2 className="card-text">{this.state.currencySign + formatCurrency(this.state.total)}</h2>
+              Object.keys(this.state.prices).length
+              ? <h2 className="card-text">{this.state.currencySign + formatCurrency(this.props.transactions.reduce((sum, transaction) => {
+                return sum += +transaction.amount * this.state.prices[transaction.coin.toUpperCase()]
+              }, 0))}</h2>
               : <p className="card-text">Calculating...</p>
             }
           </div>
@@ -77,12 +94,8 @@ class PortfolioTotalCard extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
-  console.log('state', state)
-  return {
-    transactions: state.portfolio.find((item) => item.id === props.portfolioId).transactions
-  }
-  
-};
+const mapStateToProps = (state, props) => ({
+  transactions: state.portfolio.find((item) => item.id === props.portfolioId).transactions
+});
 
 export default connect(mapStateToProps)(PortfolioTotalCard);

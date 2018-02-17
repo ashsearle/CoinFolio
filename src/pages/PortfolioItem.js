@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Table, Modal } from 'antd';
+import { Table, Modal, Popconfirm } from 'antd';
 
-import { startSetPortfolios, startAddTransaction } from '../actions/portfolio';
+import { 
+  startSetPortfolios,
+  startAddTransaction,
+  startEditTransaction,
+  startRemoveTransaction 
+} from '../actions/portfolio';
 import TransactionForm from '../components/forms/TransactionForm';
 import PortfolioTotalCard from '../components/cards/PortfolioTotalCard'
 
@@ -45,12 +50,33 @@ class PortfolioItem extends Component {
         title: 'Description',
         dataIndex: 'description',
         key: 'description'
+      }, {
+        title: 'Actions',
+        dataIndex: 'actions',
+        render: (text, record) => {
+          return (
+            <div>
+              <button className="btn btn-link" onClick={() => this.onTransactionEdit(record.id)}>Edit</button>
+              <Popconfirm title="Are you sure?" onConfirm={() => this.onTransactionDelete(record.id)}>
+                <button className="btn btn-link">Delete</button>
+              </Popconfirm>
+            </div>
+          );
+        },
       }]
     };
   }
 
   componentDidMount() {
     this.props.fetchPortfolio();
+  }
+
+  onTransactionEdit = (id) => {
+    console.log('onTransactionEdit', id);
+  }
+
+  onTransactionDelete = (id) => {
+    this.props.removeTransaction(this.props.portfolio.id, id);
   }
 
   toggleModal = () => {
@@ -118,7 +144,9 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
-  addTransaction: (portfolioId, transaction) => dispatch(startAddTransaction(portfolioId, transaction))
+  addTransaction: (portfolioId, transaction) => dispatch(startAddTransaction(portfolioId, transaction)),
+  editTransaction: (portfolioId, transactionId, transaction) => dispatch(startEditTransaction(portfolioId, transactionId, transaction)),
+  removeTransaction: (portfolioId, transactionId) => dispatch(startRemoveTransaction(portfolioId, transactionId))
 });
 
 
