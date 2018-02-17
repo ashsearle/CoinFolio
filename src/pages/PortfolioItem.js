@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Table, Modal, Popconfirm } from 'antd';
 
+import { subscribeToSocket, unsubscribeToSocket } from '../socketio/socketio';
+
 import { 
   startSetPortfolios,
   startAddTransaction,
@@ -19,6 +21,7 @@ class PortfolioItem extends Component {
 
     this.state = {
       modalOpen: false,
+      subscriptions: ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'],
       transactionsTableColumns: [{
         title: 'Type',
         dataIndex: 'type',
@@ -69,6 +72,11 @@ class PortfolioItem extends Component {
 
   componentDidMount() {
     this.props.fetchPortfolio();
+    subscribeToSocket(this.state.subscriptions, (message) => console.log('subscribeToSocket', message));
+  }
+
+  componentWillUnmount() {
+    unsubscribeToSocket(this.state.subscriptions);
   }
 
   onTransactionEdit = (id) => {

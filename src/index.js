@@ -6,10 +6,10 @@ import configureStore from './store/configureStore';
 
 import './firebase/firebase';
 import { firebase } from './firebase/firebase';
+
 import { login, logout } from './actions/auth';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import 'react-table/react-table.css';
 import './style.css';
 
 const store = configureStore();
@@ -30,3 +30,4 @@ firebase.auth().onAuthStateChanged((user) => {
   }
   render(app, document.querySelector('.root'));
 });
+
