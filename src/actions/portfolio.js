@@ -7,7 +7,7 @@ export const addPortfolio = (portfolio) =>  ({
 
 export const startAddPortfolio = (portfolioData = {}) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     const {
       name = '',
       description = '',
@@ -35,7 +35,7 @@ export const editPortfolio = (id, updates) =>  ({
 
 export const startEditPortfolio = (id, updates) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     database.ref(`users/${uid}/portfolios/${id}`).update(updates).then(() => {
       dispatch(editPortfolio(id, updates));
     });
@@ -49,7 +49,7 @@ export const removePortfolio = ({ id } = {}) =>  ({
 
 export const startRemovePortfolio = ({ id } = {}) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     database.ref(`users/${uid}/portfolios/${id}`).remove().then(() => {
       dispatch(removePortfolio({ id }));
     });
@@ -63,7 +63,7 @@ export const setPortfolio = (portfolio) => ({
 
 export const startSetPortfolios = () => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     const portfolio = getState().portfolio;
     if (portfolio.length) return dispatch(setPortfolio(portfolio));
     database.ref(`users/${uid}/portfolios`).once('value', (snapshot) => {
@@ -100,7 +100,7 @@ export const addTransaction = (portfolioId, transaction) =>  ({
 
 export const startAddTransaction = (portfolioId, transactionData = {}) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     const {
       type = '',
       coin = '',
@@ -134,7 +134,7 @@ export const editTransaction = (portfolioId, transactionId, transaction) =>  ({
 
 export const startEditTransaction = (portfolioId, transactionId, transaction) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).update(transaction).then(() => {
       dispatch(editTransaction(portfolioId, transactionId, transaction));
     });
@@ -150,7 +150,7 @@ export const removeTransaction = (portfolioId, transactionId) =>  ({
 
 export const startRemoveTransaction = (portfolioId, transactionId) => {
   return (dispatch, getState) => {
-    const uid = getState().auth.uid;
+    const uid = getState().user.uid;
     database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).remove().then(() => {
       dispatch(removeTransaction(portfolioId, transactionId));
     });

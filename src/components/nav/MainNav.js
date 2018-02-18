@@ -44,7 +44,7 @@ export class MainNav extends Component {
 };
 
 const mapStateToProps = (state) => ({
-  authenticated: !!state.auth.uid
+  authenticated: !!state.user.uid
 });
 
 const mapDispatchToProps = (dispatch) => ({

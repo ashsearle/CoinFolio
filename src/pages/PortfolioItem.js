@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Table, Modal, Popconfirm } from 'antd';
-
-import { subscribeToSocket, unsubscribeToSocket } from '../socketio/socketio';
+import _ from 'lodash';
 
 import { 
   startSetPortfolios,
@@ -11,8 +10,12 @@ import {
   startEditTransaction,
   startRemoveTransaction 
 } from '../actions/portfolio';
+
+import { fetchPrices } from '../actions/coins';
+
 import TransactionForm from '../components/forms/TransactionForm';
-import PortfolioTotalCard from '../components/cards/PortfolioTotalCard'
+import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
+import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
 
 class PortfolioItem extends Component {
 
@@ -21,7 +24,7 @@ class PortfolioItem extends Component {
 
     this.state = {
       modalOpen: false,
-      subscriptions: ['5~CCCAGG~BTC~USD', '5~CCCAGG~ETH~USD'],
+      subscriptions: [],
       transactionsTableColumns: [{
         title: 'Type',
         dataIndex: 'type',
@@ -72,12 +75,37 @@ class PortfolioItem extends Component {
 
   componentDidMount() {
     this.props.fetchPortfolio();
-    subscribeToSocket(this.state.subscriptions, (message) => console.log('subscribeToSocket', message));
+    if (this.props.portfolio && this.props.portfolio.transactions && this.props.portfolio.transactions.length) {
+      this.checkCoinsPrices(this.props.portfolio.transactions);
+    }
   }
 
-  componentWillUnmount() {
-    unsubscribeToSocket(this.state.subscriptions);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.portfolio.transactions && nextProps.portfolio.transactions.length) {
+      this.checkCoinsPrices(nextProps.portfolio.transactions);
+    }
   }
+
+  checkCoinsPrices = (transactions) => {
+    const coins = _.uniq(transactions.map((transaction) => transaction.coin.toUpperCase()));
+    this.props.fetchPrices(coins);
+  }
+
+  /*
+  shouldUpdateCoinsSubscriptions = (transactions) => {
+    const coins = _.uniq(transactions.map((transaction) => transaction.coin.toUpperCase()));
+    const subscriptions = [];
+    const subscription = _.template('5~CCCAGG~<%= coin %>~<%= currency %>');
+    coins.forEach((coin) => {
+      subscriptions.push(
+        subscription({
+        coin: coin.toUpperCase(),
+        currency: this.state.currency
+      }))
+    });
+    this.props.handleSubscriptions(subscriptions);
+  }
+  */
 
   onTransactionEdit = (id) => {
     console.log('onTransactionEdit', id);
@@ -124,12 +152,18 @@ class PortfolioItem extends Component {
                 </nav>
                 {
                   this.props.portfolio.transactions && this.props.portfolio.transactions.length
-                  ? <div>
-                      <PortfolioTotalCard portfolioId={this.props.portfolio.id}/>
-                      <Table
-                        rowKey={record => record.id}
-                        dataSource={this.props.portfolio.transactions}
-                        columns={this.state.transactionsTableColumns} />
+                  ? <div className="row">
+                      <PortfolioTotalCard transactions={this.props.portfolio.transactions}/>
+                      <Portfolio24HChangeCard transactions={this.props.portfolio.transactions}/>
+                      <section className="col-12">
+                        <h3>Recent transactions</h3>
+                        <hr />
+                        <Table
+                          rowKey={record => record.id}
+                          dataSource={this.props.portfolio.transactions}
+                          columns={this.state.transactionsTableColumns} />
+                      </section>
+                      
                     </div>
                   : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
                       <h4 className="alert-heading">Oh noes!</h4>
@@ -152,6 +186,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
+  fetchPrices: (coins) => dispatch(fetchPrices(coins)),
   addTransaction: (portfolioId, transaction) => dispatch(startAddTransaction(portfolioId, transaction)),
   editTransaction: (portfolioId, transactionId, transaction) => dispatch(startEditTransaction(portfolioId, transactionId, transaction)),
   removeTransaction: (portfolioId, transactionId) => dispatch(startRemoveTransaction(portfolioId, transactionId))

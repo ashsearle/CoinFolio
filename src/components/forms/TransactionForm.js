@@ -60,8 +60,8 @@ export default class TransactionForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.type !== 'cost' && (!this.state.amount || !this.state.price)) {
-      this.setState(() => ({ error: 'Please add an amount and a price!' }));
+    if (this.state.type !== 'cost' && !this.state.amount) {
+      this.setState(() => ({ error: 'Please add an amount!' }));
     }
     else if (this.state.type === 'cost' && !this.state.price) {
       this.setState(() => ({ error: 'Please add a price!' }));
@@ -122,9 +122,23 @@ export default class TransactionForm extends Component {
                   value={this.state.coin}
                   onChange={this.onCoinChange}>
                     <option value="btc">BTC</option>
+                    <option value="bch">BCH</option>
+                    <option value="btg">BTG</option>
                     <option value="eth">ETH</option>
+                    <option value="etc">ETC</option>
                     <option value="ltc">LTC</option>
+                    <option value="zec">ZEC</option>
                     <option value="zcl">ZCL</option>
+                    <option value="sc">SC</option>
+                    <option value="dgb">DGB</option>
+                    <option value="vtc">VTC</option>
+                    <option value="trx">TRX</option>
+                    <option value="kin">KIN</option>
+                    <option value="gnt">GNT</option>
+                    <option value="elf">ELF</option>
+                    <option value="neo">NEO</option>
+                    <option value="gas">GAS</option>
+                    <option value="req">REQ</option>
                 </select>
               </div>
               <div className="form-group col-md-6">
