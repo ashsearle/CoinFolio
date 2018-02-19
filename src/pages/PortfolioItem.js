@@ -62,7 +62,7 @@ class PortfolioItem extends Component {
         render: (text, record) => {
           return (
             <div>
-              <button className="btn btn-link" onClick={() => this.onTransactionEdit(record.id)}>Edit</button>
+              <button className="btn btn-link" onClick={() => this.onTransactionEdit(record)}>Edit</button>
               <Popconfirm title="Are you sure?" onConfirm={() => this.onTransactionDelete(record.id)}>
                 <button className="btn btn-link">Delete</button>
               </Popconfirm>
@@ -107,8 +107,12 @@ class PortfolioItem extends Component {
   }
   */
 
-  onTransactionEdit = (id) => {
-    console.log('onTransactionEdit', id);
+  onTransactionEdit = (transaction) => {
+    console.log('onTransactionEdit', transaction);
+    this.setState({
+      editingTransaction: transaction,
+      modalOpen: true
+    });
   }
 
   onTransactionDelete = (id) => {
@@ -125,15 +129,23 @@ class PortfolioItem extends Component {
     return (
       <div>
         <Modal
-          title="Add Transaction"
+          title={(this.state.editingTransaction ? 'Edit' : 'Add') + ' Transaction'}
           visible={this.state.modalOpen}
           onCancel={this.toggleModal}
           footer={null}
         >
           <TransactionForm
+            transaction={this.state.editingTransaction}
             onSubmit={(transaction) => {
-              this.props.addTransaction(this.props.portfolio.id, transaction);
-              this.toggleModal();
+              if (this.state.editingTransaction) {
+                this.props.editTransaction(this.props.portfolio.id, this.state.editingTransaction.id, transaction);
+              } else {
+                this.props.addTransaction(this.props.portfolio.id, transaction);
+              }
+              this.setState({
+                editingTransaction: null,
+                modalOpen: false
+              });
             }}/>
         </Modal>
         <div className="container content">

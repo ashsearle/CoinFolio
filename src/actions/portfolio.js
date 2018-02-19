@@ -135,12 +135,16 @@ export const editTransaction = (portfolioId, transactionId, transaction) =>  ({
 export const startEditTransaction = (portfolioId, transactionId, transaction) => {
   return (dispatch, getState) => {
     const uid = getState().user.uid;
+    console.log('portfolioId', portfolioId)
+    console.log('transactionId', transactionId)
+    console.log('transaction', transaction)
+    
     database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).update(transaction).then(() => {
       dispatch(editTransaction(portfolioId, transactionId, transaction));
     });
+    
   }
 };
-
 
 export const removeTransaction = (portfolioId, transactionId) =>  ({
   type: 'REMOVE_TRANSACTION',

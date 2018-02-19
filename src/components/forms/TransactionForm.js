@@ -10,7 +10,7 @@ export default class TransactionForm extends Component {
     super(props);
     this.state = {
       type: props.transaction ? props.transaction.type : 'purchase',
-      coin: props.transaction ? props.transaction.coin.toUpperCase : 'btc',
+      coin: props.transaction ? props.transaction.coin : 'btc',
       amount: props.transaction ? props.transaction.amount : '',
       price: props.transaction ? props.transaction.price : '',
       currency: props.transaction ? props.transaction.currency : 'usd',
@@ -92,7 +92,7 @@ export default class TransactionForm extends Component {
               <select
                 id="inputType"
                 className="form-control custom-select"
-                value={this.state.type}
+                defaultValue={this.state.type}
                 onChange={this.onTypeChange}>
                   <option value="purchase">Purchase</option>
                   <option value="mining">Mining</option>
@@ -119,7 +119,7 @@ export default class TransactionForm extends Component {
                 <select
                   id="inputCoin"
                   className="form-control custom-select"
-                  value={this.state.coin}
+                  defaultValue={this.state.coin}
                   onChange={this.onCoinChange}>
                     <option value="btc">BTC</option>
                     <option value="bch">BCH</option>
