@@ -108,7 +108,6 @@ class PortfolioItem extends Component {
   */
 
   onTransactionEdit = (transaction) => {
-    console.log('onTransactionEdit', transaction);
     this.setState({
       editingTransaction: transaction,
       modalOpen: true
