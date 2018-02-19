@@ -118,9 +118,16 @@ class PortfolioItem extends Component {
     this.props.removeTransaction(this.props.portfolio.id, id);
   }
 
-  toggleModal = () => {
+  openModal = () => {
     this.setState({
-      modalOpen: !this.state.modalOpen
+      modalOpen: true
+    });
+  }
+
+  closeModal = () => {
+    this.setState({
+      editingTransaction: null,
+      modalOpen: false
     });
   }
 
@@ -130,7 +137,7 @@ class PortfolioItem extends Component {
         <Modal
           title={(this.state.editingTransaction ? 'Edit' : 'Add') + ' Transaction'}
           visible={this.state.modalOpen}
-          onCancel={this.toggleModal}
+          onCancel={this.closeModal}
           footer={null}
         >
           <TransactionForm
@@ -141,10 +148,7 @@ class PortfolioItem extends Component {
               } else {
                 this.props.addTransaction(this.props.portfolio.id, transaction);
               }
-              this.setState({
-                editingTransaction: null,
-                modalOpen: false
-              });
+              this.closeModal();
             }}/>
         </Modal>
         <div className="container content">
@@ -157,7 +161,7 @@ class PortfolioItem extends Component {
                   <button
                     className="btn btn-primary"
                     type="button"
-                    onClick={this.toggleModal}>
+                    onClick={this.openModal}>
                     Add transaction
                   </button>
                 </nav>
@@ -179,7 +183,7 @@ class PortfolioItem extends Component {
                   : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
                       <h4 className="alert-heading">Oh noes!</h4>
                       <p>You don't have any transactions in your portfolio.</p>
-                      <button className="btn btn-secondary" onClick={this.toggleModal}>Add transaction</button>
+                      <button className="btn btn-secondary" onClick={this.openModal}>Add transaction</button>
                     </div>
                 }
               </div>

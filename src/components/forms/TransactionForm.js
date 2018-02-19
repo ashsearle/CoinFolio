@@ -21,17 +21,16 @@ export default class TransactionForm extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.transaction) {
-      this.setState({
-        type: props.transaction ? props.transaction.type : 'purchase',
-        coin: props.transaction ? props.transaction.coin : 'btc',
-        amount: props.transaction ? props.transaction.amount : '',
-        price: props.transaction ? props.transaction.price : '',
-        currency: props.transaction ? props.transaction.currency : 'usd',
-        date: props.transaction ? moment(props.transaction.date) : moment(),
-        description: props.transaction ? props.transaction.description : ''
-      });
-    }
+    console.log('props', props)
+    this.setState({
+      type: props.transaction ? props.transaction.type : 'purchase',
+      coin: props.transaction ? props.transaction.coin : 'btc',
+      amount: props.transaction ? props.transaction.amount : '',
+      price: props.transaction ? props.transaction.price : '',
+      currency: props.transaction ? props.transaction.currency : 'usd',
+      date: props.transaction ? moment(props.transaction.date) : moment(),
+      description: props.transaction ? props.transaction.description : ''
+    });
   }
 
   onTypeChange = (e) => {
@@ -185,7 +184,7 @@ export default class TransactionForm extends Component {
               <DatePicker
                 className="form-control"
                 format={dateFormat}
-                defaultValue={moment(this.state.date, dateFormat)}
+                value={moment(this.state.date, dateFormat)}
                 onChange={this.onDateChange} />
             </div>
           </div>
