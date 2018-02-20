@@ -9,7 +9,7 @@ export default class TransactionForm extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      type: props.transaction ? props.transaction.type : 'purchase',
+      type: props.transaction ? props.transaction.type : 'mining',
       coin: props.transaction ? props.transaction.coin : 'btc',
       amount: props.transaction ? props.transaction.amount : '',
       price: props.transaction ? props.transaction.price : '',
@@ -23,7 +23,7 @@ export default class TransactionForm extends Component {
   componentWillReceiveProps(props) {
     console.log('props', props)
     this.setState({
-      type: props.transaction ? props.transaction.type : 'purchase',
+      type: props.transaction ? props.transaction.type : 'mining',
       coin: props.transaction ? props.transaction.coin : 'btc',
       amount: props.transaction ? props.transaction.amount : '',
       price: props.transaction ? props.transaction.price : '',
@@ -111,6 +111,7 @@ export default class TransactionForm extends Component {
                   <option value="mining">Mining</option>
                   <option value="airdrop">Airdrop</option>
                   <option value="donation">Donation</option>
+                  <option value="dividend">Dividend</option>
                   <option value="cost">Cost</option>
               </select>
             </div>
