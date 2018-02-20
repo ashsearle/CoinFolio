@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Table, Modal, Popconfirm } from 'antd';
+import { Table, Modal, Popconfirm, Tabs } from 'antd';
 import _ from 'lodash';
 
 import { 
@@ -16,6 +16,9 @@ import { fetchPrices } from '../actions/coins';
 import TransactionForm from '../components/forms/TransactionForm';
 import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
 import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
+import PortfolioCoins from '../components/portfolio/PortfolioCoins';
+
+const TabPane = Tabs.TabPane;
 
 class PortfolioItem extends Component {
 
@@ -171,12 +174,18 @@ class PortfolioItem extends Component {
                       <PortfolioTotalCard transactions={this.props.portfolio.transactions}/>
                       <Portfolio24HChangeCard transactions={this.props.portfolio.transactions}/>
                       <section className="col-12">
-                        <h3>Recent transactions</h3>
-                        <hr />
-                        <Table
-                          rowKey={record => record.id}
-                          dataSource={this.props.portfolio.transactions}
-                          columns={this.state.transactionsTableColumns} />
+                        <Tabs defaultActiveKey="1" size={'large'}>
+                          <TabPane tab="Transactions" key="1">
+                            <Table
+                              rowKey={record => record.id}
+                              dataSource={this.props.portfolio.transactions}
+                              columns={this.state.transactionsTableColumns} />
+                          </TabPane>
+                          <TabPane tab="Coins" key="2">
+                            <PortfolioCoins
+                              transactions={this.props.portfolio.transactions}/>
+                          </TabPane>
+                        </Tabs>
                       </section>
                       
                     </div>
