@@ -28,7 +28,8 @@ class Portfolio24HChangeCard extends Component {
   }
 
   calculateChange = ({ transactions, coins, user }) => {
-    const change = transactions.reduce((sum, transaction) => {
+    const filtered = transactions.filter((transaction) => transaction.type !== 'cost');
+    const change = filtered.reduce((sum, transaction) => {
       const coin = transaction.coin.toUpperCase();
       const today = +transaction.amount * +coins.prices[coin];
       const yesterday = +transaction.amount * +coins.prices24h[coin];

@@ -21,7 +21,6 @@ export default class TransactionForm extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('props', props)
     this.setState({
       type: props.transaction ? props.transaction.type : 'mining',
       coin: props.transaction ? props.transaction.coin : 'btc',

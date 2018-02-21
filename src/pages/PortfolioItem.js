@@ -16,6 +16,7 @@ import { fetchPrices } from '../actions/coins';
 import TransactionForm from '../components/forms/TransactionForm';
 import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
 import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
+import PortfolioCostTotalCard from '../components/cards/PortfolioCostTotalCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
 
 const TabPane = Tabs.TabPane;
@@ -173,6 +174,7 @@ class PortfolioItem extends Component {
                   ? <div className="row">
                       <PortfolioTotalCard transactions={this.props.portfolio.transactions}/>
                       <Portfolio24HChangeCard transactions={this.props.portfolio.transactions}/>
+                      <PortfolioCostTotalCard transactions={this.props.portfolio.transactions}/>
                       <section className="col-12">
                         <Tabs defaultActiveKey="1" size={'large'}>
                           <TabPane tab="Transactions" key="1">

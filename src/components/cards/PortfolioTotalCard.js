@@ -15,7 +15,11 @@ class PortfolioTotalCard extends Component {
               { 
                 Object.keys(this.props.prices).length
                 ? <h2 className="card-text">{this.props.user.currencySign + formatCurrency(this.props.transactions.reduce((sum, transaction) => {
-                  return sum += +transaction.amount * this.props.prices[transaction.coin.toUpperCase()]
+                  const increase = 
+                    transaction.type === 'cost' 
+                    ? 0 
+                    : +transaction.amount * this.props.prices[transaction.coin.toUpperCase()];
+                  return sum += increase;
                 }, 0))}</h2>
                 : <p className="card-text">Calculating...</p>
               }
