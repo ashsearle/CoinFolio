@@ -17,6 +17,7 @@ import TransactionForm from '../components/forms/TransactionForm';
 import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
 import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
 import PortfolioCostTotalCard from '../components/cards/PortfolioCostTotalCard';
+import PortfolioProfitCard from '../components/cards/PortfolioProfitCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
 
 const TabPane = Tabs.TabPane;
@@ -29,6 +30,8 @@ class PortfolioItem extends Component {
     this.state = {
       modalOpen: false,
       subscriptions: [],
+      portfolioValue: 0,
+      portfolioCost: 0,
       transactionsTableColumns: [{
         title: 'Type',
         dataIndex: 'type',
@@ -135,6 +138,14 @@ class PortfolioItem extends Component {
     });
   }
 
+  onPortfolioValueCalculated = (portfolioValue) => {
+    this.setState({ portfolioValue })
+  }
+
+  onPortfolioCostCalculated = (portfolioCost) => {
+    this.setState({ portfolioCost })
+  }
+
   render() {
     return (
       <div>
@@ -172,9 +183,17 @@ class PortfolioItem extends Component {
                 {
                   this.props.portfolio.transactions && this.props.portfolio.transactions.length
                   ? <div className="row">
-                      <PortfolioTotalCard transactions={this.props.portfolio.transactions}/>
-                      <Portfolio24HChangeCard transactions={this.props.portfolio.transactions}/>
-                      <PortfolioCostTotalCard transactions={this.props.portfolio.transactions}/>
+                      <PortfolioTotalCard
+                        onPortfolioValueCalculated={this.onPortfolioValueCalculated}
+                        transactions={this.props.portfolio.transactions}/>
+                      <Portfolio24HChangeCard
+                        transactions={this.props.portfolio.transactions}/>
+                      <PortfolioCostTotalCard
+                        onPortfolioCostCalculated={this.onPortfolioCostCalculated}
+                        transactions={this.props.portfolio.transactions}/>
+                      <PortfolioProfitCard
+                        value={this.state.portfolioValue}
+                        cost={this.state.portfolioCost}/>
                       <section className="col-12">
                         <Tabs defaultActiveKey="1" size={'large'}>
                           <TabPane tab="Transactions" key="1">

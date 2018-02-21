@@ -11,7 +11,7 @@ class Portfolio24HChangeCard extends Component {
     this.state = {
       change: 0,
       formattedChange: '',
-      cardClass: ''
+      textClass: ''
     }
   }
 

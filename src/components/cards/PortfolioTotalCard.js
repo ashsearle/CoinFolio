@@ -1,9 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import { formatCurrency } from '../../utils/currency';
 
 class PortfolioTotalCard extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      total: 0
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.transactions && this.props.transactions.length) {
+      this.calculateTotal(this.props);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.transactions && nextProps.transactions.length) {
+      this.calculateTotal(nextProps);
+    }
+  }
+
+  calculateTotal = ({transactions, prices, onPortfolioValueCalculated}) => {
+    const total = transactions.reduce((sum, transaction) => {
+      const increase = 
+        transaction.type === 'cost' 
+        ? 0 
+        : +transaction.amount * prices[transaction.coin.toUpperCase()];
+      return sum += increase;
+    }, 0);
+    if (!_.isNaN(total)) {
+      this.setState({ total });
+      onPortfolioValueCalculated(total);
+    }
+  }
 
   render() {
     return (
@@ -11,16 +45,10 @@ class PortfolioTotalCard extends Component {
         <div className="card bg-light">
           <div className="card-body">
             <div>
-              <h5 className="card-title">Portfolio Value:</h5>
+              <h5 className="card-title">Value:</h5>
               { 
-                Object.keys(this.props.prices).length
-                ? <h2 className="card-text">{this.props.user.currencySign + formatCurrency(this.props.transactions.reduce((sum, transaction) => {
-                  const increase = 
-                    transaction.type === 'cost' 
-                    ? 0 
-                    : +transaction.amount * this.props.prices[transaction.coin.toUpperCase()];
-                  return sum += increase;
-                }, 0))}</h2>
+                this.state.total
+                ? <h2 className="card-text">{ this.props.user.currencySign + formatCurrency(this.state.total) }</h2>
                 : <p className="card-text">Calculating...</p>
               }
             </div>

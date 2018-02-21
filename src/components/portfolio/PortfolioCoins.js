@@ -24,7 +24,7 @@ class PortfolioCoins extends Component {
 
   sortCoins = (transactions) => {
     const coins = [];
-    _.uniqBy(this.props.transactions, 'coin')
+    _.uniqBy(transactions.filter((transaction) => transaction.type !== 'cost'), 'coin')
     .map((transaction) => {
       return transaction.coin
     })
