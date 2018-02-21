@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 class PortfolioCoins extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       coins: []
-    }
+    };
   }
 
   componentDidMount() {
@@ -22,35 +21,44 @@ class PortfolioCoins extends Component {
     }
   }
 
-  sortCoins = (transactions) => {
+  sortCoins = transactions => {
     const coins = [];
-    _.uniqBy(transactions.filter((transaction) => transaction.type !== 'cost'), 'coin')
-    .map((transaction) => {
-      return transaction.coin
-    })
-    .map((coin) => {
-      return coins.push(
-        {
+    _.uniqBy(
+      transactions.filter(transaction => transaction.type !== 'cost'),
+      'coin'
+    )
+      .map(transaction => {
+        return transaction.coin;
+      })
+      .map(coin => {
+        return coins.push({
           coin: coin.toUpperCase(),
-          amount: _.reduce(transactions, (sum, transaction) => {
-            return sum + (transaction.coin === coin ? +transaction.amount : 0)
-          }, 0)
-        }
-      )
-    });
-    this.setState({ coins })
-  }
+          amount: _.reduce(
+            transactions,
+            (sum, transaction) => {
+              return (
+                sum + (transaction.coin === coin ? +transaction.amount : 0)
+              );
+            },
+            0
+          )
+        });
+      });
+    this.setState({ coins });
+  };
 
   render() {
     return (
       <ul>
-          {
-            this.state.coins.map(function({coin, amount}, index){
-              return <li key={index}>{coin}: {amount}</li>;
-            })
-          }
+        {this.state.coins.map(function({ coin, amount }, index) {
+          return (
+            <li key={index}>
+              {coin}: {amount}
+            </li>
+          );
+        })}
       </ul>
-    )
+    );
   }
 }
 

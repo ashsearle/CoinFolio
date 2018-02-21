@@ -18,7 +18,11 @@ const AppRouter = () => (
       <MainNav />
       <Switch>
         <Route path="/" component={CurrenciesPage} exact={true} />
-        <PrivateRoute path="/portfolio" component={PortfolioPage} exact={true} />
+        <PrivateRoute
+          path="/portfolio"
+          component={PortfolioPage}
+          exact={true}
+        />
         <PrivateRoute path="/portfolio/:id" component={PortfolioItem} />
         <Route component={NotFoundPage} />
       </Switch>

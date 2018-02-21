@@ -1,7 +1,7 @@
-import _ from "lodash";
+import _ from 'lodash';
 //import { subscribeToSocket, unsubscribeToSocket } from '../socketio/socketio';
 //import CCC from '../utils/socketio';
-import apiConfig from "../config/api";
+import apiConfig from '../config/api';
 
 const {
   price: coinPriceEndpoint,
@@ -9,12 +9,12 @@ const {
 } = apiConfig.currencies;
 
 export const addPrice = (price = {}) => ({
-  type: "ADD_PRICE",
+  type: 'ADD_PRICE',
   price
 });
 
 export const addPrice24h = (price = {}) => ({
-  type: "ADD_PRICE_24H",
+  type: 'ADD_PRICE_24H',
   price
 });
 

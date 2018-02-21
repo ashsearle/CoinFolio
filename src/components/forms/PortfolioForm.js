@@ -1,53 +1,52 @@
 import React, { Component } from 'react';
 
 export default class PortfolioForm extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       name: props.portfolio ? props.portfolio.name : '',
       currency: props.portfolio ? props.portfolio.currency : 'USD',
       description: props.portfolio ? props.portfolio.description : '',
       errorState: false
-    }
+    };
   }
 
-  onNameChange = (e) => {
+  onNameChange = e => {
     const name = e.target.value;
     this.setState(() => ({ name }));
-  }
+  };
 
-  onCurrencyChange = (e) => {
+  onCurrencyChange = e => {
     const currency = e.target.value;
     this.setState(() => ({ currency }));
-  }
+  };
 
-  onDescriptionChange = (e) => {
+  onDescriptionChange = e => {
     const description = e.target.value;
     this.setState(() => ({ description }));
-  }
+  };
 
-  onSubmit = (e) => {
+  onSubmit = e => {
     e.preventDefault();
     if (!this.state.name) {
       this.setState(() => ({ error: 'Please add a name!' }));
-    }
-    else {
+    } else {
       this.setState(() => ({ error: '' }));
       this.props.onSubmit({
         name: this.state.name,
         currency: this.state.currency,
         description: this.state.description
-      })
+      });
     }
-  }
+  };
 
   render() {
     return (
       <div>
-        {this.state.error && <div className="alert alert-danger">{this.state.error}</div>}
-        <form
-          onSubmit={this.onSubmit}>
+        {this.state.error && (
+          <div className="alert alert-danger">{this.state.error}</div>
+        )}
+        <form onSubmit={this.onSubmit}>
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="inputName">Name</label>
@@ -57,7 +56,8 @@ export default class PortfolioForm extends Component {
                 id="inputName"
                 placeholder="Name"
                 value={this.state.name}
-                onChange={this.onNameChange}/>
+                onChange={this.onNameChange}
+              />
             </div>
             <div className="form-group col-md-6">
               <label htmlFor="inputCurrency">Currency</label>
@@ -65,9 +65,10 @@ export default class PortfolioForm extends Component {
                 id="inputCurrency"
                 className="form-control custom-select"
                 value={this.state.currency}
-                onChange={this.onCurrencyChange}>
-                  <option value="usd">USD</option>
-                  <option value="gbp">GBP</option>
+                onChange={this.onCurrencyChange}
+              >
+                <option value="usd">USD</option>
+                <option value="gbp">GBP</option>
               </select>
             </div>
           </div>
@@ -77,13 +78,15 @@ export default class PortfolioForm extends Component {
               placeholder="Add a description for your portfolio (optional)"
               className="form-control"
               value={this.state.description}
-              onChange={this.onDescriptionChange}>
-            </textarea>
+              onChange={this.onDescriptionChange}
+            />
           </div>
-          <button type="submit" className="btn btn-primary float-right">Submit</button>
-          <div className="clearfix"></div>
+          <button type="submit" className="btn btn-primary float-right">
+            Submit
+          </button>
+          <div className="clearfix" />
         </form>
       </div>
-    )
+    );
   }
 }

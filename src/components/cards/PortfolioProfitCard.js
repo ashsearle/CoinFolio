@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import { formatCurrency } from "../../utils/currency";
+import { formatCurrency } from '../../utils/currency';
 
 class PortfolioProfitCard extends Component {
   render() {
@@ -14,10 +14,10 @@ class PortfolioProfitCard extends Component {
               {this.props.value && this.props.cost ? (
                 <h2
                   className={
-                    "card-text " +
+                    'card-text ' +
                     (this.props.value < this.props.cost
-                      ? "text-danger"
-                      : "text-success")
+                      ? 'text-danger'
+                      : 'text-success')
                   }
                 >
                   {formatCurrency(

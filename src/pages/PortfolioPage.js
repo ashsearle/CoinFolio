@@ -8,7 +8,6 @@ import PortfolioList from '../components/portfolio/PortfolioList';
 import { startAddPortfolio, startSetPortfolios } from '../actions/portfolio';
 
 class PortfolioPage extends Component {
-
   constructor(props) {
     super(props);
 
@@ -25,18 +24,18 @@ class PortfolioPage extends Component {
     this.setState({
       modalOpen: !this.state.modalOpen
     });
-  }
+  };
 
   render() {
     return (
       <div className="container content">
-        
         <nav className="navbar">
           <h1>Portfolio</h1>
           <button
             className="btn btn-primary"
             type="button"
-            onClick={this.toggleModal}>
+            onClick={this.toggleModal}
+          >
             Add portfolio
           </button>
         </nav>
@@ -48,40 +47,41 @@ class PortfolioPage extends Component {
           footer={null}
         >
           <PortfolioForm
-            onSubmit={(portfolio) => {
+            onSubmit={portfolio => {
               this.props.createPortfolio(portfolio);
               this.toggleModal();
-            }}/>
+            }}
+          />
         </Modal>
 
-        {
-          this.props.portfolio.length
-
-          ? <PortfolioList />
-
-          : <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
-              <h4 className="alert-heading">Oh noes!</h4>
-              <p>You don't have any portfolio yet.</p>
-              <hr />
-              <p>You can add as many portfolios as you like, as soon as you have they will show here.</p>
-              <button className="btn btn-secondary" onClick={this.toggleModal}>Add portfolio now</button>
-            </div>
-        }
-
-        
+        {this.props.portfolio.length ? (
+          <PortfolioList />
+        ) : (
+          <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
+            <h4 className="alert-heading">Oh noes!</h4>
+            <p>You don't have any portfolio yet.</p>
+            <hr />
+            <p>
+              You can add as many portfolios as you like, as soon as you have
+              they will show here.
+            </p>
+            <button className="btn btn-secondary" onClick={this.toggleModal}>
+              Add portfolio now
+            </button>
+          </div>
+        )}
       </div>
-    )
+    );
   }
-  
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   portfolio: state.portfolio
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
-  createPortfolio: (portfolio) => dispatch(startAddPortfolio(portfolio))
+  createPortfolio: portfolio => dispatch(startAddPortfolio(portfolio))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PortfolioPage);

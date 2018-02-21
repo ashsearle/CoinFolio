@@ -5,12 +5,11 @@ import _ from 'lodash';
 import { formatCurrency } from '../../utils/currency';
 
 class PortfolioTotalCard extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       total: 0
-    }
+    };
   }
 
   componentDidMount() {
@@ -25,19 +24,19 @@ class PortfolioTotalCard extends Component {
     }
   }
 
-  calculateTotal = ({transactions, prices, onPortfolioValueCalculated}) => {
+  calculateTotal = ({ transactions, prices, onPortfolioValueCalculated }) => {
     const total = transactions.reduce((sum, transaction) => {
-      const increase = 
-        transaction.type === 'cost' 
-        ? 0 
-        : +transaction.amount * prices[transaction.coin.toUpperCase()];
-      return sum += increase;
+      const increase =
+        transaction.type === 'cost'
+          ? 0
+          : +transaction.amount * prices[transaction.coin.toUpperCase()];
+      return (sum += increase);
     }, 0);
     if (!_.isNaN(total)) {
       this.setState({ total });
       onPortfolioValueCalculated(total);
     }
-  }
+  };
 
   render() {
     return (
@@ -46,20 +45,22 @@ class PortfolioTotalCard extends Component {
           <div className="card-body">
             <div>
               <h5 className="card-title">Value:</h5>
-              { 
-                this.state.total
-                ? <h2 className="card-text">{ formatCurrency(this.props.user, this.state.total) }</h2>
-                : <p className="card-text">Calculating...</p>
-              }
+              {this.state.total ? (
+                <h2 className="card-text">
+                  {formatCurrency(this.props.user, this.state.total)}
+                </h2>
+              ) : (
+                <p className="card-text">Calculating...</p>
+              )}
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   prices: state.coins.prices,
   user: state.user
 });

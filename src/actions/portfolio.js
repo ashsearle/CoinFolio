@@ -1,6 +1,6 @@
 import database from '../firebase/firebase';
 
-export const addPortfolio = (portfolio) =>  ({
+export const addPortfolio = portfolio => ({
   type: 'ADD_PORTFOLIO',
   portfolio
 });
@@ -12,22 +12,28 @@ export const startAddPortfolio = (portfolioData = {}) => {
       name = '',
       description = '',
       currency = '',
-      created = (new Date()).toISOString(),
+      created = new Date().toISOString(),
       isPublic = false
     } = portfolioData;
-    const portfolio = {name, description, currency, created, isPublic};
-    database.ref(`users/${uid}/portfolios`).push(portfolio).then((ref) => {
-      dispatch(addPortfolio({
-        id: ref.key,
-        ...portfolio
-      }))
-    }).catch((e) => {
-      console.log('error', e)
-    });
-  }
-}
+    const portfolio = { name, description, currency, created, isPublic };
+    database
+      .ref(`users/${uid}/portfolios`)
+      .push(portfolio)
+      .then(ref => {
+        dispatch(
+          addPortfolio({
+            id: ref.key,
+            ...portfolio
+          })
+        );
+      })
+      .catch(e => {
+        console.log('error', e);
+      });
+  };
+};
 
-export const editPortfolio = (id, updates) =>  ({
+export const editPortfolio = (id, updates) => ({
   type: 'EDIT_PORTFOLIO',
   id,
   updates
@@ -36,13 +42,16 @@ export const editPortfolio = (id, updates) =>  ({
 export const startEditPortfolio = (id, updates) => {
   return (dispatch, getState) => {
     const uid = getState().user.uid;
-    database.ref(`users/${uid}/portfolios/${id}`).update(updates).then(() => {
-      dispatch(editPortfolio(id, updates));
-    });
-  }
+    database
+      .ref(`users/${uid}/portfolios/${id}`)
+      .update(updates)
+      .then(() => {
+        dispatch(editPortfolio(id, updates));
+      });
+  };
 };
 
-export const removePortfolio = ({ id } = {}) =>  ({
+export const removePortfolio = ({ id } = {}) => ({
   type: 'REMOVE_PORTFOLIO',
   id
 });
@@ -50,13 +59,16 @@ export const removePortfolio = ({ id } = {}) =>  ({
 export const startRemovePortfolio = ({ id } = {}) => {
   return (dispatch, getState) => {
     const uid = getState().user.uid;
-    database.ref(`users/${uid}/portfolios/${id}`).remove().then(() => {
-      dispatch(removePortfolio({ id }));
-    });
-  }
+    database
+      .ref(`users/${uid}/portfolios/${id}`)
+      .remove()
+      .then(() => {
+        dispatch(removePortfolio({ id }));
+      });
+  };
 };
 
-export const setPortfolio = (portfolio) => ({
+export const setPortfolio = portfolio => ({
   type: 'SET_PORTFOLIO',
   portfolio
 });
@@ -66,18 +78,18 @@ export const startSetPortfolios = () => {
     const uid = getState().user.uid;
     const portfolio = getState().portfolio;
     if (portfolio.length) return dispatch(setPortfolio(portfolio));
-    database.ref(`users/${uid}/portfolios`).once('value', (snapshot) => {
+    database.ref(`users/${uid}/portfolios`).once('value', snapshot => {
       const portfolio = [];
-      snapshot.forEach((child) => {
+      snapshot.forEach(child => {
         portfolio.push({
           id: child.key,
           ...child.val()
         });
       });
-      portfolio.map((portfolioItem) => {
+      portfolio.map(portfolioItem => {
         if (portfolioItem.transactions) {
           const formattedTransactions = [];
-          Object.keys(portfolioItem.transactions).forEach((key) => {
+          Object.keys(portfolioItem.transactions).forEach(key => {
             formattedTransactions.push({
               id: key,
               ...portfolioItem.transactions[key]
@@ -86,13 +98,13 @@ export const startSetPortfolios = () => {
           portfolioItem.transactions = formattedTransactions;
         }
         return portfolioItem;
-      })
+      });
       dispatch(setPortfolio(portfolio));
     });
-  }
+  };
 };
 
-export const addTransaction = (portfolioId, transaction) =>  ({
+export const addTransaction = (portfolioId, transaction) => ({
   type: 'ADD_TRANSACTION',
   portfolioId,
   transaction
@@ -110,38 +122,58 @@ export const startAddTransaction = (portfolioId, transactionData = {}) => {
       date = '',
       description = ''
     } = transactionData;
-    const transaction = {type, coin, amount, price, currency, date, description};
-    database.ref(`users/${uid}/portfolios/${portfolioId}/transactions`).push(transaction).then((ref) => {
-      dispatch(addTransaction(
-        portfolioId,
-      {
-        id: ref.key,
-        ...transaction
-      }))
-    }).catch((e) => {
-      console.log('error', e)
-    });
-    
-  }
-}
+    const transaction = {
+      type,
+      coin,
+      amount,
+      price,
+      currency,
+      date,
+      description
+    };
+    database
+      .ref(`users/${uid}/portfolios/${portfolioId}/transactions`)
+      .push(transaction)
+      .then(ref => {
+        dispatch(
+          addTransaction(portfolioId, {
+            id: ref.key,
+            ...transaction
+          })
+        );
+      })
+      .catch(e => {
+        console.log('error', e);
+      });
+  };
+};
 
-export const editTransaction = (portfolioId, transactionId, transaction) =>  ({
+export const editTransaction = (portfolioId, transactionId, transaction) => ({
   type: 'EDIT_TRANSACTION',
   portfolioId,
   transactionId,
   transaction
 });
 
-export const startEditTransaction = (portfolioId, transactionId, transaction) => {
+export const startEditTransaction = (
+  portfolioId,
+  transactionId,
+  transaction
+) => {
   return (dispatch, getState) => {
     const uid = getState().user.uid;
-    database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).update(transaction).then(() => {
-      dispatch(editTransaction(portfolioId, transactionId, transaction));
-    });
-  }
+    database
+      .ref(
+        `users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`
+      )
+      .update(transaction)
+      .then(() => {
+        dispatch(editTransaction(portfolioId, transactionId, transaction));
+      });
+  };
 };
 
-export const removeTransaction = (portfolioId, transactionId) =>  ({
+export const removeTransaction = (portfolioId, transactionId) => ({
   type: 'REMOVE_TRANSACTION',
   portfolioId,
   transactionId
@@ -150,8 +182,13 @@ export const removeTransaction = (portfolioId, transactionId) =>  ({
 export const startRemoveTransaction = (portfolioId, transactionId) => {
   return (dispatch, getState) => {
     const uid = getState().user.uid;
-    database.ref(`users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`).remove().then(() => {
-      dispatch(removeTransaction(portfolioId, transactionId));
-    });
-  }
+    database
+      .ref(
+        `users/${uid}/portfolios/${portfolioId}/transactions/${transactionId}`
+      )
+      .remove()
+      .then(() => {
+        dispatch(removeTransaction(portfolioId, transactionId));
+      });
+  };
 };

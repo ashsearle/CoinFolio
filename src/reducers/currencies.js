@@ -4,8 +4,8 @@ const currenciesReducer = (state = currenciesReducerDefaultState, action) => {
     case 'SET_CURRENCIES':
       return action.currencies;
     default:
-      return state
+      return state;
   }
-}
+};
 
 export default currenciesReducer;

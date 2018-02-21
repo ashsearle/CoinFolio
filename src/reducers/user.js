@@ -3,7 +3,7 @@ const defaultState = {
   currencySign: '£',
   locales: 'en-GB',
   uid: null
-}
+};
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'LOGIN':
@@ -15,8 +15,8 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         uid: null
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};

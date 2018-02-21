@@ -10,10 +10,10 @@ const socket = io.connect('https://streamer.cryptocompare.com/');
 const subscribeToSocket = (subscription, cb) => {
   socket.on('m', message => cb(message));
   socket.emit('SubAdd', { subs: subscription });
-}
+};
 
-const unsubscribeToSocket = (subscription) => {
+const unsubscribeToSocket = subscription => {
   socket.emit('SubRemove', { subs: subscription });
-}
+};
 
 export { subscribeToSocket, unsubscribeToSocket };

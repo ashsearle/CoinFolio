@@ -32,21 +32,18 @@ const coinsReducer = (state = defaultState, action) => {
     case 'SET_SUBSCRIPTIONS':
       return {
         ...state,
-        subscriptions: [
-          ...state.subscriptions,
-          ...action.subscriptions
-        ]
+        subscriptions: [...state.subscriptions, ...action.subscriptions]
       };
     case 'REMOVE_SUBSCRIPTIONS':
       return {
         ...state,
-        subscriptions: state.subscriptions.filter((subscription) => {
+        subscriptions: state.subscriptions.filter(subscription => {
           return !action.subscriptions.includes(subscription);
         })
       };
     default:
-      return state
+      return state;
   }
-}
+};
 
 export default coinsReducer;

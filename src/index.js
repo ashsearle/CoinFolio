@@ -19,15 +19,13 @@ const app = (
   </Provider>
 );
 
-firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged(user => {
   console.log('onAuthStateChanged', user);
   if (user) {
     store.dispatch(login(user.uid));
-  }
-  else {
-    store.dispatch(logout())
+  } else {
+    store.dispatch(logout());
     history.push('/');
   }
   render(app, document.querySelector('.root'));
 });
-
