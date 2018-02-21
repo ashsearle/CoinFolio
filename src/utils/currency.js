@@ -1,4 +1,3 @@
-export const formatCurrency = (val) => {
-  val = !!+val ? +val : 0;
-  return Number(Math.round(val + 'e2') + 'e-2').toFixed(2);
+export const formatCurrency = ({currency = 'USD', locales = 'en-US'}, value = 0) => {
+  return new Intl.NumberFormat(locales, { style: 'currency', currency: currency }).format(value);
 };

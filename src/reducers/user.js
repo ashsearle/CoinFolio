@@ -1,6 +1,7 @@
 const defaultState = {
   currency: 'GBP',
   currencySign: '£',
+  locales: 'en-GB',
   uid: null
 }
 export default (state = defaultState, action) => {

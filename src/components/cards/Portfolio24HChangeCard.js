@@ -40,7 +40,7 @@ class Portfolio24HChangeCard extends Component {
     if (!_.isNaN(change) && change !== this.state.change) {
       this.setState({
         change: change,
-        formattedChange: user.currencySign + formatCurrency(Math.abs(change)),
+        formattedChange: formatCurrency(user, change),
         textClass: change < 0 ? 'text-danger' : (change > 0 ? 'text-success': '')
       })
     }
@@ -55,11 +55,7 @@ class Portfolio24HChangeCard extends Component {
               <h5 className="card-title">24H Change:</h5>
               { 
                 this.state.formattedChange
-                ? <h2 className={'card-text ' +  this.state.textClass}>
-                  {
-                    (this.state.change < 0 ? '-' : '') + this.state.formattedChange
-                  }
-                  </h2>
+                ? <h2 className={'card-text ' +  this.state.textClass}>{ this.state.formattedChange }</h2>
                 : <p className="card-text">Calculating...</p>
               }
             </div>

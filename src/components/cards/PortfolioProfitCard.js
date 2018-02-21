@@ -15,7 +15,7 @@ class PortfolioProfitCard extends Component {
               { 
                 this.props.value && this.props.cost
                 ? <h2 className={'card-text ' + (this.props.value < this.props.cost ? 'text-danger' : 'text-success')}>
-                    { this.props.user.currencySign + formatCurrency(this.props.value - this.props.cost) }
+                    { formatCurrency(this.props.user, this.props.value - this.props.cost) }
                   </h2>
                 : <p className="card-text">Calculating...</p>
               }
