@@ -1,20 +1,20 @@
-import _ from 'lodash';
+import _ from "lodash";
 //import { subscribeToSocket, unsubscribeToSocket } from '../socketio/socketio';
 //import CCC from '../utils/socketio';
-import apiConfig from '../config/api';
+import apiConfig from "../config/api";
 
-const { 
+const {
   price: coinPriceEndpoint,
   price24h: coinPrice24HEndpoint
 } = apiConfig.currencies;
 
 export const addPrice = (price = {}) => ({
-  type: 'ADD_PRICE',
+  type: "ADD_PRICE",
   price
 });
 
 export const addPrice24h = (price = {}) => ({
-  type: 'ADD_PRICE_24H',
+  type: "ADD_PRICE_24H",
   price
 });
 
@@ -26,30 +26,30 @@ export const fetchPrices = (coins = []) => {
     const priceEndpoint = _.template(coinPriceEndpoint);
     const price24HEndpoint = _.template(coinPrice24HEndpoint);
     const currency = getState().user.currency;
-    newPrices.forEach((coin) => {
+    newPrices.forEach(coin => {
       // get current price
       const endpoint = priceEndpoint({
-        'coin': coin,
-        'currency': currency
+        coin: coin,
+        currency: currency
       });
       fetch(endpoint)
         .then(res => res.json())
-        .then((json) => {
-          dispatch(addPrice({[coin]: json[currency]}));
+        .then(json => {
+          dispatch(addPrice({ [coin]: json[currency] }));
         });
       // Get 24h price
       const endpoint24h = price24HEndpoint({
-        'coin': coin,
-        'currency': currency,
-        'timestamp': Date.now() - 8.64e+7
+        coin: coin,
+        currency: currency,
+        timestamp: Date.now() - 8.64e7
       });
       fetch(endpoint24h)
         .then(res => res.json())
-        .then((json) => {
-          dispatch(addPrice24h({[coin]: json[coin][currency]}));
+        .then(json => {
+          dispatch(addPrice24h({ [coin]: json[coin][currency] }));
         });
     });
-  }
+  };
 };
 
 /*
