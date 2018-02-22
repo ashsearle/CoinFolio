@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { formatCurrency } from '../../utils/currency';
+import { formatCurrency, exchangeToUserCurrency } from '../../utils/currency';
 
 class PortfolioTotalCard extends Component {
   constructor(props) {
@@ -24,14 +24,25 @@ class PortfolioTotalCard extends Component {
     }
   }
 
-  calculateTotal = ({ transactions, prices, onPortfolioValueCalculated }) => {
-    const total = transactions.reduce((sum, transaction) => {
-      const increase =
-        transaction.type === 'cost'
-          ? 0
-          : +transaction.amount * prices[transaction.coin.toUpperCase()];
-      return (sum += increase);
-    }, 0);
+  calculateTotal = ({
+    transactions,
+    currencies,
+    user,
+    onPortfolioValueCalculated
+  }) => {
+    const total = transactions
+      .filter(transaction => transaction.type !== 'cost')
+      .reduce((sum, transaction) => {
+        const transactionCurrency = _.find(currencies, currency => {
+          return currency.short === transaction.coin.toUpperCase();
+        });
+        // TODO: atm we're assuming it's either USD or GBP
+        const transactionPrice =
+          transaction.currency.toLowerCase() === user.currency.toLowerCase()
+            ? transactionCurrency.price
+            : exchangeToUserCurrency(transactionCurrency.price, user);
+        return (sum += +transaction.amount * transactionPrice);
+      }, 0);
     if (!_.isNaN(total)) {
       this.setState({ total });
       onPortfolioValueCalculated(total);
@@ -61,7 +72,7 @@ class PortfolioTotalCard extends Component {
 }
 
 const mapStateToProps = state => ({
-  prices: state.coins.prices,
+  currencies: state.currencies,
   user: state.user
 });
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Table, Modal, Popconfirm, Tabs } from 'antd';
-import _ from 'lodash';
 
 import {
   startSetPortfolios,
@@ -10,8 +9,6 @@ import {
   startEditTransaction,
   startRemoveTransaction
 } from '../actions/portfolio';
-
-import { fetchPrices } from '../actions/coins';
 
 import TransactionForm from '../components/forms/TransactionForm';
 import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
@@ -28,7 +25,6 @@ class PortfolioItem extends Component {
 
     this.state = {
       modalOpen: false,
-      subscriptions: [],
       portfolioValue: 0,
       portfolioCost: 0,
       transactionsTableColumns: [
@@ -98,48 +94,7 @@ class PortfolioItem extends Component {
 
   componentDidMount() {
     this.props.fetchPortfolio();
-    if (
-      this.props.portfolio &&
-      this.props.portfolio.transactions &&
-      this.props.portfolio.transactions.length
-    ) {
-      this.checkCoinsPrices(this.props.portfolio.transactions);
-    }
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.portfolio.transactions &&
-      nextProps.portfolio.transactions.length
-    ) {
-      this.checkCoinsPrices(nextProps.portfolio.transactions);
-    }
-  }
-
-  checkCoinsPrices = transactions => {
-    const coins = _.uniq(
-      transactions
-        .filter(transaction => transaction.type !== 'cost')
-        .map(transaction => transaction.coin.toUpperCase())
-    );
-    this.props.fetchPrices(coins);
-  };
-
-  /*
-  shouldUpdateCoinsSubscriptions = (transactions) => {
-    const coins = _.uniq(transactions.map((transaction) => transaction.coin.toUpperCase()));
-    const subscriptions = [];
-    const subscription = _.template('5~CCCAGG~<%= coin %>~<%= currency %>');
-    coins.forEach((coin) => {
-      subscriptions.push(
-        subscription({
-        coin: coin.toUpperCase(),
-        currency: this.state.currency
-      }))
-    });
-    this.props.handleSubscriptions(subscriptions);
-  }
-  */
 
   onTransactionEdit = transaction => {
     this.setState({
@@ -281,7 +236,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
-  fetchPrices: coins => dispatch(fetchPrices(coins)),
   addTransaction: (portfolioId, transaction) =>
     dispatch(startAddTransaction(portfolioId, transaction)),
   editTransaction: (portfolioId, transactionId, transaction) =>
