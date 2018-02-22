@@ -32,9 +32,10 @@ class CurrenciesPage extends Component {
       this.state.currencies
     );
     updatedCurrencies.forEach(updatedCurrency => {
-      const currentPrice = _.find(this.state.currencies, function(current) {
+      const currentCurrency = _.find(this.state.currencies, function(current) {
         return current.short === updatedCurrency.short;
-      }).price;
+      });
+      const currentPrice = currentCurrency.price;
       const updatedPrice = updatedCurrency.price;
       const trend = updatedPrice > currentPrice ? 'up' : 'down';
       _.find(nextCurrencies, function(next) {
