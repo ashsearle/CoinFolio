@@ -26,15 +26,18 @@ class Portfolio24HChangeCard extends Component {
     }
   }
 
-  calculateChange = ({ transactions, coins, user }) => {
+  calculateChange = ({ transactions, currencies, user }) => {
     const filtered = transactions.filter(
       transaction => transaction.type !== 'cost'
     );
     const change = filtered.reduce((sum, transaction) => {
-      const coin = transaction.coin.toUpperCase();
-      const today = +transaction.amount * +coins.prices[coin];
-      const yesterday = +transaction.amount * +coins.prices24h[coin];
-      const diff = today - yesterday;
+      const transactionCurrency = _.find(currencies, currency => {
+        return currency.short === transaction.coin.toUpperCase();
+      });
+      const diff =
+        +transaction.amount *
+        transactionCurrency.price *
+        (transactionCurrency.perc / 100);
       return (sum += diff);
     }, 0);
 
@@ -70,7 +73,7 @@ class Portfolio24HChangeCard extends Component {
 }
 
 const mapStateToProps = state => ({
-  coins: state.coins,
+  currencies: state.currencies,
   user: state.user
 });
 

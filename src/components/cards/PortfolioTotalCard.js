@@ -24,12 +24,19 @@ class PortfolioTotalCard extends Component {
     }
   }
 
-  calculateTotal = ({ transactions, prices, onPortfolioValueCalculated }) => {
+  calculateTotal = ({
+    transactions,
+    currencies,
+    onPortfolioValueCalculated
+  }) => {
     const total = transactions.reduce((sum, transaction) => {
+      const transactionCurrency = _.find(currencies, currency => {
+        return currency.short === transaction.coin.toUpperCase();
+      });
       const increase =
         transaction.type === 'cost'
           ? 0
-          : +transaction.amount * prices[transaction.coin.toUpperCase()];
+          : +transaction.amount * transactionCurrency.price;
       return (sum += increase);
     }, 0);
     if (!_.isNaN(total)) {
@@ -61,7 +68,7 @@ class PortfolioTotalCard extends Component {
 }
 
 const mapStateToProps = state => ({
-  prices: state.coins.prices,
+  currencies: state.currencies,
   user: state.user
 });
 
