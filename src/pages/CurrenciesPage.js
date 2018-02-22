@@ -1,23 +1,64 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'antd';
+import _ from 'lodash';
 
 import { formatCurrency } from '../utils/currency';
 import { formatNumber } from '../utils/number';
 import { fetchCurrencies } from '../actions/currencies';
 
 class CurrenciesPage extends Component {
-  componentDidMount() {
-    //this.props.fetchCurrencies();
+  constructor(props) {
+    super(props);
+    this.state = {
+      currencies: []
+    };
   }
+
+  componentDidMount() {
+    this.setState({
+      currencies: this.props.currencies
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const currencies = this.getTrends(nextProps.currencies);
+    this.setState({ currencies });
+  }
+
+  getTrends = nextCurrencies => {
+    const updatedCurrencies = _.difference(
+      nextCurrencies,
+      this.state.currencies
+    );
+    updatedCurrencies.forEach(updatedCurrency => {
+      const currentPrice = _.find(this.state.currencies, function(current) {
+        return current.short === updatedCurrency.short;
+      }).price;
+      const updatedPrice = updatedCurrency.price;
+      const trend = updatedPrice > currentPrice ? 'up' : 'down';
+      _.find(nextCurrencies, function(next) {
+        return next.short === updatedCurrency.short;
+      }).trend = trend;
+    });
+    return nextCurrencies;
+  };
 
   formatPercentChange = text => {
     const className = +text > 0 ? 'text-success' : 'text-danger';
     return <span className={className}>{text}%</span>;
   };
 
+  formatChangeTrend = (text, trend) => {
+    if (trend) {
+      const className = trend === 'up' ? 'text-success' : 'text-danger';
+      return <span className={className}>{text}</span>;
+    }
+    return text;
+  };
+
   render() {
-    const data = this.props.currencies.map((currency, index) => {
+    const data = this.state.currencies.map((currency, index) => {
       currency.rank = index + 1;
       return currency;
     });
@@ -53,8 +94,11 @@ class CurrenciesPage extends Component {
         dataIndex: 'price',
         key: 'price',
         sorter: (a, b) => a.price - b.price,
-        render: text => {
-          return formatCurrency(this.props.user, text);
+        render: (text, record) => {
+          return this.formatChangeTrend(
+            formatCurrency(this.props.user, text),
+            record.trend
+          );
         }
       },
       {
@@ -100,7 +144,7 @@ class CurrenciesPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
   currencies: state.currencies,
   user: state.user
 });

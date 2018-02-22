@@ -8,7 +8,7 @@ import './firebase/firebase';
 import { firebase } from './firebase/firebase';
 
 import { login, logout } from './actions/auth';
-import { fetchCurrencies } from './actions/currencies';
+import { fetchCurrencies, socketConnect } from './actions/currencies';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './style.css';
@@ -21,7 +21,6 @@ const app = (
 );
 
 firebase.auth().onAuthStateChanged(user => {
-  console.log('onAuthStateChanged', user);
   if (user) {
     store.dispatch(login(user.uid));
   } else {
@@ -29,5 +28,6 @@ firebase.auth().onAuthStateChanged(user => {
     history.push('/');
   }
   store.dispatch(fetchCurrencies());
+  store.dispatch(socketConnect());
   render(app, document.querySelector('.root'));
 });
