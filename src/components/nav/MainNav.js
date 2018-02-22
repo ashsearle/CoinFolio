@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { doLogin, doLogout } from '../../actions/auth';
+import { doLogin, doLogout } from '../../actions/user';
 
 export class MainNav extends Component {
   onAuthClick = () => {
