@@ -12,10 +12,12 @@ export const exchangeToUserCurrency = (value, { currency, exchangeRates }) => {
 
 export const formatCurrency = (
   { currency = 'USD', locales = 'en-US' },
-  value = 0
+  value = 0,
+  options
 ) => {
   return new Intl.NumberFormat(locales, {
     style: 'currency',
-    currency: currency
+    currency: currency,
+    ...options
   }).format(value);
 };
