@@ -8,7 +8,7 @@ import { fetchCurrencies } from '../actions/currencies';
 
 class CurrenciesPage extends Component {
   componentDidMount() {
-    this.props.fetchCurrencies();
+    //this.props.fetchCurrencies();
   }
 
   formatPercentChange = text => {
@@ -17,13 +17,8 @@ class CurrenciesPage extends Component {
   };
 
   render() {
-    const data = this.props.currencies.map(currency => {
-      currency.market_cap =
-        currency['market_cap_' + this.props.user.currency.toLowerCase()];
-      currency.price =
-        currency['price_' + this.props.user.currency.toLowerCase()];
-      currency['24h_volume'] =
-        currency['24h_volume_' + this.props.user.currency.toLowerCase()];
+    const data = this.props.currencies.map((currency, index) => {
+      currency.rank = index + 1;
       return currency;
     });
     const columns = [
@@ -36,19 +31,19 @@ class CurrenciesPage extends Component {
       },
       {
         title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'long',
+        key: 'long',
         sorter: (a, b) => {
-          if (a.name < b.name) return -1;
-          if (a.name > b.name) return 1;
+          if (a.long < b.long) return -1;
+          if (a.long > b.long) return 1;
           return 0;
         }
       },
       {
         title: 'Market Cap',
-        dataIndex: 'market_cap',
-        key: 'market_cap',
-        sorter: (a, b) => a.market_cap - b.market_cap,
+        dataIndex: 'mktcap',
+        key: 'mktcap',
+        sorter: (a, b) => a.mktcap - b.mktcap,
         render: text => {
           return formatCurrency(this.props.user, text);
         }
@@ -64,53 +59,29 @@ class CurrenciesPage extends Component {
       },
       {
         title: 'Volume (24h)',
-        dataIndex: '24h_volume',
-        key: '24h_volume',
-        sorter: (a, b) => a['24h_volume'] - b['24h_volume'],
+        dataIndex: 'volume',
+        key: 'volume',
+        sorter: (a, b) => a.volume - b.volume,
         render: text => {
           return formatCurrency(this.props.user, text);
         }
       },
       {
         title: 'Supply',
-        dataIndex: 'total_supply',
-        key: 'total_supply',
-        sorter: (a, b) => a.total_supply - b.total_supply,
+        dataIndex: 'supply',
+        key: 'supply',
+        sorter: (a, b) => a.supply - b.supply,
         render: (text, record) => {
           return (
-            formatNumber(this.props.user, record.total_supply) +
-            ' ' +
-            record.symbol
+            formatNumber(this.props.user, record.supply) + ' ' + record.short
           );
         }
       },
       {
-        title: '1h',
-        dataIndex: 'percent_change_1h',
-        key: 'percent_change_1h',
-        className: 'percent_change_1h_class',
-        sorter: (a, b) => a.percent_change_1h_class - b.percent_change_1h_class,
-        render: text => {
-          return this.formatPercentChange(text);
-        }
-      },
-      {
         title: '24h',
-        dataIndex: 'percent_change_24h',
-        key: 'percent_change_24h',
-        className: 'percent_change_24h_class',
-        sorter: (a, b) =>
-          a.percent_change_24h_class - b.percent_change_24h_class,
-        render: text => {
-          return this.formatPercentChange(text);
-        }
-      },
-      {
-        title: '7d',
-        dataIndex: 'percent_change_7d',
-        key: 'percent_change_7d',
-        className: 'percent_change_7d_class',
-        sorter: (a, b) => a.percent_change_7d_class - b.percent_change_7d_class,
+        dataIndex: 'perc',
+        key: 'perc',
+        sorter: (a, b) => a.perc - b.perc,
         render: text => {
           return this.formatPercentChange(text);
         }
@@ -119,7 +90,7 @@ class CurrenciesPage extends Component {
     return (
       <div className="container content">
         <Table
-          rowKey={record => record.id}
+          rowKey={record => record.short}
           dataSource={data}
           columns={columns}
           pagination={{ pageSize: 100 }}

@@ -8,6 +8,7 @@ import './firebase/firebase';
 import { firebase } from './firebase/firebase';
 
 import { login, logout } from './actions/auth';
+import { fetchCurrencies } from './actions/currencies';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './style.css';
@@ -27,5 +28,6 @@ firebase.auth().onAuthStateChanged(user => {
     store.dispatch(logout());
     history.push('/');
   }
+  store.dispatch(fetchCurrencies());
   render(app, document.querySelector('.root'));
 });

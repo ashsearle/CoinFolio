@@ -1,5 +1,4 @@
 import apiConfig from '../config/api';
-import _ from 'lodash';
 
 const { all: allCurrenciesEndpoint } = apiConfig.currencies;
 
@@ -11,11 +10,9 @@ export const setCurrencies = (currencies = []) => ({
 export const fetchCurrencies = () => {
   return (dispatch, getState) => {
     const cache = JSON.parse(sessionStorage.getItem('allCurrencies'));
-    const endpoint = _.template(allCurrenciesEndpoint)({
-      currency: getState().user.currency
-    });
+    console.log('cache', cache);
     if (cache) return dispatch(setCurrencies(cache));
-    fetch(endpoint)
+    fetch(allCurrenciesEndpoint)
       .then(res => res.json())
       .then(json => {
         sessionStorage.setItem('allCurrencies', JSON.stringify(json));
