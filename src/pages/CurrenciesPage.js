@@ -27,6 +27,9 @@ class CurrenciesPage extends Component {
   }
 
   getTrends = nextCurrencies => {
+    if (!this.state.currencies.length) {
+      return nextCurrencies;
+    }
     const updatedCurrencies = _.difference(
       nextCurrencies,
       this.state.currencies
