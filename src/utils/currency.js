@@ -1,4 +1,4 @@
-const toUserCurrency = (value, currency, exchangeRates) => {
+export const exchangeToUserCurrency = (value, { currency, exchangeRates }) => {
   if (
     !exchangeRates ||
     !Object.keys(exchangeRates).length ||
@@ -11,10 +11,9 @@ const toUserCurrency = (value, currency, exchangeRates) => {
 };
 
 export const formatCurrency = (
-  { currency = 'USD', locales = 'en-US', exchangeRates = {} },
+  { currency = 'USD', locales = 'en-US' },
   value = 0
 ) => {
-  value = toUserCurrency(value, currency, exchangeRates);
   return new Intl.NumberFormat(locales, {
     style: 'currency',
     currency: currency

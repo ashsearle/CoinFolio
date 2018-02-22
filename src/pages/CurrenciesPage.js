@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 import _ from 'lodash';
 
-import { formatCurrency } from '../utils/currency';
+import { formatCurrency, exchangeToUserCurrency } from '../utils/currency';
 import { formatNumber } from '../utils/number';
 import { fetchCurrencies } from '../actions/currencies';
 
@@ -86,7 +86,10 @@ class CurrenciesPage extends Component {
         key: 'mktcap',
         sorter: (a, b) => a.mktcap - b.mktcap,
         render: text => {
-          return formatCurrency(this.props.user, text);
+          return formatCurrency(
+            this.props.user,
+            exchangeToUserCurrency(text, this.props.user)
+          );
         }
       },
       {
@@ -96,7 +99,10 @@ class CurrenciesPage extends Component {
         sorter: (a, b) => a.price - b.price,
         render: (text, record) => {
           return this.formatChangeTrend(
-            formatCurrency(this.props.user, text),
+            formatCurrency(
+              this.props.user,
+              exchangeToUserCurrency(text, this.props.user)
+            ),
             record.trend
           );
         }
@@ -107,7 +113,10 @@ class CurrenciesPage extends Component {
         key: 'volume',
         sorter: (a, b) => a.volume - b.volume,
         render: text => {
-          return formatCurrency(this.props.user, text);
+          return formatCurrency(
+            this.props.user,
+            exchangeToUserCurrency(text, this.props.user)
+          );
         }
       },
       {
@@ -144,7 +153,7 @@ class CurrenciesPage extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = state => ({
   currencies: state.currencies,
   user: state.user
 });

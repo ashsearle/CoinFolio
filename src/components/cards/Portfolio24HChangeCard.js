@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { formatCurrency } from '../../utils/currency';
+import { formatCurrency, exchangeToUserCurrency } from '../../utils/currency';
 
 class Portfolio24HChangeCard extends Component {
   constructor(props) {
@@ -34,9 +34,14 @@ class Portfolio24HChangeCard extends Component {
       const transactionCurrency = _.find(currencies, currency => {
         return currency.short === transaction.coin.toUpperCase();
       });
+      // TODO: atm we're assuming it's either USD or GBP
+      const transactionPrice =
+        transaction.currency.toLowerCase() === user.currency.toLowerCase()
+          ? transactionCurrency.price
+          : exchangeToUserCurrency(transactionCurrency.price, user);
       const diff =
         +transaction.amount *
-        transactionCurrency.price *
+        transactionPrice *
         (transactionCurrency.perc / 100);
       return (sum += diff);
     }, 0);

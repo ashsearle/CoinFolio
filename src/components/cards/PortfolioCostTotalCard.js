@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { formatCurrency } from '../../utils/currency';
+import { formatCurrency, exchangeToUserCurrency } from '../../utils/currency';
 
 class PortfolioCostTotalCard extends Component {
   constructor(props) {
@@ -24,11 +24,15 @@ class PortfolioCostTotalCard extends Component {
     }
   }
 
-  calculateCost = ({ transactions, onPortfolioCostCalculated }) => {
+  calculateCost = ({ transactions, onPortfolioCostCalculated, user }) => {
     const cost = transactions
       .filter(transaction => transaction.type === 'cost')
       .reduce((sum, transaction) => {
-        return (sum += +transaction.price);
+        const transactionPrice =
+          transaction.currency.toLowerCase() === user.currency.toLowerCase()
+            ? transaction.price
+            : exchangeToUserCurrency(transaction.price, user);
+        return (sum += +transactionPrice);
       }, 0);
     if (!_.isNaN(cost)) {
       this.setState({ cost });

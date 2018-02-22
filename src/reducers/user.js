@@ -1,6 +1,5 @@
 const defaultState = {
   currency: 'GBP',
-  currencySign: '£',
   locales: 'en-GB',
   uid: null,
   exchangeRates: null
