@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import { firebase, googleAuthProvider } from '../firebase/firebase';
 import apiConfig from '../config/api';
+import uiConfig from '../config/ui';
 
 export const login = uid => ({
   type: 'LOGIN',
@@ -31,13 +32,18 @@ export const setRates = (rates = {}) => ({
 
 export const fetchExchangeRates = () => {
   return (dispatch, getState) => {
-    const userCurrency = getState().user.currency;
-    const { exchangeRates } = apiConfig;
+    const { exchangeRates: ratesEndpoint } = apiConfig;
+    const { fiatCurrencies } = uiConfig;
+    const currencies = fiatCurrencies
+      .map(currency => currency.value)
+      .filter(currency => currency !== 'USD')
+      .join();
+
     const cache = JSON.parse(sessionStorage.getItem('exchangeRates'));
-    if (!userCurrency || userCurrency === 'USD') return;
     if (cache) return dispatch(setRates(cache));
-    const endpoint = _.template(exchangeRates)({
-      currency: userCurrency
+
+    const endpoint = _.template(ratesEndpoint)({
+      currencies
     });
     fetch(endpoint)
       .then(res => res.json())
