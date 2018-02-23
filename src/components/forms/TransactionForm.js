@@ -73,8 +73,8 @@ export default class TransactionForm extends Component {
       getPriceHistorical(
         this.state.coin,
         this.state.currency,
-        // Moment valueOf is funky
-        new Date(moment(this.state.date).format('YYYY-MM-DD')).valueOf()
+        // Moment sets ISO string using today's time even if past date
+        new Date(this.state.date.format('YYYY-MM-DD')).valueOf()
       )
         .then(response => {
           const price =
@@ -103,7 +103,7 @@ export default class TransactionForm extends Component {
       amount: this.state.type !== 'cost' ? +this.state.amount : '',
       price: +this.state.price,
       currency: this.state.currency,
-      date: moment(this.state.date).toJSON(),
+      date: this.state.date.toJSON(),
       description: this.state.description
     });
   };
