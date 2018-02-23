@@ -106,7 +106,7 @@ class CurrenciesPage extends Component {
             formatCurrency(
               this.props.user,
               exchangeToUserCurrency(text, this.props.user),
-              { minimumFractionDigits: 6 }
+              { minimumFractionDigits: +text > 1 ? 2 : 6 }
             ),
             record.trend
           );
