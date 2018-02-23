@@ -26,7 +26,9 @@ export const fetchCurrencies = () => {
     fetch(endpoint)
       .then(res => res.json())
       .then(json => {
-        setCache(endpointKey, json, cacheExpiry);
+        if (cacheResponse) {
+          setCache(endpointKey, json, cacheExpiry);
+        }
         dispatch(setCurrencies(json));
       });
   };

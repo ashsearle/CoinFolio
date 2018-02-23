@@ -56,8 +56,9 @@ export const fetchExchangeRates = () => {
     fetch(endpoint)
       .then(res => res.json())
       .then(({ rates }) => {
-        setCache(endpointKey, rates, cacheExpiry);
-
+        if (cacheResponse) {
+          setCache(endpointKey, rates, cacheExpiry);
+        }
         dispatch(setRates(rates));
       });
   };

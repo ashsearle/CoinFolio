@@ -3,6 +3,7 @@ import moment from 'moment';
 import { DatePicker } from 'antd';
 
 import uiConfig from '../../config/ui';
+import { getPriceHistorical } from '../../utils/api';
 
 const dateFormat = 'DD-MM-YYYY';
 const { fiatCurrencies } = uiConfig;
@@ -66,18 +67,45 @@ export default class TransactionForm extends Component {
       this.setState(() => ({ error: 'Please add an amount!' }));
     } else if (this.state.type === 'cost' && !this.state.price) {
       this.setState(() => ({ error: 'Please add a price!' }));
+    } else if (this.state.type === 'purchase' && !this.state.price) {
+      this.setState(() => ({ error: '' }));
+      // If not a cost, and user has not set a price, fetch the historical price
+      getPriceHistorical(
+        this.state.coin,
+        this.state.currency,
+        // Moment valueOf is funky
+        new Date(moment(this.state.date).format('YYYY-MM-DD')).valueOf()
+      )
+        .then(response => {
+          const price =
+            response[this.state.coin.toUpperCase()][
+              this.state.currency.toUpperCase()
+            ];
+          this.setState(() => ({ price }));
+          this.submitForm();
+        })
+        .catch(() => {
+          this.setState(() => ({
+            error:
+              "Can't get the price history for this coin, please enter a price"
+          }));
+        });
     } else {
       this.setState(() => ({ error: '' }));
-      this.props.onSubmit({
-        type: this.state.type,
-        coin: this.state.type !== 'cost' ? this.state.coin : '',
-        amount: this.state.type !== 'cost' ? this.state.amount : '',
-        price: this.state.price,
-        currency: this.state.currency,
-        date: moment(this.state.date).toJSON(),
-        description: this.state.description
-      });
+      this.submitForm();
     }
+  };
+
+  submitForm = () => {
+    this.props.onSubmit({
+      type: this.state.type,
+      coin: this.state.type !== 'cost' ? this.state.coin : '',
+      amount: this.state.type !== 'cost' ? +this.state.amount : '',
+      price: +this.state.price,
+      currency: this.state.currency,
+      date: moment(this.state.date).toJSON(),
+      description: this.state.description
+    });
   };
 
   render() {

@@ -13,6 +13,12 @@ export default {
       url: 'https://api.fixer.io/latest?base=USD&symbols=<%= currencies %>',
       cache: true,
       expiry: 86400
+    },
+    priceHistorical: {
+      url:
+        'https://min-api.cryptocompare.com/data/pricehistorical?fsym=<%= fromSym %>&tsyms=<%= toSym %>&ts=<%= timestamp %>',
+      cache: true,
+      expiry: 86400
     }
   }
 };
