@@ -2,6 +2,7 @@ import * as io from 'socket.io-client';
 import _ from 'lodash';
 
 import apiConfig from '../config/api';
+import { getCache, setCache } from '../utils/cache';
 
 export const setCurrencies = (currencies = []) => ({
   type: 'SET_CURRENCIES',
@@ -10,13 +11,22 @@ export const setCurrencies = (currencies = []) => ({
 
 export const fetchCurrencies = () => {
   return dispatch => {
-    const { all: endpoint } = apiConfig.currencies;
-    const cache = JSON.parse(sessionStorage.getItem('allCurrencies'));
-    if (cache) return dispatch(setCurrencies(cache));
+    const endpointKey = 'allCurrencies';
+    const {
+      url: endpoint,
+      cache: cacheResponse,
+      expiry: cacheExpiry
+    } = apiConfig.endpoints[endpointKey];
+
+    if (cacheResponse) {
+      const cache = getCache(endpointKey);
+      if (cache) return dispatch(setCurrencies(cache));
+    }
+
     fetch(endpoint)
       .then(res => res.json())
       .then(json => {
-        sessionStorage.setItem('allCurrencies', JSON.stringify(json));
+        setCache(endpointKey, json, cacheExpiry);
         dispatch(setCurrencies(json));
       });
   };
@@ -32,7 +42,7 @@ const reduceCurrencies = (currency, currencies) =>
 
 export const socketConnect = () => {
   return dispatch => {
-    const { socket: endpoint } = apiConfig.currencies;
+    const { url: endpoint } = apiConfig.endpoints.socket;
     const socket = io.connect(endpoint);
     let currencies = [];
     socket.on('trades', function({ msg }) {
