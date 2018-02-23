@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { DatePicker } from 'antd';
 
+import uiConfig from '../../config/ui';
+
 const dateFormat = 'DD-MM-YYYY';
+const { fiatCurrencies } = uiConfig;
 
 export default class TransactionForm extends Component {
   constructor(props) {
@@ -17,18 +20,6 @@ export default class TransactionForm extends Component {
       description: props.transaction ? props.transaction.description : '',
       errorState: false
     };
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      type: props.transaction ? props.transaction.type : 'mining',
-      coin: props.transaction ? props.transaction.coin : 'btc',
-      amount: props.transaction ? props.transaction.amount : '',
-      price: props.transaction ? props.transaction.price : '',
-      currency: props.transaction ? props.transaction.currency : 'usd',
-      date: props.transaction ? moment(props.transaction.date) : moment(),
-      description: props.transaction ? props.transaction.description : ''
-    });
   }
 
   onTypeChange = e => {
@@ -177,8 +168,11 @@ export default class TransactionForm extends Component {
                 value={this.state.currency}
                 onChange={this.onCurrencyChange}
               >
-                <option value="gbp">GBP</option>
-                <option value="usd">USD</option>
+                {fiatCurrencies.map(({ code, value }) => (
+                  <option key={code} value={code}>
+                    {value}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-group col-md-6">

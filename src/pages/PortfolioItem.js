@@ -131,30 +131,35 @@ class PortfolioItem extends Component {
   render() {
     return (
       <div>
-        <Modal
-          title={
-            (this.state.editingTransaction ? 'Edit' : 'Add') + ' Transaction'
-          }
-          visible={this.state.modalOpen}
-          onCancel={this.closeModal}
-          footer={null}
-        >
-          <TransactionForm
-            transaction={this.state.editingTransaction}
-            onSubmit={transaction => {
-              if (this.state.editingTransaction) {
-                this.props.editTransaction(
-                  this.props.portfolio.id,
-                  this.state.editingTransaction.id,
-                  transaction
-                );
-              } else {
-                this.props.addTransaction(this.props.portfolio.id, transaction);
-              }
-              this.closeModal();
-            }}
-          />
-        </Modal>
+        {this.state.modalOpen ? (
+          <Modal
+            title={
+              (this.state.editingTransaction ? 'Edit' : 'Add') + ' Transaction'
+            }
+            visible={true}
+            onCancel={this.closeModal}
+            footer={null}
+          >
+            <TransactionForm
+              transaction={this.state.editingTransaction}
+              onSubmit={transaction => {
+                if (this.state.editingTransaction) {
+                  this.props.editTransaction(
+                    this.props.portfolio.id,
+                    this.state.editingTransaction.id,
+                    transaction
+                  );
+                } else {
+                  this.props.addTransaction(
+                    this.props.portfolio.id,
+                    transaction
+                  );
+                }
+                this.closeModal();
+              }}
+            />
+          </Modal>
+        ) : null}
         <div className="container content">
           {this.props.portfolio ? (
             <div>
