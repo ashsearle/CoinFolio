@@ -46,7 +46,7 @@ class PortfolioCostTotalCard extends Component {
         <div className="card bg-light">
           <div className="card-body">
             <div>
-              <h5 className="card-title">Costs:</h5>
+              <h5 className="card-title">Investment:</h5>
               {this.state.cost ? (
                 <h2 className="card-text">
                   {formatCurrency(this.props.user, this.state.cost)}

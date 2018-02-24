@@ -4,6 +4,7 @@ import { DatePicker } from 'antd';
 
 import uiConfig from '../../config/ui';
 import { getPriceHistorical } from '../../utils/api';
+import { momentToTimestamp } from '../../utils/dates';
 
 const dateFormat = 'DD-MM-YYYY';
 const { fiatCurrencies } = uiConfig;
@@ -73,8 +74,7 @@ export default class TransactionForm extends Component {
       getPriceHistorical(
         this.state.coin,
         this.state.currency,
-        // Moment sets ISO string using today's time even if past date
-        new Date(this.state.date.format('YYYY-MM-DD')).valueOf()
+        momentToTimestamp(this.state.date, true)
       )
         .then(response => {
           const price =
@@ -138,7 +138,7 @@ export default class TransactionForm extends Component {
                 type="text"
                 className="form-control"
                 id="inputPrice"
-                placeholder="Price"
+                placeholder="Unit Price"
                 value={this.state.price}
                 onChange={this.onPriceChange}
               />

@@ -37,17 +37,27 @@ class PortfolioItem extends Component {
           title: 'Coin',
           dataIndex: 'coin',
           key: 'coin',
-          render: text => text.toUpperCase()
+          render: text => {
+            return text ? text.toUpperCase() : '-';
+          }
         },
         {
           title: 'Amount',
           dataIndex: 'amount',
-          key: 'amount'
+          key: 'amount',
+          render: text => {
+            return text ? text : '-';
+          }
         },
         {
           title: 'Price',
           dataIndex: 'price',
-          key: 'price'
+          key: 'price',
+          render: (text, record) => {
+            return record.type === 'purchase' || record.type === 'cost'
+              ? text
+              : '-';
+          }
         },
         {
           title: 'Currency',
@@ -64,7 +74,10 @@ class PortfolioItem extends Component {
         {
           title: 'Description',
           dataIndex: 'description',
-          key: 'description'
+          key: 'description',
+          render: text => {
+            return text ? text : '-';
+          }
         },
         {
           title: 'Actions',

@@ -1,3 +1,9 @@
+export const momentToTimestamp = (momentObj, seconds = false) => {
+  // Moment sets ISO string using today's time even if past date
+  const divideBy = seconds ? 1000 : 1;
+  return new Date(momentObj.format('YYYY-MM-DD')).valueOf() / divideBy;
+};
+
 export const formatDate = (date, includeDay) => {
   if (!date) {
     console.error('formatDate needs a date!');
