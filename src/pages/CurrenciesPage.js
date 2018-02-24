@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import { formatCurrency, exchangeToUserCurrency } from '../utils/currency';
 import { formatNumber } from '../utils/number';
-import { fetchCurrencies } from '../actions/currencies';
+import { updateCurrencies } from '../actions/currencies';
 
 class CurrenciesPage extends Component {
   constructor(props) {
@@ -45,6 +45,8 @@ class CurrenciesPage extends Component {
         return next.short === updatedCurrency.short;
       }).trend = trend;
     });
+    console.log('nextCurrencies', nextCurrencies);
+    //this.props.updateCurrencies(updatedCurrencies);
     return nextCurrencies;
   };
 
@@ -164,7 +166,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrencies: () => dispatch(fetchCurrencies())
+  updateCurrencies: currencies => dispatch(updateCurrencies(currencies))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrenciesPage);

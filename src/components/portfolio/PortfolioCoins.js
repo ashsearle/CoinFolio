@@ -1,13 +1,71 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Table } from 'antd';
+
+import { formatNumber } from '../../utils/number';
+import { formatCurrency, exchangeToUserCurrency } from '../../utils/currency';
 
 class PortfolioCoins extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      coins: []
+      coins: [],
+      columns: [
+        {
+          title: 'Coin',
+          dataIndex: 'coin',
+          key: 'coin'
+        },
+        {
+          title: 'Amount',
+          dataIndex: 'amount',
+          key: 'amount',
+          render: text => {
+            return formatNumber(this.props.user, text, {
+              minimumFractionDigits: text % 1 !== 0 ? 6 : 0
+            });
+          }
+        },
+        {
+          title: 'Value',
+          dataIndex: 'value',
+          key: 'value',
+          render: (text, record) => {
+            return this.formatChangeTrend(
+              formatCurrency(
+                this.props.user,
+                exchangeToUserCurrency(text, this.props.user),
+                { minimumFractionDigits: +text > 1 ? 2 : 6 }
+              ),
+              record.trend
+            );
+          }
+        },
+        {
+          title: 'Change',
+          dataIndex: 'change',
+          key: 'change',
+          render: text => {
+            return this.formatPercentChange(text);
+          }
+        }
+      ]
     };
   }
+
+  formatPercentChange = text => {
+    const className = +text > 0 ? 'text-success' : 'text-danger';
+    return <span className={className}>{text}%</span>;
+  };
+
+  formatChangeTrend = (text, trend) => {
+    if (trend) {
+      const className = trend === 'up' ? 'text-success' : 'text-danger';
+      return <span className={className}>{text}</span>;
+    }
+    return text;
+  };
 
   componentDidMount() {
     if (this.props.transactions && this.props.transactions.length) {
@@ -22,7 +80,7 @@ class PortfolioCoins extends Component {
   }
 
   sortCoins = transactions => {
-    const coins = [];
+    let coins = [];
     _.uniqBy(
       transactions.filter(transaction => transaction.type !== 'cost'),
       'coin'
@@ -44,22 +102,34 @@ class PortfolioCoins extends Component {
           )
         });
       });
+    coins = coins.map(coin => {
+      const currency = this.props.currencies.find(
+        currency => currency.short === coin.coin
+      );
+      return {
+        ...coin,
+        value: coin.amount * currency.price,
+        change: currency.perc,
+        trend: currency.trend || null
+      };
+    });
     this.setState({ coins });
   };
 
   render() {
     return (
-      <ul>
-        {this.state.coins.map(function({ coin, amount }, index) {
-          return (
-            <li key={index}>
-              {coin}: {amount}
-            </li>
-          );
-        })}
-      </ul>
+      <Table
+        rowKey={record => record.coin}
+        dataSource={this.state.coins}
+        columns={this.state.columns}
+      />
     );
   }
 }
 
-export default PortfolioCoins;
+const mapStateToProps = state => ({
+  user: state.user,
+  currencies: state.currencies
+});
+
+export default connect(mapStateToProps)(PortfolioCoins);
