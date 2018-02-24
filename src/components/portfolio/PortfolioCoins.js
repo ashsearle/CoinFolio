@@ -5,6 +5,7 @@ import { Table } from 'antd';
 
 import { formatNumber } from '../../utils/number';
 import { formatCurrency, exchangeToUserCurrency } from '../../utils/currency';
+import { formatPercentChange, formatChangeTrend } from '../../utils/format';
 
 class PortfolioCoins extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class PortfolioCoins extends Component {
           dataIndex: 'value',
           key: 'value',
           render: (text, record) => {
-            return this.formatChangeTrend(
+            return formatChangeTrend(
               formatCurrency(
                 this.props.user,
                 exchangeToUserCurrency(text, this.props.user),
@@ -47,25 +48,12 @@ class PortfolioCoins extends Component {
           dataIndex: 'change',
           key: 'change',
           render: text => {
-            return this.formatPercentChange(text);
+            return formatPercentChange(text);
           }
         }
       ]
     };
   }
-
-  formatPercentChange = text => {
-    const className = +text > 0 ? 'text-success' : 'text-danger';
-    return <span className={className}>{text}%</span>;
-  };
-
-  formatChangeTrend = (text, trend) => {
-    if (trend) {
-      const className = trend === 'up' ? 'text-success' : 'text-danger';
-      return <span className={className}>{text}</span>;
-    }
-    return text;
-  };
 
   componentDidMount() {
     if (this.props.transactions && this.props.transactions.length) {
@@ -106,11 +94,14 @@ class PortfolioCoins extends Component {
       const currency = this.props.currencies.find(
         currency => currency.short === coin.coin
       );
+      const currencyTrend = this.props.trends.find(
+        trend => trend.short === coin.coin
+      );
       return {
         ...coin,
         value: coin.amount * currency.price,
         change: currency.perc,
-        trend: currency.trend || null
+        trend: currencyTrend ? currencyTrend.trend : null
       };
     });
     this.setState({ coins });
@@ -129,7 +120,8 @@ class PortfolioCoins extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  currencies: state.currencies
+  currencies: state.currencies.all,
+  trends: state.currencies.trends
 });
 
 export default connect(mapStateToProps)(PortfolioCoins);

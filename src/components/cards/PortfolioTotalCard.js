@@ -72,7 +72,7 @@ class PortfolioTotalCard extends Component {
 }
 
 const mapStateToProps = state => ({
-  currencies: state.currencies,
+  currencies: state.currencies.all,
   user: state.user
 });
 

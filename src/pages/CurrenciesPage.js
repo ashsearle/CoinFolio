@@ -4,68 +4,17 @@ import { Table } from 'antd';
 import _ from 'lodash';
 
 import { formatCurrency, exchangeToUserCurrency } from '../utils/currency';
+import { formatPercentChange, formatChangeTrend } from '../utils/format';
 import { formatNumber } from '../utils/number';
-import { updateCurrencies } from '../actions/currencies';
 
 class CurrenciesPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currencies: []
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
-      currencies: this.props.currencies
-    });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const currencies = this.getTrends(nextProps.currencies);
-    this.setState({ currencies });
-  }
-
-  getTrends = nextCurrencies => {
-    if (!this.state.currencies.length) {
-      return nextCurrencies;
-    }
-    const updatedCurrencies = _.difference(
-      nextCurrencies,
-      this.state.currencies
-    );
-    updatedCurrencies.forEach(updatedCurrency => {
-      const currentCurrency = _.find(this.state.currencies, function(current) {
-        return current.short === updatedCurrency.short;
-      });
-      const currentPrice = currentCurrency.price;
-      const updatedPrice = updatedCurrency.price;
-      const trend = updatedPrice > currentPrice ? 'up' : 'down';
-      _.find(nextCurrencies, function(next) {
-        return next.short === updatedCurrency.short;
-      }).trend = trend;
-    });
-    console.log('nextCurrencies', nextCurrencies);
-    //this.props.updateCurrencies(updatedCurrencies);
-    return nextCurrencies;
-  };
-
-  formatPercentChange = text => {
-    const className = +text > 0 ? 'text-success' : 'text-danger';
-    return <span className={className}>{text}%</span>;
-  };
-
-  formatChangeTrend = (text, trend) => {
-    if (trend) {
-      const className = trend === 'up' ? 'text-success' : 'text-danger';
-      return <span className={className}>{text}</span>;
-    }
-    return text;
-  };
-
   render() {
-    const data = this.state.currencies.map((currency, index) => {
+    const data = this.props.currencies.map((currency, index) => {
       currency.rank = index + 1;
+      const coinTrend = _.find(this.props.trends, trend => {
+        return trend.short === currency.short;
+      });
+      currency.trend = coinTrend ? coinTrend.trend : null;
       return currency;
     });
     const columns = [
@@ -104,7 +53,7 @@ class CurrenciesPage extends Component {
         key: 'price',
         sorter: (a, b) => a.price - b.price,
         render: (text, record) => {
-          return this.formatChangeTrend(
+          return formatChangeTrend(
             formatCurrency(
               this.props.user,
               exchangeToUserCurrency(text, this.props.user),
@@ -143,7 +92,7 @@ class CurrenciesPage extends Component {
         key: 'perc',
         sorter: (a, b) => a.perc - b.perc,
         render: text => {
-          return this.formatPercentChange(text);
+          return formatPercentChange(text);
         }
       }
     ];
@@ -161,12 +110,9 @@ class CurrenciesPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  currencies: state.currencies,
+  currencies: state.currencies.all,
+  trends: state.currencies.trends,
   user: state.user
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateCurrencies: currencies => dispatch(updateCurrencies(currencies))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CurrenciesPage);
+export default connect(mapStateToProps)(CurrenciesPage);

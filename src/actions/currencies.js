@@ -51,10 +51,37 @@ export const socketConnect = () => {
       currencies = reduceCurrencies(msg, currencies);
     });
     const debounce = _.debounce(() => {
+      dispatch(getTrends(currencies));
       dispatch(updateCurrencies(currencies));
       currencies = [];
       debounce();
     }, 5000);
     debounce();
+  };
+};
+
+export const updateTrends = (trends = []) => ({
+  type: 'UPDATE_TRENDS',
+  trends
+});
+
+export const getTrends = updatedCurrencies => {
+  return (dispatch, getState) => {
+    const currentCurrencies = getState().currencies.all;
+    const trends = [];
+    if (currentCurrencies.length) {
+      updatedCurrencies.forEach(updatedCurrency => {
+        const currentCurrency = _.find(currentCurrencies, current => {
+          return current.short === updatedCurrency.short;
+        });
+        const currentPrice = currentCurrency.price;
+        const updatedPrice = updatedCurrency.price;
+        trends.push({
+          short: updatedCurrency.short,
+          trend: updatedPrice > currentPrice ? 'up' : 'down'
+        });
+      });
+      dispatch(updateTrends(trends));
+    }
   };
 };
