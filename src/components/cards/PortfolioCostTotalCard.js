@@ -26,13 +26,20 @@ class PortfolioCostTotalCard extends Component {
 
   calculateCost = ({ transactions, onPortfolioCostCalculated, user }) => {
     const cost = transactions
-      .filter(transaction => transaction.type === 'cost')
+      .filter(
+        transaction =>
+          transaction.type === 'cost' || transaction.type === 'purchase'
+      )
       .reduce((sum, transaction) => {
         const transactionPrice =
-          transaction.currency.toLowerCase() === user.currency.toLowerCase()
+          transaction.type === 'cost'
             ? transaction.price
-            : exchangeToUserCurrency(transaction.price, user);
-        return (sum += +transactionPrice);
+            : transaction.price * transaction.amount;
+        const costIncrease =
+          transaction.currency.toLowerCase() === user.currency.toLowerCase()
+            ? transactionPrice
+            : exchangeToUserCurrency(transactionPrice, user);
+        return (sum += +costIncrease);
       }, 0);
     if (!_.isNaN(cost)) {
       this.setState({ cost });
