@@ -8,69 +8,28 @@ import { formatCurrency, exchangeToUserCurrency } from '../../utils/currency';
 import { formatPercentChange, formatChangeTrend } from '../../utils/format';
 
 class PortfolioCoins extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      coins: [],
-      columns: [
-        {
-          title: 'Coin',
-          dataIndex: 'coin',
-          key: 'coin'
-        },
-        {
-          title: 'Amount',
-          dataIndex: 'amount',
-          key: 'amount',
-          render: text => {
-            return formatNumber(this.props.user, text, {
-              minimumFractionDigits: text % 1 !== 0 ? 6 : 0
-            });
-          }
-        },
-        {
-          title: 'Value',
-          dataIndex: 'value',
-          key: 'value',
-          render: (text, record) => {
-            return formatChangeTrend(
-              formatCurrency(
-                this.props.user,
-                exchangeToUserCurrency(text, this.props.user),
-                { minimumFractionDigits: +text > 1 ? 2 : 6 }
-              ),
-              record.trend
-            );
-          }
-        },
-        {
-          title: 'Change',
-          dataIndex: 'change',
-          key: 'change',
-          render: text => {
-            return formatPercentChange(text);
-          }
-        }
-      ]
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.transactions && this.props.transactions.length) {
-      this.sortCoins(this.props.transactions);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.transactions && nextProps.transactions.length) {
-      this.sortCoins(nextProps.transactions);
-    }
-  }
-
-  sortCoins = transactions => {
+  getCoinTrend = coin => {
+    const currencyTrend = this.props.trends.find(trend => trend.short === coin);
+    return currencyTrend ? currencyTrend.trend : null;
+  };
+  getCoinCurrency = coin => {
+    return this.props.currencies.find(currency => currency.short === coin);
+  };
+  getCoinTotalAmount = coin => {
+    return _.reduce(
+      this.props.transactions,
+      (sum, transaction) => {
+        return sum + (transaction.coin === coin ? +transaction.amount : 0);
+      },
+      0
+    );
+  };
+  sortCoins = () => {
     let coins = [];
     _.uniqBy(
-      transactions.filter(transaction => transaction.type !== 'cost'),
+      this.props.transactions.filter(
+        transaction => transaction.type !== 'cost'
+      ),
       'coin'
     )
       .map(transaction => {
@@ -79,40 +38,64 @@ class PortfolioCoins extends Component {
       .map(coin => {
         return coins.push({
           coin: coin.toUpperCase(),
-          amount: _.reduce(
-            transactions,
-            (sum, transaction) => {
-              return (
-                sum + (transaction.coin === coin ? +transaction.amount : 0)
-              );
-            },
-            0
-          )
+          amount: this.getCoinTotalAmount(coin),
+          value:
+            this.getCoinTotalAmount(coin) *
+            this.getCoinCurrency(coin.toUpperCase()).price,
+          change: this.getCoinCurrency(coin.toUpperCase()).perc,
+          trend: this.getCoinTrend(coin.toUpperCase())
         });
       });
-    coins = coins.map(coin => {
-      const currency = this.props.currencies.find(
-        currency => currency.short === coin.coin
-      );
-      const currencyTrend = this.props.trends.find(
-        trend => trend.short === coin.coin
-      );
-      return {
-        ...coin,
-        value: coin.amount * currency.price,
-        change: currency.perc,
-        trend: currencyTrend ? currencyTrend.trend : null
-      };
-    });
-    this.setState({ coins });
+    return coins;
   };
 
   render() {
+    const coins = this.sortCoins();
+    const columns = [
+      {
+        title: 'Coin',
+        dataIndex: 'coin',
+        key: 'coin'
+      },
+      {
+        title: 'Amount',
+        dataIndex: 'amount',
+        key: 'amount',
+        render: text => {
+          return formatNumber(this.props.user, text, {
+            minimumFractionDigits: text % 1 !== 0 ? 6 : 0
+          });
+        }
+      },
+      {
+        title: 'Value',
+        dataIndex: 'value',
+        key: 'value',
+        render: (text, record) => {
+          return formatChangeTrend(
+            formatCurrency(
+              this.props.user,
+              exchangeToUserCurrency(text, this.props.user),
+              { minimumFractionDigits: +text > 1 ? 2 : 6 }
+            ),
+            record.trend
+          );
+        }
+      },
+      {
+        title: '24h Change',
+        dataIndex: 'change',
+        key: 'change',
+        render: text => {
+          return formatPercentChange(text);
+        }
+      }
+    ];
     return (
       <Table
         rowKey={record => record.coin}
-        dataSource={this.state.coins}
-        columns={this.state.columns}
+        dataSource={coins}
+        columns={columns}
       />
     );
   }
