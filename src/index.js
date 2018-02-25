@@ -10,6 +10,7 @@ import { firebase } from './firebase/firebase';
 import { login, logout, fetchExchangeRates } from './actions/user';
 import { fetchCurrencies, socketConnect } from './actions/currencies';
 
+import 'semantic-ui-css/semantic.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './style.css';
 
