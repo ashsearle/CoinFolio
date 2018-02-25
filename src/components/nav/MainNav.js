@@ -15,7 +15,7 @@ export class MainNav extends Component {
       <div className="container">
         <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-light">
           <Link className="navbar-brand" to="/">
-            Live Crypto Portfolio
+            Koindash
           </Link>
           <button
             className="navbar-toggler"

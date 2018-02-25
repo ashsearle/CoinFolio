@@ -11,7 +11,7 @@ import { login, logout, fetchExchangeRates } from './actions/user';
 import { fetchCurrencies, socketConnect } from './actions/currencies';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import './styles/css/index.css';
+import './styles/index.css';
 
 const store = configureStore();
 const app = (
