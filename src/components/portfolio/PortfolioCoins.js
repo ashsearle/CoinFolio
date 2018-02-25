@@ -55,12 +55,18 @@ class PortfolioCoins extends Component {
       {
         title: 'Coin',
         dataIndex: 'coin',
-        key: 'coin'
+        key: 'coin',
+        sorter: (a, b) => {
+          if (a.coin < b.coin) return -1;
+          if (a.coin > b.coin) return 1;
+          return 0;
+        }
       },
       {
         title: 'Amount',
         dataIndex: 'amount',
         key: 'amount',
+        sorter: (a, b) => a.amount - b.amount,
         render: text => {
           return formatNumber(this.props.user, text, {
             minimumFractionDigits: text % 1 !== 0 ? 6 : 0
@@ -71,6 +77,7 @@ class PortfolioCoins extends Component {
         title: 'Value',
         dataIndex: 'value',
         key: 'value',
+        sorter: (a, b) => a.value - b.value,
         render: (text, record) => {
           return formatChangeTrend(
             formatCurrency(
@@ -86,6 +93,7 @@ class PortfolioCoins extends Component {
         title: '24h Change',
         dataIndex: 'change',
         key: 'change',
+        sorter: (a, b) => a.change - b.change,
         render: text => {
           return formatPercentChange(text);
         }
