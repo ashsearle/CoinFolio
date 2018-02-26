@@ -13,13 +13,23 @@ class PortfolioTotalCard extends Component {
   }
 
   componentDidMount() {
-    if (this.props.transactions && this.props.transactions.length) {
+    if (
+      this.props.transactions &&
+      this.props.transactions.length &&
+      this.props.currencies &&
+      this.props.currencies.length
+    ) {
       this.calculateTotal(this.props);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.transactions && nextProps.transactions.length) {
+    if (
+      nextProps.transactions &&
+      nextProps.transactions.length &&
+      this.props.currencies &&
+      this.props.currencies.length
+    ) {
       this.calculateTotal(nextProps);
     }
   }

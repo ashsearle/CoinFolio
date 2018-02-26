@@ -19,6 +19,11 @@ export default {
         'https://min-api.cryptocompare.com/data/pricehistorical?fsym=<%= fromSym %>&tsyms=<%= toSym %>&ts=<%= timestamp %>',
       cache: true,
       expiry: 86400
+    },
+    history: {
+      url: 'https://coincap.io/history/<%= coin %>',
+      cache: true,
+      expiry: 86400
     }
   }
 };

@@ -2,7 +2,8 @@ import _ from 'lodash';
 
 const currenciesReducerDefaultState = {
   all: [],
-  trends: []
+  trends: [],
+  history: {}
 };
 const currenciesReducer = (state = currenciesReducerDefaultState, action) => {
   switch (action.type) {
@@ -30,6 +31,17 @@ const currenciesReducer = (state = currenciesReducerDefaultState, action) => {
             return trend.short;
           }
         )
+      };
+    case 'SET_COIN_HISTORY':
+      return {
+        ...state,
+        history: {
+          ...state.history,
+          [action.coin]: {
+            ...state.history[action.coin],
+            ...action.data
+          }
+        }
       };
     default:
       return state;

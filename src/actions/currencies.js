@@ -2,7 +2,7 @@ import * as io from 'socket.io-client';
 import _ from 'lodash';
 
 import apiConfig from '../config/api';
-import { getCache, setCache } from '../utils/cache';
+import { getCache, setCache, getDeepCache, setDeepCache } from '../utils/cache';
 
 export const setCurrencies = (currencies = []) => ({
   type: 'SET_CURRENCIES',
@@ -83,5 +83,40 @@ export const getTrends = updatedCurrencies => {
       });
       dispatch(updateTrends(trends));
     }
+  };
+};
+
+export const setCoinHistory = (coin, data) => ({
+  type: 'SET_COIN_HISTORY',
+  coin,
+  data
+});
+
+export const getCoinHistory = coin => {
+  return dispatch => {
+    const endpointKey = 'history';
+    const {
+      url: historyEndpoint,
+      cache: cacheResponse,
+      expiry: cacheExpiry
+    } = apiConfig.endpoints[endpointKey];
+
+    if (cacheResponse) {
+      const cache = getDeepCache(endpointKey, coin);
+      if (cache) return dispatch(setCoinHistory(coin, cache));
+    }
+
+    const endpoint = _.template(historyEndpoint)({
+      coin
+    });
+
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(json => {
+        if (cacheResponse) {
+          setDeepCache(endpointKey, coin, json.price, cacheExpiry);
+        }
+        dispatch(setCoinHistory(coin, json.price));
+      });
   };
 };

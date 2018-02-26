@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Table, Modal, Popconfirm, Tabs } from 'antd';
-
 import {
   startSetPortfolios,
   startAddTransaction,
@@ -16,6 +15,7 @@ import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
 import PortfolioCostTotalCard from '../components/cards/PortfolioCostTotalCard';
 import PortfolioProfitCard from '../components/cards/PortfolioProfitCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
+import PortfolioChart from '../components/charts/PortfolioChart';
 
 const TabPane = Tabs.TabPane;
 
@@ -231,6 +231,16 @@ class PortfolioItem extends Component {
                     value={this.state.portfolioValue}
                     cost={this.state.portfolioCost}
                   />
+                  <section className="col-12 rechart-container">
+                    {this.props.portfolio.transactions &&
+                    this.props.portfolio.transactions.length ? (
+                      <PortfolioChart
+                        transactions={this.props.portfolio.transactions}
+                      />
+                    ) : (
+                      'Loading chart...'
+                    )}
+                  </section>
                   <section className="col-12">
                     <Tabs defaultActiveKey="1" size={'large'}>
                       <TabPane tab="Transactions" key="1">
