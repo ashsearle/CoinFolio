@@ -17,7 +17,8 @@ import PortfolioChart from '../components/charts/PortfolioChart';
 import {
   getPortfolioTotalValue,
   getPortfolio24hChange,
-  getPortfolioCost
+  getPortfolioCost,
+  getPortfolioChartData
 } from '../utils/portfolio';
 import { formatCurrency } from '../utils/currency';
 import { getChangeTextClassName } from '../utils/format';
@@ -245,15 +246,8 @@ class PortfolioItem extends Component {
                       this.props.portfolioTotalValue - this.props.portfolioCost
                     )}
                   />
-                  <section className="col-12 rechart-container">
-                    {this.props.portfolio.transactions &&
-                    this.props.portfolio.transactions.length ? (
-                      <PortfolioChart
-                        transactions={this.props.portfolio.transactions}
-                      />
-                    ) : (
-                      'Loading chart...'
-                    )}
+                  <section className="rechart-container col-12 mt-1">
+                    <PortfolioChart data={this.props.portfolioChartData} />
                   </section>
                   <section className="col-12">
                     <Tabs defaultActiveKey="1" size={'large'}>
@@ -306,7 +300,8 @@ const mapStateToProps = (state, props) => {
     portfolio: currentPortfolio,
     portfolio24hChange: getPortfolio24hChange(state, currentPortfolio),
     portfolioTotalValue: getPortfolioTotalValue(state, currentPortfolio),
-    portfolioCost: getPortfolioCost(state, currentPortfolio)
+    portfolioCost: getPortfolioCost(state, currentPortfolio),
+    portfolioChartData: getPortfolioChartData(state, currentPortfolio)
   };
 };
 
