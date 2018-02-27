@@ -1,8 +1,10 @@
 import React from 'react';
 
+export const getChangeTextClassName = number =>
+  number < 0 ? 'text-danger' : number > 0 ? 'text-success' : '';
+
 export const formatPercentChange = text => {
-  const className = +text > 0 ? 'text-success' : 'text-danger';
-  return <span className={className}>{text}%</span>;
+  return <span className={getChangeTextClassName(+text)}>{text}%</span>;
 };
 
 export const formatChangeTrend = (text, trend) => {

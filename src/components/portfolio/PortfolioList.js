@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { Modal } from 'antd';
 
-import { startEditPortfolio } from '../../actions/portfolio';
 import { formatDate } from '../../utils/dates';
-import PortfolioForm from '../forms/PortfolioForm';
+import PortfolioForm from './PortfolioForm';
 
 class PortfolioList extends Component {
   constructor(props) {
@@ -35,7 +33,11 @@ class PortfolioList extends Component {
           <PortfolioForm
             portfolio={this.state.editing}
             onSubmit={portfolio => {
-              this.props.editPortfolio(this.state.editing.id, portfolio);
+              this.props.onPortfolioEdit(this.state.editing.id, portfolio);
+              this.toggleModal();
+            }}
+            onDelete={() => {
+              this.props.onPortfolioDelete(this.state.editing.id);
               this.toggleModal();
             }}
           />
@@ -84,12 +86,4 @@ class PortfolioList extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  portfolio: state.portfolio
-});
-
-const mapDispatchToProps = dispatch => ({
-  editPortfolio: (id, data) => dispatch(startEditPortfolio(id, data))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PortfolioList);
+export default PortfolioList;

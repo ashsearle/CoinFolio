@@ -2,11 +2,11 @@ import React from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
-import MainNav from '../components/nav/MainNav';
-import CurrenciesPage from '../pages/CurrenciesPage';
-import PortfolioPage from '../pages/PortfolioPage';
-import PortfolioItem from '../pages/PortfolioItem';
-import NotFoundPage from '../pages/NotFoundPage';
+import MainNav from '../containers/MainNav';
+import CurrenciesPage from '../containers/CurrenciesPage';
+import PortfolioPage from '../containers/PortfolioPage';
+import PortfolioItem from '../containers/PortfolioItem';
+import NotFoundPage from '../containers/NotFoundPage';
 
 import PrivateRoute from './PrivateRoute';
 

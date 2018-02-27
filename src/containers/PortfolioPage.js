@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal } from 'antd';
 
-import PortfolioForm from '../components/forms/PortfolioForm';
+import PortfolioForm from '../components/portfolio/PortfolioForm';
 import PortfolioList from '../components/portfolio/PortfolioList';
 
-import { startAddPortfolio, startSetPortfolios } from '../actions/portfolio';
+import {
+  startSetPortfolios,
+  startAddPortfolio,
+  startEditPortfolio,
+  startRemovePortfolio
+} from '../actions/portfolio';
 
 class PortfolioPage extends Component {
   constructor(props) {
@@ -55,7 +60,11 @@ class PortfolioPage extends Component {
         </Modal>
 
         {this.props.portfolio.length ? (
-          <PortfolioList />
+          <PortfolioList
+            portfolio={this.props.portfolio}
+            onPortfolioEdit={(id, data) => this.props.editPortfolio(id, data)}
+            onPortfolioDelete={id => this.props.deletePortfolio(id)}
+          />
         ) : (
           <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
             <h4 className="alert-heading">Oh noes!</h4>
@@ -81,7 +90,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
-  createPortfolio: portfolio => dispatch(startAddPortfolio(portfolio))
+  createPortfolio: portfolio => dispatch(startAddPortfolio(portfolio)),
+  editPortfolio: (id, data) => dispatch(startEditPortfolio(id, data)),
+  deletePortfolio: id => dispatch(startRemovePortfolio(id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PortfolioPage);

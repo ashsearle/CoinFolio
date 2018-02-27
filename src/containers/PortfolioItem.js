@@ -9,13 +9,20 @@ import {
   startRemoveTransaction
 } from '../actions/portfolio';
 
-import TransactionForm from '../components/forms/TransactionForm';
-import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
-import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
-import PortfolioCostTotalCard from '../components/cards/PortfolioCostTotalCard';
-import PortfolioProfitCard from '../components/cards/PortfolioProfitCard';
+import TransactionForm from '../components/transactions/TransactionForm';
+import PortfolioCard from '../components/portfolio/PortfolioCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
-import PortfolioChart from '../components/charts/PortfolioChart';
+import PortfolioChart from '../components/portfolio/PortfolioChart';
+
+import {
+  getPortfolioTotalValue,
+  getPortfolio24hChange,
+  getPortfolioCost,
+  getPortfolioChartData
+} from '../utils/portfolio';
+import { getPortfolioCoinsData } from '../utils/coins';
+import { formatCurrency } from '../utils/currency';
+import { getChangeTextClassName } from '../utils/format';
 
 const TabPane = Tabs.TabPane;
 
@@ -25,8 +32,6 @@ class PortfolioItem extends Component {
 
     this.state = {
       modalOpen: false,
-      portfolioValue: 0,
-      portfolioCost: 0,
       transactionsTableColumns: [
         {
           title: 'Type',
@@ -160,14 +165,6 @@ class PortfolioItem extends Component {
     });
   };
 
-  onPortfolioValueCalculated = portfolioValue => {
-    this.setState({ portfolioValue });
-  };
-
-  onPortfolioCostCalculated = portfolioCost => {
-    this.setState({ portfolioCost });
-  };
-
   render() {
     return (
       <div>
@@ -216,30 +213,42 @@ class PortfolioItem extends Component {
               {this.props.portfolio.transactions &&
               this.props.portfolio.transactions.length ? (
                 <div className="row">
-                  <PortfolioTotalCard
-                    onPortfolioValueCalculated={this.onPortfolioValueCalculated}
-                    transactions={this.props.portfolio.transactions}
-                  />
-                  <Portfolio24HChangeCard
-                    transactions={this.props.portfolio.transactions}
-                  />
-                  <PortfolioCostTotalCard
-                    onPortfolioCostCalculated={this.onPortfolioCostCalculated}
-                    transactions={this.props.portfolio.transactions}
-                  />
-                  <PortfolioProfitCard
-                    value={this.state.portfolioValue}
-                    cost={this.state.portfolioCost}
-                  />
-                  <section className="col-12 rechart-container">
-                    {this.props.portfolio.transactions &&
-                    this.props.portfolio.transactions.length ? (
-                      <PortfolioChart
-                        transactions={this.props.portfolio.transactions}
-                      />
-                    ) : (
-                      'Loading chart...'
+                  <PortfolioCard
+                    title="Value:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolioTotalValue
                     )}
+                  />
+                  <PortfolioCard
+                    title="24h Change:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolio24hChange
+                    )}
+                    valueClassName={getChangeTextClassName(
+                      this.props.portfolio24hChange
+                    )}
+                  />
+                  <PortfolioCard
+                    title="Investment:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolioCost
+                    )}
+                  />
+                  <PortfolioCard
+                    title="Profit:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolioTotalValue - this.props.portfolioCost
+                    )}
+                    valueClassName={getChangeTextClassName(
+                      this.props.portfolioTotalValue - this.props.portfolioCost
+                    )}
+                  />
+                  <section className="rechart-container col-12 mt-1">
+                    <PortfolioChart data={this.props.portfolioChartData} />
                   </section>
                   <section className="col-12">
                     <Tabs defaultActiveKey="1" size={'large'}>
@@ -252,7 +261,8 @@ class PortfolioItem extends Component {
                       </TabPane>
                       <TabPane tab="Coins" key="2">
                         <PortfolioCoins
-                          transactions={this.props.portfolio.transactions}
+                          user={this.props.user}
+                          data={this.props.portfolioCoinsData}
                         />
                       </TabPane>
                     </Tabs>
@@ -283,11 +293,20 @@ class PortfolioItem extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => ({
-  portfolio: state.portfolio.find(
+const mapStateToProps = (state, props) => {
+  const currentPortfolio = state.portfolio.find(
     portfolioItem => portfolioItem.id === props.match.params.id
-  )
-});
+  );
+  return {
+    user: state.user,
+    portfolio: currentPortfolio,
+    portfolio24hChange: getPortfolio24hChange(state, currentPortfolio),
+    portfolioTotalValue: getPortfolioTotalValue(state, currentPortfolio),
+    portfolioCost: getPortfolioCost(state, currentPortfolio),
+    portfolioChartData: getPortfolioChartData(state, currentPortfolio),
+    portfolioCoinsData: getPortfolioCoinsData(state, currentPortfolio)
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
