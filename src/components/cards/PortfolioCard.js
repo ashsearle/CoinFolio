@@ -14,7 +14,13 @@ class PortfolioCard extends Component {
             <div>
               <h5 className="card-title">{title}</h5>
               {value ? (
-                <h2 className={'card-text ' + valueClassName}>{value}</h2>
+                <h2
+                  className={
+                    'card-text' + (valueClassName ? ' ' + valueClassName : '')
+                  }
+                >
+                  {value}
+                </h2>
               ) : (
                 <p className="card-text">Calculating...</p>
               )}

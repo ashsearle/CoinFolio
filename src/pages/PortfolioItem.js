@@ -11,14 +11,15 @@ import {
 
 import TransactionForm from '../components/forms/TransactionForm';
 import PortfolioCard from '../components/cards/PortfolioCard';
-import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
-import PortfolioCostTotalCard from '../components/cards/PortfolioCostTotalCard';
-import PortfolioProfitCard from '../components/cards/PortfolioProfitCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
 import PortfolioChart from '../components/charts/PortfolioChart';
 
+import {
+  getPortfolioTotalValue,
+  getPortfolio24hChange,
+  getPortfolioCost
+} from '../utils/portfolio';
 import { formatCurrency } from '../utils/currency';
-import { getPortfolio24hChange } from '../utils/portfolio';
 import { getChangeTextClassName } from '../utils/format';
 
 const TabPane = Tabs.TabPane;
@@ -29,8 +30,6 @@ class PortfolioItem extends Component {
 
     this.state = {
       modalOpen: false,
-      portfolioValue: 0,
-      portfolioCost: 0,
       transactionsTableColumns: [
         {
           title: 'Type',
@@ -140,10 +139,6 @@ class PortfolioItem extends Component {
     this.props.fetchPortfolio();
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps);
-  }
-
   onTransactionEdit = transaction => {
     this.setState({
       editingTransaction: transaction,
@@ -166,14 +161,6 @@ class PortfolioItem extends Component {
       editingTransaction: null,
       modalOpen: false
     });
-  };
-
-  onPortfolioValueCalculated = portfolioValue => {
-    this.setState({ portfolioValue });
-  };
-
-  onPortfolioCostCalculated = portfolioCost => {
-    this.setState({ portfolioCost });
   };
 
   render() {
@@ -224,9 +211,12 @@ class PortfolioItem extends Component {
               {this.props.portfolio.transactions &&
               this.props.portfolio.transactions.length ? (
                 <div className="row">
-                  <PortfolioTotalCard
-                    onPortfolioValueCalculated={this.onPortfolioValueCalculated}
-                    transactions={this.props.portfolio.transactions}
+                  <PortfolioCard
+                    title="Value:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolioTotalValue
+                    )}
                   />
                   <PortfolioCard
                     title="24h Change:"
@@ -238,13 +228,22 @@ class PortfolioItem extends Component {
                       this.props.portfolio24hChange
                     )}
                   />
-                  <PortfolioCostTotalCard
-                    onPortfolioCostCalculated={this.onPortfolioCostCalculated}
-                    transactions={this.props.portfolio.transactions}
+                  <PortfolioCard
+                    title="Investment:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolioCost
+                    )}
                   />
-                  <PortfolioProfitCard
-                    value={this.state.portfolioValue}
-                    cost={this.state.portfolioCost}
+                  <PortfolioCard
+                    title="Profit:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolioTotalValue - this.props.portfolioCost
+                    )}
+                    valueClassName={getChangeTextClassName(
+                      this.props.portfolioTotalValue - this.props.portfolioCost
+                    )}
                   />
                   <section className="col-12 rechart-container">
                     {this.props.portfolio.transactions &&
@@ -305,7 +304,9 @@ const mapStateToProps = (state, props) => {
   return {
     user: state.user,
     portfolio: currentPortfolio,
-    portfolio24hChange: getPortfolio24hChange(state, currentPortfolio)
+    portfolio24hChange: getPortfolio24hChange(state, currentPortfolio),
+    portfolioTotalValue: getPortfolioTotalValue(state, currentPortfolio),
+    portfolioCost: getPortfolioCost(state, currentPortfolio)
   };
 };
 
