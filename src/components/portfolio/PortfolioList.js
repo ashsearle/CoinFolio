@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Modal } from 'antd';
 
 import { formatDate } from '../../utils/dates';
-import PortfolioForm from '../forms/PortfolioForm';
+import PortfolioForm from './PortfolioForm';
 
 class PortfolioList extends Component {
   constructor(props) {

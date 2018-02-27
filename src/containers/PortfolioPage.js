@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal } from 'antd';
 
-import PortfolioForm from '../components/forms/PortfolioForm';
+import PortfolioForm from '../components/portfolio/PortfolioForm';
 import PortfolioList from '../components/portfolio/PortfolioList';
 
 import {

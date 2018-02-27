@@ -9,10 +9,10 @@ import {
   startRemoveTransaction
 } from '../actions/portfolio';
 
-import TransactionForm from '../components/forms/TransactionForm';
-import PortfolioCard from '../components/cards/PortfolioCard';
+import TransactionForm from '../components/transactions/TransactionForm';
+import PortfolioCard from '../components/portfolio/PortfolioCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
-import PortfolioChart from '../components/charts/PortfolioChart';
+import PortfolioChart from '../components/portfolio/PortfolioChart';
 
 import {
   getPortfolioTotalValue,

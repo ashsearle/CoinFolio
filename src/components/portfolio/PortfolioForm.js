@@ -89,13 +89,15 @@ export default class PortfolioForm extends Component {
             >
               Submit
             </button>
-            <button
-              type="button"
-              className="btn btn-secondary ml-2"
-              onClick={this.props.onDelete}
-            >
-              Delete
-            </button>
+            {this.props.portfolio && (
+              <button
+                type="button"
+                className="btn btn-secondary ml-2"
+                onClick={this.props.onDelete}
+              >
+                Delete
+              </button>
+            )}
           </nav>
 
           <div className="clearfix" />
