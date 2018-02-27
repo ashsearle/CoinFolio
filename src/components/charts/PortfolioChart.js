@@ -45,8 +45,8 @@ class PortfolioChart extends Component {
     const firstTransactionDate = moment(
       [].concat(transactionDates).shift().date
     );
-    const lastTransactionDate = moment([].concat(transactionDates).pop().date);
-    const numDays = lastTransactionDate.diff(firstTransactionDate, 'days') + 2;
+    const today = moment();
+    const numDays = today.diff(firstTransactionDate, 'days') + 2;
 
     // Build chart data, one object for each day, incrementing data as we go
     for (let i = 0; i < numDays; i++) {
