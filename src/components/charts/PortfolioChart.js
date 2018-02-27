@@ -30,7 +30,6 @@ class PortfolioChart extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // We need to update chart data only if all coins history is fetched, or if new transaction
     if (!this.state.coins.length) {
       this.getCoinsHistory();
     }
@@ -38,13 +37,10 @@ class PortfolioChart extends Component {
 
   updateChartData = () => {
     const chartData = [];
-    // Sort dates
-    const transactionDates = _.orderBy(this.props.transactions, transaction =>
-      moment(transaction.date)
-    );
-    const firstTransactionDate = moment(
-      [].concat(transactionDates).shift().date
-    );
+    const firstTransactionDate = _.orderBy(
+      this.props.transactions,
+      transaction => moment(transaction.date)
+    ).shift().date;
     const today = moment();
     const numDays = today.diff(firstTransactionDate, 'days') + 2;
 
@@ -65,7 +61,6 @@ class PortfolioChart extends Component {
           if (type === 'cost') {
             obj = {
               ...obj,
-              date: formattedCurrentDate,
               cost: +price
             };
           } else {
@@ -79,9 +74,7 @@ class PortfolioChart extends Component {
             );
             obj = {
               ...obj,
-              date: formattedCurrentDate,
               [coin]: obj[coin] ? obj[coin] + coinValue : coinValue,
-              cost: 0,
               total: obj.total ? obj.total + coinValue : coinValue
             };
           }
