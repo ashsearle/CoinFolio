@@ -10,12 +10,16 @@ import {
 } from '../actions/portfolio';
 
 import TransactionForm from '../components/forms/TransactionForm';
+import PortfolioCard from '../components/cards/PortfolioCard';
 import PortfolioTotalCard from '../components/cards/PortfolioTotalCard';
-import Portfolio24HChangeCard from '../components/cards/Portfolio24HChangeCard';
 import PortfolioCostTotalCard from '../components/cards/PortfolioCostTotalCard';
 import PortfolioProfitCard from '../components/cards/PortfolioProfitCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
 import PortfolioChart from '../components/charts/PortfolioChart';
+
+import { formatCurrency } from '../utils/currency';
+import { getPortfolio24hChange } from '../utils/portfolio';
+import { getChangeTextClassName } from '../utils/format';
 
 const TabPane = Tabs.TabPane;
 
@@ -136,6 +140,10 @@ class PortfolioItem extends Component {
     this.props.fetchPortfolio();
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
+  }
+
   onTransactionEdit = transaction => {
     this.setState({
       editingTransaction: transaction,
@@ -220,8 +228,15 @@ class PortfolioItem extends Component {
                     onPortfolioValueCalculated={this.onPortfolioValueCalculated}
                     transactions={this.props.portfolio.transactions}
                   />
-                  <Portfolio24HChangeCard
-                    transactions={this.props.portfolio.transactions}
+                  <PortfolioCard
+                    title="24h Change:"
+                    value={formatCurrency(
+                      this.props.user,
+                      this.props.portfolio24hChange
+                    )}
+                    valueClassName={getChangeTextClassName(
+                      this.props.portfolio24hChange
+                    )}
                   />
                   <PortfolioCostTotalCard
                     onPortfolioCostCalculated={this.onPortfolioCostCalculated}
@@ -283,11 +298,16 @@ class PortfolioItem extends Component {
   }
 }
 
-const mapStateToProps = (state, props) => ({
-  portfolio: state.portfolio.find(
+const mapStateToProps = (state, props) => {
+  const currentPortfolio = state.portfolio.find(
     portfolioItem => portfolioItem.id === props.match.params.id
-  )
-});
+  );
+  return {
+    user: state.user,
+    portfolio: currentPortfolio,
+    portfolio24hChange: getPortfolio24hChange(state, currentPortfolio)
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchPortfolio: () => dispatch(startSetPortfolios()),
