@@ -18,7 +18,8 @@ const portfolioReducer = (state = portfolioReducerDefaultState, action) => {
         }
       });
     case 'REMOVE_PORTFOLIO':
-      return state.filter(({ id }) => id !== action.id);
+      console.log('REMOVE_PORTFOLIO', action.id);
+      return state.filter(portfolio => portfolio.id !== action.id);
     case 'ADD_TRANSACTION':
       return state.map(portfolio => {
         if (portfolio.id === action.portfolioId) {

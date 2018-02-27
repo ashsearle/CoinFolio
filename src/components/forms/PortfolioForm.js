@@ -46,7 +46,7 @@ export default class PortfolioForm extends Component {
         {this.state.error && (
           <div className="alert alert-danger">{this.state.error}</div>
         )}
-        <form onSubmit={this.onSubmit}>
+        <form>
           <div className="form-row">
             <div className="form-group col-md-6">
               <label htmlFor="inputName">Name</label>
@@ -81,9 +81,23 @@ export default class PortfolioForm extends Component {
               onChange={this.onDescriptionChange}
             />
           </div>
-          <button type="submit" className="btn btn-primary float-right">
-            Submit
-          </button>
+          <nav className="float-right">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.onSubmit}
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary ml-2"
+              onClick={this.props.onDelete}
+            >
+              Delete
+            </button>
+          </nav>
+
           <div className="clearfix" />
         </form>
       </div>

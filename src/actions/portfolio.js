@@ -51,19 +51,21 @@ export const startEditPortfolio = (id, updates) => {
   };
 };
 
-export const removePortfolio = ({ id } = {}) => ({
+export const removePortfolio = id => ({
   type: 'REMOVE_PORTFOLIO',
   id
 });
 
-export const startRemovePortfolio = ({ id } = {}) => {
+export const startRemovePortfolio = id => {
+  console.log('startRemovePortfolio', id);
+  if (!id) return;
   return (dispatch, getState) => {
     const uid = getState().user.uid;
     database
       .ref(`users/${uid}/portfolios/${id}`)
       .remove()
       .then(() => {
-        dispatch(removePortfolio({ id }));
+        dispatch(removePortfolio(id));
       });
   };
 };
