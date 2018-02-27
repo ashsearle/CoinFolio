@@ -6,7 +6,14 @@ export const getPortfolioTotalValue = (
   { currencies, user },
   currentPortfolio
 ) => {
-  if (!currentPortfolio || !user || !currencies || !currencies.all) return;
+  if (
+    !currentPortfolio ||
+    !user ||
+    !currencies ||
+    !currencies.all ||
+    !currencies.all.length
+  )
+    return;
   const { transactions } = currentPortfolio;
   const { all: allCurrencies } = currencies;
   return transactions
@@ -33,7 +40,14 @@ export const getPortfolio24hChange = (
   { currencies, user },
   currentPortfolio
 ) => {
-  if (!currentPortfolio || !user || !currencies || !currencies.all) return;
+  if (
+    !currentPortfolio ||
+    !user ||
+    !currencies ||
+    !currencies.all ||
+    !currencies.all.length
+  )
+    return;
 
   const { transactions } = currentPortfolio;
   const { all: allCurrencies } = currencies;
@@ -135,17 +149,4 @@ export const getPortfolioChartData = (
     chartData.push(obj);
   }
   return chartData;
-};
-
-export const getCoinsHistory = () => {
-  const coins = _.uniqBy(
-    this.props.transactions.filter(transaction => transaction.type !== 'cost'),
-    'coin'
-  ).map(transaction => transaction.coin);
-  // Save coins to state
-  this.setState({ coins });
-  // Fetch all coins history
-  coins.forEach(coin => {
-    this.props.getCoinHistory(coin.toUpperCase());
-  });
 };

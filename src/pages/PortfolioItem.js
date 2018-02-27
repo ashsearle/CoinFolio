@@ -20,6 +20,7 @@ import {
   getPortfolioCost,
   getPortfolioChartData
 } from '../utils/portfolio';
+import { getPortfolioCoinsData } from '../utils/coins';
 import { formatCurrency } from '../utils/currency';
 import { getChangeTextClassName } from '../utils/format';
 
@@ -260,7 +261,8 @@ class PortfolioItem extends Component {
                       </TabPane>
                       <TabPane tab="Coins" key="2">
                         <PortfolioCoins
-                          transactions={this.props.portfolio.transactions}
+                          user={this.props.user}
+                          data={this.props.portfolioCoinsData}
                         />
                       </TabPane>
                     </Tabs>
@@ -301,7 +303,8 @@ const mapStateToProps = (state, props) => {
     portfolio24hChange: getPortfolio24hChange(state, currentPortfolio),
     portfolioTotalValue: getPortfolioTotalValue(state, currentPortfolio),
     portfolioCost: getPortfolioCost(state, currentPortfolio),
-    portfolioChartData: getPortfolioChartData(state, currentPortfolio)
+    portfolioChartData: getPortfolioChartData(state, currentPortfolio),
+    portfolioCoinsData: getPortfolioCoinsData(state, currentPortfolio)
   };
 };
 
