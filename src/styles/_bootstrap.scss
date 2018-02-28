@@ -1,11 +1,16 @@
-.container.content {
-  padding-top: 100px;
-}
-
-.nav-link.active {
-  background: #eee;
+.btn {
+  &.btn-primary {
+    background: $dark-grey;
+    border: none;
+  }
 }
 
 .badge {
   font-weight: normal;
+}
+
+.navbar {
+  &.np {
+    padding: 0;
+  }
 }

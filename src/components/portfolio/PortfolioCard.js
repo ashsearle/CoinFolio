@@ -9,18 +9,18 @@ class PortfolioCard extends Component {
     const { title, value, valueClassName } = this.props;
     return (
       <div className="mb-3 col-md-3">
-        <div className="card bg-light">
+        <div className="card">
           <div className="card-body">
             <div>
-              <h5 className="card-title">{title}</h5>
+              <h3 className="card-title">{title}</h3>
               {value ? (
-                <h2
+                <div
                   className={
-                    'card-text' + (valueClassName ? ' ' + valueClassName : '')
+                    'card-value' + (valueClassName ? ' ' + valueClassName : '')
                   }
                 >
                   {value}
-                </h2>
+                </div>
               ) : (
                 <p className="card-text">Calculating...</p>
               )}

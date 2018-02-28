@@ -23,12 +23,14 @@ class CurrenciesPage extends Component {
         dataIndex: 'rank',
         key: 'rank',
         defaultSortOrder: 'ascend',
+        className: 'text-align-left',
         sorter: (a, b) => a.rank - b.rank
       },
       {
         title: 'Name',
         dataIndex: 'long',
         key: 'long',
+        className: 'text-align-left bold',
         sorter: (a, b) => {
           if (a.long < b.long) return -1;
           if (a.long > b.long) return 1;
@@ -97,13 +99,15 @@ class CurrenciesPage extends Component {
       }
     ];
     return (
-      <div className="container content">
-        <Table
-          rowKey={record => record.short}
-          dataSource={data}
-          columns={columns}
-          pagination={{ pageSize: 100 }}
-        />
+      <div className="content-wrapper">
+        <div className="container-fluid">
+          <Table
+            rowKey={record => record.short}
+            dataSource={data}
+            columns={columns}
+            pagination={{ pageSize: 100 }}
+          />
+        </div>
       </div>
     );
   }

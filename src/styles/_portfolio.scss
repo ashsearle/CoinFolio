@@ -1,0 +1,17 @@
+/*
+/ Portfolio card
+*/
+
+.portfolio-single {
+  .card {
+    border-color: $light-grey;
+    border-radius: 2px;
+    .card-title {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    .card-value {
+      font-size: 24px;
+    }
+  }
+}

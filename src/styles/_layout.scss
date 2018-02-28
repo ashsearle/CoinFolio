@@ -1,0 +1,12 @@
+body {
+  &.sidebar-show {
+    .content-wrapper {
+      padding-left: 200px;
+    }
+  }
+  .content-wrapper {
+    padding-top: 90px;
+    padding-left: 0px;
+    @include transition(padding 0.3s ease-out);
+  }
+}

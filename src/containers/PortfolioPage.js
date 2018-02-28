@@ -33,52 +33,57 @@ class PortfolioPage extends Component {
 
   render() {
     return (
-      <div className="container content">
-        <nav className="navbar">
-          <h1>Portfolio</h1>
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={this.toggleModal}
-          >
-            Add portfolio
-          </button>
-        </nav>
-
-        <Modal
-          title="Add portfolio"
-          visible={this.state.modalOpen}
-          onCancel={this.toggleModal}
-          footer={null}
-        >
-          <PortfolioForm
-            onSubmit={portfolio => {
-              this.props.createPortfolio(portfolio);
-              this.toggleModal();
-            }}
-          />
-        </Modal>
-
-        {this.props.portfolio.length ? (
-          <PortfolioList
-            portfolio={this.props.portfolio}
-            onPortfolioEdit={(id, data) => this.props.editPortfolio(id, data)}
-            onPortfolioDelete={id => this.props.deletePortfolio(id)}
-          />
-        ) : (
-          <div className="alert alert-dark text-center pt-4 pb-4" role="alert">
-            <h4 className="alert-heading">Oh noes!</h4>
-            <p>You don't have any portfolio yet.</p>
-            <hr />
-            <p>
-              You can add as many portfolios as you like, as soon as you have
-              they will show here.
-            </p>
-            <button className="btn btn-secondary" onClick={this.toggleModal}>
-              Add portfolio now
+      <div className="content-wrapper">
+        <div className="container-fluid">
+          <nav className="navbar">
+            <h1>Portfolio</h1>
+            <button
+              className="btn btn-primary"
+              type="button"
+              onClick={this.toggleModal}
+            >
+              Add portfolio
             </button>
-          </div>
-        )}
+          </nav>
+
+          <Modal
+            title="Add portfolio"
+            visible={this.state.modalOpen}
+            onCancel={this.toggleModal}
+            footer={null}
+          >
+            <PortfolioForm
+              onSubmit={portfolio => {
+                this.props.createPortfolio(portfolio);
+                this.toggleModal();
+              }}
+            />
+          </Modal>
+
+          {this.props.portfolio.length ? (
+            <PortfolioList
+              portfolio={this.props.portfolio}
+              onPortfolioEdit={(id, data) => this.props.editPortfolio(id, data)}
+              onPortfolioDelete={id => this.props.deletePortfolio(id)}
+            />
+          ) : (
+            <div
+              className="alert alert-dark text-center pt-4 pb-4"
+              role="alert"
+            >
+              <h4 className="alert-heading">Oh noes!</h4>
+              <p>You don't have any portfolio yet.</p>
+              <hr />
+              <p>
+                You can add as many portfolios as you like, as soon as you have
+                they will show here.
+              </p>
+              <button className="btn btn-secondary" onClick={this.toggleModal}>
+                Add portfolio now
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     );
   }

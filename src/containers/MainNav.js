@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { doLogin, doLogout } from '../actions/user';
@@ -10,38 +10,24 @@ export class MainNav extends Component {
     this.props[action]();
   };
 
+  toggleSidebar = () => {
+    document.querySelector('body').classList.toggle('sidebar-show');
+  };
+
   render() {
     return (
-      <div className="container">
-        <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-          <Link className="navbar-brand" to="/">
-            Koindash
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbar-nav"
-            aria-controls="navbar-nav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse" id="navbar-nav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/" exact={true}>
-                  Currencies
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/portfolio">
-                  Portfolio
-                </NavLink>
-              </li>
-            </ul>
-          </div>
+      <nav className="navbar fixed-top top-nav">
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={this.toggleSidebar}
+        >
+          <i className="fas fa-bars" />
+        </button>
+        <Link className="navbar-brand" to="/">
+          Koindash
+        </Link>
+        <div className="navbar-user">
           <button
             className="btn btn-primary"
             type="button"
@@ -49,8 +35,8 @@ export class MainNav extends Component {
           >
             {this.props.authenticated ? 'Logout' : 'Login'}
           </button>
-        </nav>
-      </div>
+        </div>
+      </nav>
     );
   }
 }

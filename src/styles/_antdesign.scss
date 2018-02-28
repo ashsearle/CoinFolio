@@ -1,5 +1,22 @@
 .ant-table {
   overflow: auto;
+  font-family: $font-base;
+  .ant-table-thead > tr > th {
+    color: $dark-grey;
+  }
+  tr > th,
+  td {
+    text-align: right;
+    &.text-align-left {
+      text-align: left;
+    }
+    &:not(th).bold {
+      font-weight: 500;
+    }
+    &:not(th).capitalize {
+      text-transform: capitalize;
+    }
+  }
 }
 
 .ant-table-content {

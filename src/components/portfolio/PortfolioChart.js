@@ -25,8 +25,13 @@ class PortfolioChart extends Component {
           <Tooltip />
           <Legend />
           <CartesianGrid stroke="#f5f5f5" />
-          <Area type="monotone" dataKey="total" fill="#eee" stroke="#ccc" />
-          <Bar dataKey="cost" barSize={20} fill="#413ea0" />
+          <Area
+            type="monotone"
+            dataKey="total"
+            fill="#f4f4f4"
+            stroke="#323237"
+          />
+          <Bar dataKey="cost" barSize={20} fill="#f7cf5f" />
         </ComposedChart>
       </ResponsiveContainer>
     );

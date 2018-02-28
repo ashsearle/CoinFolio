@@ -3,6 +3,7 @@ import { Router, Switch, Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
 import MainNav from '../containers/MainNav';
+import SideNav from '../containers/SideNav';
 import CurrenciesPage from '../containers/CurrenciesPage';
 import PortfolioPage from '../containers/PortfolioPage';
 import PortfolioItem from '../containers/PortfolioItem';
@@ -16,6 +17,7 @@ const AppRouter = () => (
   <Router history={history}>
     <div>
       <MainNav />
+      <SideNav />
       <Switch>
         <Route path="/" component={CurrenciesPage} exact={true} />
         <PrivateRoute
