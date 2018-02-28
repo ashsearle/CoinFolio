@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import { Table, Modal, Popconfirm, Tabs } from 'antd';
+import { Modal, Tabs } from 'antd';
 import {
   startSetPortfolios,
   startAddTransaction,
@@ -13,6 +12,7 @@ import TransactionForm from '../components/transactions/TransactionForm';
 import PortfolioCard from '../components/portfolio/PortfolioCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
 import PortfolioChart from '../components/portfolio/PortfolioChart';
+import PortfolioTransactions from '../components/portfolio/PortfolioTransactions';
 
 import {
   getPortfolioTotalValue,
@@ -31,110 +31,7 @@ class PortfolioItem extends Component {
     super(props);
 
     this.state = {
-      modalOpen: false,
-      transactionsTableColumns: [
-        {
-          title: 'Type',
-          dataIndex: 'type',
-          key: 'type',
-          className: 'text-align-left bold capitalize',
-          sorter: (a, b) => {
-            if (a.type < b.type) return -1;
-            if (a.type > b.type) return 1;
-            return 0;
-          }
-        },
-        {
-          title: 'Coin',
-          dataIndex: 'coin',
-          key: 'coin',
-          sorter: (a, b) => {
-            if (a.coin < b.coin) return -1;
-            if (a.coin > b.coin) return 1;
-            return 0;
-          },
-          render: text => {
-            return text ? text.toUpperCase() : '-';
-          }
-        },
-        {
-          title: 'Amount',
-          dataIndex: 'amount',
-          key: 'amount',
-          sorter: (a, b) => a.amount - b.amount,
-          render: text => {
-            return text ? text : '-';
-          }
-        },
-        {
-          title: 'Price',
-          dataIndex: 'price',
-          key: 'price',
-          sorter: (a, b) => a.price - b.price,
-          render: (text, record) => {
-            return record.type === 'purchase' || record.type === 'cost'
-              ? text
-              : '-';
-          }
-        },
-        {
-          title: 'Currency',
-          dataIndex: 'currency',
-          key: 'currency',
-          sorter: (a, b) => {
-            if (a.currency < b.currency) return -1;
-            if (a.currency > b.currency) return 1;
-            return 0;
-          },
-          render: text => text.toUpperCase()
-        },
-        {
-          title: 'Date',
-          dataIndex: 'date',
-          key: 'date',
-          sorter: (a, b) => {
-            if (moment(a.date).isBefore(moment(b.date))) return -1;
-            if (moment(a.date).isAfter(moment(b.date))) return 1;
-            return 0;
-          },
-          render: text => moment(text).format('Do MMM YYYY')
-        },
-        {
-          title: 'Description',
-          dataIndex: 'description',
-          key: 'description',
-          sorter: (a, b) => {
-            if (a.description < b.description) return -1;
-            if (a.description > b.description) return 1;
-            return 0;
-          },
-          render: text => {
-            return text ? text : '-';
-          }
-        },
-        {
-          title: 'Actions',
-          dataIndex: 'actions',
-          render: (text, record) => {
-            return (
-              <div>
-                <button
-                  className="btn btn-link"
-                  onClick={() => this.onTransactionEdit(record)}
-                >
-                  Edit
-                </button>
-                <Popconfirm
-                  title="Are you sure?"
-                  onConfirm={() => this.onTransactionDelete(record.id)}
-                >
-                  <button className="btn btn-link">Delete</button>
-                </Popconfirm>
-              </div>
-            );
-          }
-        }
-      ]
+      modalOpen: false
     };
   }
 
@@ -202,8 +99,8 @@ class PortfolioItem extends Component {
           <div className="container-fluid portfolio-single">
             {this.props.portfolio ? (
               <div>
-                <nav className="navbar np">
-                  <h1>{this.props.portfolio.name}</h1>
+                <nav className="navbar section-nav-bar">
+                  <h1 className="title">{this.props.portfolio.name}</h1>
                   <button
                     className="btn btn-primary"
                     type="button"
@@ -257,10 +154,8 @@ class PortfolioItem extends Component {
                     <section className="col-12">
                       <Tabs defaultActiveKey="1" size={'large'}>
                         <TabPane tab="Transactions" key="1">
-                          <Table
-                            rowKey={record => record.id}
-                            dataSource={this.props.portfolio.transactions}
-                            columns={this.state.transactionsTableColumns}
+                          <PortfolioTransactions
+                            data={this.props.portfolio.transactions}
                           />
                         </TabPane>
                         <TabPane tab="Coins" key="2">

@@ -10,7 +10,17 @@
 }
 
 .navbar {
+  .title {
+    margin-bottom: 0;
+  }
   &.np {
     padding: 0;
   }
+}
+
+.text-success {
+  color: $color-success;
+}
+.text-danger {
+  color: $color-danger;
 }

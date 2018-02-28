@@ -31,7 +31,7 @@ class PortfolioChart extends Component {
             fill="#f4f4f4"
             stroke="#323237"
           />
-          <Bar dataKey="cost" barSize={20} fill="#f7cf5f" />
+          <Bar dataKey="cost" barSize={20} fill="#6d5eac" />
         </ComposedChart>
       </ResponsiveContainer>
     );
