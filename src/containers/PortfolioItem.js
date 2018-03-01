@@ -153,6 +153,12 @@ class PortfolioItem extends Component {
                         <TabPane tab="Transactions" key="1">
                           <PortfolioTransactions
                             data={this.props.portfolio.transactions}
+                            onTransactionEdit={transaction =>
+                              this.onTransactionEdit(transaction)
+                            }
+                            onTransactionDelete={id =>
+                              this.onTransactionDelete(id)
+                            }
                           />
                         </TabPane>
                         <TabPane tab="Coins" key="2">

@@ -92,13 +92,13 @@ class PortfolioTransactions extends Component {
             <div>
               <button
                 className="btn btn-link"
-                onClick={() => this.onTransactionEdit(record)}
+                onClick={() => this.props.onTransactionEdit(record)}
               >
                 Edit
               </button>
               <Popconfirm
                 title="Are you sure?"
-                onConfirm={() => this.onTransactionDelete(record.id)}
+                onConfirm={() => this.props.onTransactionDelete(record.id)}
               >
                 <button className="btn btn-link">Delete</button>
               </Popconfirm>
@@ -109,7 +109,7 @@ class PortfolioTransactions extends Component {
     ];
     return (
       <Table
-        rowKey={record => record.coin}
+        rowKey={record => record.id}
         dataSource={this.props.data}
         columns={columns}
       />

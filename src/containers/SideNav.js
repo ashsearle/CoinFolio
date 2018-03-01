@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { doLogout } from '../actions/user';
+
 export class SideNav extends Component {
   onAuthClick = () => {
     const action = this.props.authenticated ? 'doLogout' : 'doLogin';
@@ -24,6 +26,21 @@ export class SideNav extends Component {
               <i className="fa fa-bar-chart float-right" />
             </NavLink>
           </li>
+          {this.props.authenticated ? (
+            <li>
+              <a className="nav-link" onClick={this.props.doLogout}>
+                Logout
+                <i className="fa fa-sign-out float-right" />
+              </a>
+            </li>
+          ) : (
+            <li>
+              <NavLink className="nav-link" to="/login">
+                Login / Register
+                <i className="fa fa-sign-in float-right" />
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
     );
@@ -34,6 +51,10 @@ const mapStateToProps = state => ({
   authenticated: !!state.user.uid
 });
 
-export default connect(mapStateToProps, null, null, {
+const mapDispatchToProps = dispatch => ({
+  doLogout: () => dispatch(doLogout())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {
   pure: false
 })(SideNav);
