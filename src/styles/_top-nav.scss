@@ -19,5 +19,14 @@
 
   .navbar-user {
     margin-left: auto;
+    a,
+    button {
+      color: $grey;
+      @include transition(color 0.3s ease-out);
+      &:hover {
+        color: $dark-grey;
+        text-decoration: none;
+      }
+    }
   }
 }

@@ -10,7 +10,7 @@ export const login = uid => ({
   uid
 });
 
-export const doLogin = () => {
+export const doGoogleLogin = () => {
   return () => {
     return firebase.auth().signInWithPopup(googleAuthProvider);
   };

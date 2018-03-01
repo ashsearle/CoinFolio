@@ -1,0 +1,11 @@
+form {
+  &.login-form {
+    text-align: left;
+    padding: 10px 20px 20px;
+    .social-buttons {
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

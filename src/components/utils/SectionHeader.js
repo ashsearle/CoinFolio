@@ -4,7 +4,7 @@ class SectionHeader extends Component {
   render() {
     return (
       <header className="navbar section-header">
-        <h1>{this.props.title}</h1>
+        <h1 className="title">{this.props.title}</h1>
         {this.props.buttonLabel && (
           <button
             className="btn btn-primary"

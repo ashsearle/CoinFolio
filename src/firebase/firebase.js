@@ -1,12 +1,12 @@
 import * as firebase from 'firebase';
 
 const config = {
-  apiKey: 'AIzaSyA8mKgMWBw5ZrA2RAJhJtmVKoLlnFgkP8Y',
-  authDomain: 'livecryptoportfolio.firebaseapp.com',
-  databaseURL: 'https://livecryptoportfolio.firebaseio.com',
-  projectId: 'livecryptoportfolio',
-  storageBucket: 'livecryptoportfolio.appspot.com',
-  messagingSenderId: '986033857664'
+  apiKey: 'AIzaSyCuh954DyiYIBI4OrF5I22zwzem8Tb_Ieo',
+  authDomain: 'koindash.firebaseapp.com',
+  databaseURL: 'https://koindash.firebaseio.com',
+  projectId: 'koindash',
+  storageBucket: 'koindash.appspot.com',
+  messagingSenderId: '154677945718'
 };
 
 firebase.initializeApp(config);

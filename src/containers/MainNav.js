@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { doLogin, doLogout } from '../actions/user';
+import { doLogout } from '../actions/user';
 
 export class MainNav extends Component {
   onAuthClick = () => {
@@ -27,14 +27,19 @@ export class MainNav extends Component {
         <Link className="navbar-brand" to="/">
           Koindash
         </Link>
+
         <div className="navbar-user">
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={this.onAuthClick}
-          >
-            {this.props.authenticated ? 'Logout' : 'Login'}
-          </button>
+          {!this.props.authenticated ? (
+            <Link to="/login">Login / Register</Link>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={this.props.doLogout}
+            >
+              Logout
+            </button>
+          )}
         </div>
       </nav>
     );
@@ -46,7 +51,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  doLogin: () => dispatch(doLogin()),
   doLogout: () => dispatch(doLogout())
 });
 

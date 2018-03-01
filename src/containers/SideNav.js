@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { doLogin, doLogout } from '../actions/user';
-
 export class SideNav extends Component {
   onAuthClick = () => {
     const action = this.props.authenticated ? 'doLogout' : 'doLogin';
@@ -36,11 +34,6 @@ const mapStateToProps = state => ({
   authenticated: !!state.user.uid
 });
 
-const mapDispatchToProps = dispatch => ({
-  doLogin: () => dispatch(doLogin()),
-  doLogout: () => dispatch(doLogout())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps, null, {
+export default connect(mapStateToProps, null, null, {
   pure: false
 })(SideNav);
