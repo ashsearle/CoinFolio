@@ -2,12 +2,16 @@
 / Colors
 */
 $white: #fff;
-$light-blue: #37b0e9;
+
 $purple: #6d5eac;
 
 $light-grey: #eee;
-$medium-grey: #575757;
+$grey: #575757;
 $dark-grey: #323237;
+
+$light-blue: #37b0e9;
+$blue: darken($light-blue, 20%);
+$dark-blue: darken($light-blue, 30%);
 
 $color-complete: $light-blue;
 $color-success: #1dbb99;

@@ -69,7 +69,7 @@ class PortfolioList extends Component {
                       </Link>
                       <button
                         type="button"
-                        className="btn btn-secondary ml-2"
+                        className="btn btn-outline-secondary ml-2"
                         onClick={() => this.toggleModal(portfolioItem)}
                       >
                         Edit

@@ -22,7 +22,7 @@ export class MainNav extends Component {
           type="button"
           onClick={this.toggleSidebar}
         >
-          <i className="fas fa-bars" />
+          <i className="fa fa-bars" />
         </button>
         <Link className="navbar-brand" to="/">
           Koindash

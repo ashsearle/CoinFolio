@@ -1,7 +1,21 @@
 .btn {
+  font-weight: 300;
   &.btn-primary {
-    background: $dark-grey;
-    border: none;
+    background: $blue;
+    border-color: $blue;
+    &:hover {
+      background: $dark-blue;
+      border-color: $dark-blue;
+    }
+  }
+  &.btn-outline-secondary {
+    color: $grey;
+    border-color: $grey;
+    font-weight: 300;
+    &:hover {
+      background: $grey;
+      color: $white;
+    }
   }
 }
 
@@ -23,4 +37,8 @@
 }
 .text-danger {
   color: $color-danger;
+}
+
+.card {
+  border-radius: 2px;
 }

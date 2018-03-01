@@ -13,6 +13,7 @@ import PortfolioCard from '../components/portfolio/PortfolioCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
 import PortfolioChart from '../components/portfolio/PortfolioChart';
 import PortfolioTransactions from '../components/portfolio/PortfolioTransactions';
+import SectionHeader from '../components/utils/SectionHeader';
 
 import {
   getPortfolioTotalValue,
@@ -99,16 +100,12 @@ class PortfolioItem extends Component {
           <div className="container-fluid portfolio-single">
             {this.props.portfolio ? (
               <div>
-                <nav className="navbar section-nav-bar">
-                  <h1 className="title">{this.props.portfolio.name}</h1>
-                  <button
-                    className="btn btn-primary"
-                    type="button"
-                    onClick={this.openModal}
-                  >
-                    Add transaction
-                  </button>
-                </nav>
+                <SectionHeader
+                  title={this.props.portfolio.name}
+                  buttonLabel="Add transaction"
+                  onButtonClick={this.openModal}
+                />
+
                 {this.props.portfolio.transactions &&
                 this.props.portfolio.transactions.length ? (
                   <div className="row">

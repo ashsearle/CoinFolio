@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 
 import PortfolioForm from '../components/portfolio/PortfolioForm';
 import PortfolioList from '../components/portfolio/PortfolioList';
+import SectionHeader from '../components/utils/SectionHeader';
 
 import {
   startSetPortfolios,
@@ -35,17 +36,6 @@ class PortfolioPage extends Component {
     return (
       <div className="content-wrapper">
         <div className="container-fluid">
-          <nav className="navbar">
-            <h1>Portfolio</h1>
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={this.toggleModal}
-            >
-              Add portfolio
-            </button>
-          </nav>
-
           <Modal
             title="Add portfolio"
             visible={this.state.modalOpen}
@@ -59,6 +49,12 @@ class PortfolioPage extends Component {
               }}
             />
           </Modal>
+
+          <SectionHeader
+            title="Portfolio"
+            buttonLabel="Add portfolio"
+            onButtonClick={this.toggleModal}
+          />
 
           {this.props.portfolio.length ? (
             <PortfolioList

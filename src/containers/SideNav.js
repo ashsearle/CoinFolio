@@ -17,11 +17,13 @@ export class SideNav extends Component {
           <li>
             <NavLink className="nav-link" to="/" exact={true}>
               Currencies
+              <i className="fa fa-bitcoin float-right" />
             </NavLink>
           </li>
           <li>
             <NavLink className="nav-link" to="/portfolio">
-              Portfolio
+              Portfolios
+              <i className="fa fa-bar-chart float-right" />
             </NavLink>
           </li>
         </ul>

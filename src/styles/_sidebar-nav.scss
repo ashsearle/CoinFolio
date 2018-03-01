@@ -25,10 +25,13 @@ body {
       padding-top: 10px;
       .nav-link {
         font-size: 15px;
-        color: $medium-grey;
+        line-height: 15px;
+        padding: 10px 20px;
+        color: $white;
+        opacity: 0.4;
         &:hover,
         &.active {
-          color: $white;
+          opacity: 1;
         }
       }
     }
