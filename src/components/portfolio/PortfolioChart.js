@@ -18,7 +18,7 @@ class PortfolioChart extends Component {
   }
   render() {
     return (
-      <ResponsiveContainer>
+      <ResponsiveContainer debounce={300}>
         <ComposedChart data={this.props.data}>
           <XAxis dataKey="date" />
           <YAxis dataKey="total" />
