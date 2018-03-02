@@ -6,10 +6,6 @@ import { doLogout } from '../actions/user';
 
 export class SideNav extends Component {
 
-  shouldComponentUpdate(nextProps) {
-    return nextProps.authenticated !== this.props.authenticated;
-  }
-
   render() {
     return (
       <div className="collapse show" id="sidebar-nav">
