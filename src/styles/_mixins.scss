@@ -85,3 +85,31 @@
   -ms-transform-origin: $origin;
   transform-origin: $origin;
 }
+
+@mixin box-shadow($left: 0, $top: 2px, $blur: 6px, $color: rgba(0,0,0,0.2), $inset: false) {
+  @if $inset {
+    -webkit-box-shadow:inset $left $top $blur $color;
+    -moz-box-shadow:inset $left $top $blur $color;
+    box-shadow:inset $left $top $blur $color;
+  } @else {
+    -webkit-box-shadow: $left $top $blur $color;
+    -moz-box-shadow: $left $top $blur $color;
+    box-shadow: $left $top $blur $color;
+  }
+}
+
+/*
+/ Accent border
+*/
+
+@mixin accent-border($border-color) {
+  border-top: 5px solid $border-color;
+}
+
+/*
+/ Accent border
+*/
+
+@mixin accent-border($border-color) {
+  border-top: 5px solid $border-color;
+}

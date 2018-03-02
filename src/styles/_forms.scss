@@ -1,11 +1,27 @@
-form {
-  &.login-form {
-    text-align: left;
-    padding: 10px 20px 20px;
-    .social-buttons {
+.login-form {
+  padding: 14px 20px 20px;
+  @include accent-border($light-blue);
+  @include box-shadow();
+  header {
+    margin-bottom: 30px;
+    .title {
+      margin-bottom: 10px;
+    }
+  }
+  .buttons {
+    max-width: 400px;
+    display: inline-block;
+    button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding-left: 40px;
+    }
+    @include breakpoint(tablet) {
+      padding: 0 20px;
       button {
-        width: 100%;
+        padding-left: inherit;
       }
     }
   }
 }
+

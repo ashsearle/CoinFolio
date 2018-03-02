@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { firebase, googleAuthProvider } from '../firebase/firebase';
+import { firebase, googleAuthProvider, facebookAuthProvider, twitterAuthProvider } from '../firebase/firebase';
 import apiConfig from '../config/api';
 import uiConfig from '../config/ui';
 import { getCache, setCache } from '../utils/cache';
@@ -13,6 +13,18 @@ export const login = uid => ({
 export const doGoogleLogin = () => {
   return () => {
     return firebase.auth().signInWithPopup(googleAuthProvider);
+  };
+};
+
+export const doFacebookLogin = () => {
+  return () => {
+    return firebase.auth().signInWithPopup(facebookAuthProvider);
+  };
+};
+
+export const doTwitterLogin = () => {
+  return () => {
+    return firebase.auth().signInWithPopup(twitterAuthProvider);
   };
 };
 

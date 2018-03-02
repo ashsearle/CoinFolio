@@ -15,5 +15,9 @@ body {
         margin-bottom: 0;
       }
     }
+
+    @include breakpoint(tablet) {
+      padding-left: 200px;
+    }
   }
 }

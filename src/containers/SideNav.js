@@ -34,13 +34,13 @@ export class SideNav extends Component {
               </a>
             </li>
           ) : (
-            <li>
-              <NavLink className="nav-link" to="/login">
-                Login / Register
+              <li>
+                <NavLink className="nav-link" to="/login">
+                  Login
                 <i className="fa fa-sign-in float-right" />
-              </NavLink>
-            </li>
-          )}
+                </NavLink>
+              </li>
+            )}
         </ul>
       </div>
     );

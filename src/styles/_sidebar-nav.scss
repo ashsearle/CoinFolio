@@ -19,6 +19,7 @@ body {
     @include transition(transform 0.3s ease-out);
     @include breakpoint(tablet) {
       width: 200px;
+      @include translate(0, 0);
     }
 
     .list-group {

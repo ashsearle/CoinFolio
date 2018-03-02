@@ -20,10 +20,41 @@
   &.btn-google {
     background: $color-google;
     color: $white;
+    .icon {
+      background: darken($color-google, 10%);
+    }
   }
   &.btn-facebook {
     background: $color-facebook;
     color: $white;
+    .icon {
+      background: darken($color-facebook, 10%);
+    }
+  }
+  &.btn-twitter {
+    background: $color-twitter;
+    color: $white;
+    .icon {
+      background: darken($color-twitter, 10%);
+    }
+  }
+
+  
+  &.btn-icon {
+    position: relative;
+    .icon {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      i {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        @include translate(-50%, -50%);
+      }
+    }
   }
 }
 
