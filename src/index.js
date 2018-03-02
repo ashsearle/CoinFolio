@@ -7,7 +7,7 @@ import configureStore from './store/configureStore';
 import './firebase/firebase';
 import { firebase } from './firebase/firebase';
 
-import { login, logout, fetchExchangeRates } from './actions/user';
+import { login, logout, fetchExchangeRates, getUserCurrency } from './actions/user';
 import { fetchCurrencies, socketConnect } from './actions/currencies';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -28,6 +28,7 @@ firebase.auth().onAuthStateChanged(user => {
     store.dispatch(logout());
     history.push('/');
   }
+  store.dispatch(getUserCurrency());
   store.dispatch(fetchExchangeRates());
   store.dispatch(fetchCurrencies());
   store.dispatch(socketConnect());

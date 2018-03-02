@@ -1,8 +1,8 @@
-export const exchangeToUserCurrency = (value, { currency, exchangeRates }) => {
+export const exchangeToUserCurrency = (value, { fiatCurrency, exchangeRates }) => {
+  const { value: currency } = fiatCurrency;
   if (
     !exchangeRates ||
     !Object.keys(exchangeRates).length ||
-    !currency ||
     currency === 'USD'
   ) {
     return value;
@@ -11,10 +11,11 @@ export const exchangeToUserCurrency = (value, { currency, exchangeRates }) => {
 };
 
 export const formatCurrency = (
-  { currency = 'USD', locales = 'en-US' },
+  { fiatCurrency },
   value = 0,
   options = {}
 ) => {
+  const { value: currency, locales } = fiatCurrency;
   return new Intl.NumberFormat(locales, {
     style: 'currency',
     currency: currency,

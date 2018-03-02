@@ -16,6 +16,7 @@ export const getPortfolioTotalValue = (
     return;
   const { transactions } = currentPortfolio;
   const { all: allCurrencies } = currencies;
+  const { value: userCurrency } = user.fiatCurrency;
   return transactions
     .filter(transaction => transaction.type !== 'cost')
     .reduce((sum, transaction) => {
@@ -29,7 +30,7 @@ export const getPortfolioTotalValue = (
       }
       // TODO: atm we're assuming it's either USD or GBP
       const transactionPrice =
-        transaction.currency.toLowerCase() === user.currency.toLowerCase()
+        transaction.currency.toLowerCase() === userCurrency.toLowerCase()
           ? transactionCurrency.price
           : exchangeToUserCurrency(transactionCurrency.price, user);
       return (sum += +transaction.amount * transactionPrice);
@@ -51,6 +52,7 @@ export const getPortfolio24hChange = (
 
   const { transactions } = currentPortfolio;
   const { all: allCurrencies } = currencies;
+  const { value: userCurrency } = user.fiatCurrency;
   const filtered = transactions.filter(
     transaction => transaction.type !== 'cost'
   );
@@ -65,7 +67,7 @@ export const getPortfolio24hChange = (
     }
     // TODO: atm we're assuming it's either USD or GBP
     const transactionPrice =
-      transaction.currency.toLowerCase() === user.currency.toLowerCase()
+      transaction.currency.toLowerCase() === userCurrency.toLowerCase()
         ? transactionCurrency.price
         : exchangeToUserCurrency(transactionCurrency.price, user);
     const diff =
@@ -77,6 +79,7 @@ export const getPortfolio24hChange = (
 export const getPortfolioCost = ({ user }, currentPortfolio) => {
   if (!currentPortfolio || !user) return;
   const { transactions } = currentPortfolio;
+  const { value: userCurrency } = user.fiatCurrency;
   return transactions
     .filter(
       transaction =>
@@ -88,7 +91,7 @@ export const getPortfolioCost = ({ user }, currentPortfolio) => {
           ? transaction.price
           : transaction.price * transaction.amount;
       const costIncrease =
-        transaction.currency.toLowerCase() === user.currency.toLowerCase()
+        transaction.currency.toLowerCase() === userCurrency.toLowerCase()
           ? transactionPrice
           : exchangeToUserCurrency(transactionPrice, user);
       return (sum += +costIncrease);

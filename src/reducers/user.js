@@ -1,10 +1,13 @@
 const defaultState = {
-  currency: 'GBP',
-  locales: 'en-GB',
   uid: null,
   exchangeRates: null,
   displayName: null,
-  photoURL: null
+  photoURL: null,
+  fiatCurrency: {
+    code: 'usd',
+    value: 'USD',
+    locales: 'en-US'
+  }
 };
 export default (state = defaultState, action) => {
   switch (action.type) {
@@ -27,6 +30,14 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         exchangeRates: action.rates
+      };
+    case 'SET_USER_CURRENCY':
+      return {
+        ...state,
+        fiatCurrency: {
+          ...state.fiatCurrency,
+          ...action.fiatCurrency
+        }
       };
     default:
       return state;

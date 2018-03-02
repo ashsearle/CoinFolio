@@ -75,3 +75,24 @@ export const fetchExchangeRates = () => {
       });
   };
 };
+
+export const setUserCurrency = (fiatCurrency = {}) => ({
+  type: 'SET_USER_CURRENCY',
+  fiatCurrency
+});
+
+export const startSetUserCurrency = (fiatCurrency = {}) => {
+  return dispatch => {
+    setCache('fiatCurrency', fiatCurrency, 2592000);
+    dispatch(setUserCurrency(fiatCurrency));
+  }
+};
+
+export const getUserCurrency = () => {
+  return dispatch => {
+    const cache = getCache('fiatCurrency');
+    if (cache) {
+      dispatch(setUserCurrency(cache));
+    }
+  }
+};

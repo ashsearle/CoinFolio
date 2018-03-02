@@ -17,16 +17,13 @@
     font-weight: 300;
   }
 
-  .navbar-user {
+  .currency-select {
     margin-left: auto;
-    a,
-    button {
+    select.form-control {
+      font-size: 14px;
+      padding: 5px 20px 5px 7px;
+      height: 35px;
       color: $grey;
-      @include transition(color 0.3s ease-out);
-      &:hover {
-        color: $dark-grey;
-        text-decoration: none;
-      }
     }
   }
 }

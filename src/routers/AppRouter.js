@@ -22,7 +22,7 @@ const AppRouter = () => (
       <SideNav />
       <Switch>
         <Route path="/" component={CurrenciesPage} exact={true} />
-        <PublicRoute path="/login" component={LoginPage} exact={true} />
+        <PublicRoute path="/login" component={LoginPage} />
         <PrivateRoute
           path="/portfolio"
           component={PortfolioPage}
