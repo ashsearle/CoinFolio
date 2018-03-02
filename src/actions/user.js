@@ -5,9 +5,9 @@ import apiConfig from '../config/api';
 import uiConfig from '../config/ui';
 import { getCache, setCache } from '../utils/cache';
 
-export const login = uid => ({
+export const login = user => ({
   type: 'LOGIN',
-  uid
+  user
 });
 
 export const doGoogleLogin = () => {

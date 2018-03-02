@@ -13,6 +13,10 @@ export class SideNav extends Component {
   render() {
     return (
       <div className="collapse show" id="sidebar-nav">
+        {!!this.props.user.uid && <div className="avatar">
+          <img src={this.props.user.photoURL} alt="avatar" />
+          <span className="name">{this.props.user.displayName}</span>
+        </div>}
         <ul className="list-group">
           <li>
             <NavLink className="nav-link" to="/" exact={true}>
@@ -26,7 +30,7 @@ export class SideNav extends Component {
               <i className="fa fa-bar-chart float-right" />
             </NavLink>
           </li>
-          {this.props.authenticated ? (
+          {!!this.props.user.uid ? (
             <li>
               <a className="nav-link" onClick={this.props.doLogout}>
                 Logout
@@ -48,7 +52,7 @@ export class SideNav extends Component {
 }
 
 const mapStateToProps = state => ({
-  authenticated: !!state.user.uid
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({

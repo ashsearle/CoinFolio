@@ -23,7 +23,7 @@ const app = (
 firebase.auth().onAuthStateChanged(user => {
   console.log('onAuthStateChanged', user)
   if (user) {
-    store.dispatch(login(user.uid));
+    store.dispatch(login(user));
   } else {
     store.dispatch(logout());
     history.push('/');

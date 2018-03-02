@@ -2,19 +2,26 @@ const defaultState = {
   currency: 'GBP',
   locales: 'en-GB',
   uid: null,
-  exchangeRates: null
+  exchangeRates: null,
+  displayName: null,
+  photoURL: null
 };
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'LOGIN':
+      const { uid, displayName, photoURL } = action.user;
       return {
         ...state,
-        uid: action.uid
+        uid,
+        displayName,
+        photoURL
       };
     case 'LOGOUT':
       return {
         ...state,
-        uid: null
+        uid: null,
+        displayName: null,
+        photoURL: null
       };
     case 'SET_EXCHANGE_RATES':
       return {
