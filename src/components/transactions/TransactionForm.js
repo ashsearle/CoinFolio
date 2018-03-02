@@ -79,7 +79,7 @@ export default class TransactionForm extends Component {
         .then(response => {
           const price =
             response[this.state.coin.toUpperCase()][
-              this.state.currency.toUpperCase()
+            this.state.currency.toUpperCase()
             ];
           this.setState(() => ({ price }));
           this.submitForm();

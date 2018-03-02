@@ -23,7 +23,7 @@ class PortfolioList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="portfolio-list">
         <Modal
           title="Edit portfolio"
           visible={this.state.modalOpen}

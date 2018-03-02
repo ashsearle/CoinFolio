@@ -57,7 +57,6 @@ export const removePortfolio = id => ({
 });
 
 export const startRemovePortfolio = id => {
-  console.log('startRemovePortfolio', id);
   if (!id) return;
   return (dispatch, getState) => {
     const uid = getState().user.uid;

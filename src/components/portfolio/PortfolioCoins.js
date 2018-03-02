@@ -12,6 +12,7 @@ class PortfolioCoins extends Component {
         title: 'Coin',
         dataIndex: 'coin',
         key: 'coin',
+        className: 'text-align-left bold',
         sorter: (a, b) => {
           if (a.coin < b.coin) return -1;
           if (a.coin > b.coin) return 1;

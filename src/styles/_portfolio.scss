@@ -1,11 +1,21 @@
 /*
 / Portfolio card
 */
+.portfolio-list,
+.portfolio-single {
+  .card {
+    border-radius: 0;
+    border: none;
+    @include accent-border($dark-blue);
+    @include box-shadow();
+    .card-title {
+      font-weight: 300;
+    }
+  }
+}
 
 .portfolio-single {
   .card {
-    border-color: $light-grey;
-    border-radius: 2px;
     .card-title {
       font-size: 16px;
       margin-bottom: 5px;

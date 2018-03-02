@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import { doLogout } from '../actions/user';
 
 export class SideNav extends Component {
-  onAuthClick = () => {
-    const action = this.props.authenticated ? 'doLogout' : 'doLogin';
-    this.props[action]();
-  };
+
+  shouldComponentUpdate(nextProps) {
+    return nextProps.authenticated !== this.props.authenticated;
+  }
 
   render() {
     return (

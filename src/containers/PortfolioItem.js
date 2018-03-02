@@ -107,88 +107,88 @@ class PortfolioItem extends Component {
                 />
 
                 {this.props.portfolio.transactions &&
-                this.props.portfolio.transactions.length ? (
-                  <div className="row">
-                    <PortfolioCard
-                      title="Value:"
-                      value={formatCurrency(
-                        this.props.user,
-                        this.props.portfolioTotalValue
-                      )}
-                    />
-                    <PortfolioCard
-                      title="24h Change:"
-                      value={formatCurrency(
-                        this.props.user,
-                        this.props.portfolio24hChange
-                      )}
-                      valueClassName={getChangeTextClassName(
-                        this.props.portfolio24hChange
-                      )}
-                    />
-                    <PortfolioCard
-                      title="Investment:"
-                      value={formatCurrency(
-                        this.props.user,
-                        this.props.portfolioCost
-                      )}
-                    />
-                    <PortfolioCard
-                      title="Profit:"
-                      value={formatCurrency(
-                        this.props.user,
-                        this.props.portfolioTotalValue -
+                  this.props.portfolio.transactions.length ? (
+                    <div className="row">
+                      <PortfolioCard
+                        title="Value:"
+                        value={formatCurrency(
+                          this.props.user,
+                          this.props.portfolioTotalValue
+                        )}
+                      />
+                      <PortfolioCard
+                        title="24h Change:"
+                        value={formatCurrency(
+                          this.props.user,
+                          this.props.portfolio24hChange
+                        )}
+                        valueClassName={getChangeTextClassName(
+                          this.props.portfolio24hChange
+                        )}
+                      />
+                      <PortfolioCard
+                        title="Investment:"
+                        value={formatCurrency(
+                          this.props.user,
                           this.props.portfolioCost
-                      )}
-                      valueClassName={getChangeTextClassName(
-                        this.props.portfolioTotalValue -
+                        )}
+                      />
+                      <PortfolioCard
+                        title="Profit:"
+                        value={formatCurrency(
+                          this.props.user,
+                          this.props.portfolioTotalValue -
                           this.props.portfolioCost
-                      )}
-                    />
-                    <section className="rechart-container col-12 mt-1">
-                      <PortfolioChart data={this.props.portfolioChartData} />
-                    </section>
-                    <section className="col-12">
-                      <Tabs defaultActiveKey="1" size={'large'}>
-                        <TabPane tab="Transactions" key="1">
-                          <PortfolioTransactions
-                            data={this.props.portfolio.transactions}
-                            onTransactionEdit={transaction =>
-                              this.onTransactionEdit(transaction)
-                            }
-                            onTransactionDelete={id =>
-                              this.onTransactionDelete(id)
-                            }
-                          />
-                        </TabPane>
-                        <TabPane tab="Coins" key="2">
-                          <PortfolioCoins
-                            user={this.props.user}
-                            data={this.props.portfolioCoinsData}
-                          />
-                        </TabPane>
-                      </Tabs>
-                    </section>
-                  </div>
-                ) : (
-                  <div
-                    className="alert alert-dark text-center pt-4 pb-4"
-                    role="alert"
-                  >
-                    <h4 className="alert-heading">Oh noes!</h4>
-                    <p>You don't have any transactions in your portfolio.</p>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={this.openModal}
+                        )}
+                        valueClassName={getChangeTextClassName(
+                          this.props.portfolioTotalValue -
+                          this.props.portfolioCost
+                        )}
+                      />
+                      <section className="rechart-container col-12 mt-1">
+                        <PortfolioChart data={this.props.portfolioChartData} />
+                      </section>
+                      <section className="col-12">
+                        <Tabs defaultActiveKey="1" size={'large'}>
+                          <TabPane tab="Transactions" key="1">
+                            <PortfolioTransactions
+                              data={this.props.portfolio.transactions}
+                              onTransactionEdit={transaction =>
+                                this.onTransactionEdit(transaction)
+                              }
+                              onTransactionDelete={id =>
+                                this.onTransactionDelete(id)
+                              }
+                            />
+                          </TabPane>
+                          <TabPane tab="Coins" key="2">
+                            <PortfolioCoins
+                              user={this.props.user}
+                              data={this.props.portfolioCoinsData}
+                            />
+                          </TabPane>
+                        </Tabs>
+                      </section>
+                    </div>
+                  ) : (
+                    <div
+                      className="alert alert-dark text-center pt-4 pb-4"
+                      role="alert"
                     >
-                      Add transaction
+                      <h4 className="alert-heading">Oh noes!</h4>
+                      <p>You don't have any transactions in your portfolio.</p>
+                      <button
+                        className="btn btn-secondary"
+                        onClick={this.openModal}
+                      >
+                        Add transaction
                     </button>
-                  </div>
-                )}
+                    </div>
+                  )}
               </div>
             ) : (
-              'Loading...'
-            )}
+                'Loading...'
+              )}
           </div>
         </div>
       </div>

@@ -22,8 +22,8 @@ class PortfolioCard extends Component {
                   {value}
                 </div>
               ) : (
-                <p className="card-text">Calculating...</p>
-              )}
+                  <p className="card-text">Calculating...</p>
+                )}
             </div>
           </div>
         </div>

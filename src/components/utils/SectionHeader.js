@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class SectionHeader extends Component {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.title !== this.props.title;
+  }
   render() {
     return (
       <header className="navbar section-header">
