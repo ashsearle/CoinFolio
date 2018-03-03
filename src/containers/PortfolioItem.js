@@ -20,8 +20,9 @@ import {
   getPortfolio24hChange,
   getPortfolioCost,
   getPortfolioChartData
-} from '../utils/portfolio';
-import { getPortfolioCoinsData } from '../utils/coins';
+} from '../selectors/portfolio';
+import { getPortfolioCoinsData } from '../selectors/coins';
+
 import { formatCurrency } from '../utils/currency';
 import { getChangeTextClassName } from '../utils/format';
 
@@ -197,17 +198,16 @@ class PortfolioItem extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const currentPortfolio = state.portfolio.find(
-    portfolioItem => portfolioItem.id === props.match.params.id
-  );
   return {
     user: state.user,
-    portfolio: currentPortfolio,
-    portfolio24hChange: getPortfolio24hChange(state, currentPortfolio),
-    portfolioTotalValue: getPortfolioTotalValue(state, currentPortfolio),
-    portfolioCost: getPortfolioCost(state, currentPortfolio),
-    portfolioChartData: getPortfolioChartData(state, currentPortfolio),
-    portfolioCoinsData: getPortfolioCoinsData(state, currentPortfolio)
+    portfolio: state.portfolio.find(
+      portfolioItem => portfolioItem.id === props.match.params.id
+    ),
+    portfolio24hChange: getPortfolio24hChange(state, props),
+    portfolioTotalValue: getPortfolioTotalValue(state, props),
+    portfolioCost: getPortfolioCost(state, props),
+    portfolioChartData: getPortfolioChartData(state, props),
+    portfolioCoinsData: getPortfolioCoinsData(state, props)
   };
 };
 
