@@ -3,20 +3,30 @@ import { connect } from 'react-redux';
 import { Table } from 'antd';
 import _ from 'lodash';
 
+import { getCurrenciesTableData } from '../selectors/tables';
+
 import { formatCurrency, exchangeToUserCurrency } from '../utils/currency';
 import { formatPercentChange, formatChangeTrend } from '../utils/format';
 import { formatNumber } from '../utils/number';
 
 class CurrenciesPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: ''
+    };
+    this.debouncedSearch = _.debounce(this.debouncedSearch, 400);
+  }
+  debouncedSearch = filter => {
+    this.setState({ filter });
+  };
+  handleFilterChange = e => {
+    this.debouncedSearch(e.target.value);
+  };
   render() {
-    const data = this.props.currencies.map((currency, index) => {
-      currency.rank = index + 1;
-      const coinTrend = _.find(this.props.trends, trend => {
-        return trend.short === currency.short;
-      });
-      currency.trend = coinTrend ? coinTrend.trend : null;
-      return currency;
-    });
+    const data = _.filter(this.props.tableData, currency =>
+      currency.long.toLowerCase().startsWith(this.state.filter.toLowerCase())
+    );
     const columns = [
       {
         title: '#',
@@ -101,13 +111,33 @@ class CurrenciesPage extends Component {
     return (
       <div className="content-wrapper">
         <div className="container-fluid">
-          <Table
-            bordered={true}
-            rowKey={record => record.short}
-            dataSource={data}
-            columns={columns}
-            pagination={{ pageSize: 100 }}
-          />
+          <div className="row">
+            <div className="col-md-3 flex-right">
+              <div className="form-group">
+                <input
+                  type="search"
+                  className="form-control"
+                  placeholder="Filter coins"
+                  onChange={this.handleFilterChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12">
+              <Table
+                loading={
+                  (!this.props.tableData || !this.props.tableData.length) &&
+                  !this.state.filter
+                }
+                bordered={true}
+                rowKey={record => record.short}
+                dataSource={data}
+                columns={columns}
+                pagination={{ pageSize: 100 }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -115,8 +145,7 @@ class CurrenciesPage extends Component {
 }
 
 const mapStateToProps = state => ({
-  currencies: state.currencies.all,
-  trends: state.currencies.trends,
+  tableData: getCurrenciesTableData(state),
   user: state.user
 });
 

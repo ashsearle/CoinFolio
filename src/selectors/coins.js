@@ -39,9 +39,6 @@ const getCoinTotalAmount = (coin, transactions) => {
 export const getPortfolioCoinsData = createSelector(
   [getPortfolioTransactions, getAllCurrencies, getCurrencyTrends],
   (transactions, allCurrencies, trends) => {
-    console.log('transactions', transactions);
-    console.log('allCurrencies', allCurrencies);
-    console.log('trends', trends);
     if (!transactions || !allCurrencies || !trends) return;
     let coins = [];
     _.uniqBy(
@@ -62,7 +59,6 @@ export const getPortfolioCoinsData = createSelector(
           trend: getCoinTrend(coin.toUpperCase(), trends)
         });
       });
-    console.log('coins', coins);
     return coins;
   }
 );

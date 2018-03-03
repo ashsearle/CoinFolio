@@ -1,4 +1,7 @@
 body {
+  .flex-right {
+    margin-left: auto;
+  }
   //background: $very-light-grey;
   &.sidebar-show {
     .content-wrapper {
