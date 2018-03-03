@@ -9,19 +9,17 @@ import { formatCurrency, exchangeToUserCurrency } from '../utils/currency';
 import { formatPercentChange, formatChangeTrend } from '../utils/format';
 import { formatNumber } from '../utils/number';
 
+import DebouncedInput from '../components/forms/DebouncedInput';
+
 class CurrenciesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       filter: ''
     };
-    this.debouncedSearch = _.debounce(this.debouncedSearch, 400);
   }
-  debouncedSearch = filter => {
+  handleFilterChange = filter => {
     this.setState({ filter });
-  };
-  handleFilterChange = e => {
-    this.debouncedSearch(e.target.value);
   };
   render() {
     const data = _.filter(this.props.tableData, currency =>
@@ -114,11 +112,10 @@ class CurrenciesPage extends Component {
           <div className="row">
             <div className="col-md-3 flex-right">
               <div className="form-group">
-                <input
+                <DebouncedInput
                   type="search"
-                  className="form-control"
                   placeholder="Filter coins"
-                  onChange={this.handleFilterChange}
+                  onChange={value => this.handleFilterChange(value)}
                 />
               </div>
             </div>
