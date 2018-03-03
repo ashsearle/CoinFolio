@@ -2,8 +2,7 @@ export const exchangeToUserCurrency = (value, { fiatCurrency, exchangeRates }) =
   const { value: currency } = fiatCurrency;
   if (
     !exchangeRates ||
-    !Object.keys(exchangeRates).length ||
-    currency === 'USD'
+    !Object.keys(exchangeRates).length
   ) {
     return value;
   }

@@ -83,7 +83,7 @@ export const setUserCurrency = (fiatCurrency = {}) => ({
 
 export const startSetUserCurrency = (fiatCurrency = {}) => {
   return dispatch => {
-    setCache('fiatCurrency', fiatCurrency, 2592000);
+    setCache('fiatCurrency', fiatCurrency, 2592000000);
     dispatch(setUserCurrency(fiatCurrency));
   }
 };
