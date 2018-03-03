@@ -58,6 +58,7 @@ class PortfolioCoins extends Component {
     ];
     return (
       <Table
+        bordered={true}
         rowKey={(record, index) => index}
         dataSource={this.props.data}
         columns={columns}

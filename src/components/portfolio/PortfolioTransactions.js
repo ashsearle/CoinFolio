@@ -109,6 +109,7 @@ class PortfolioTransactions extends Component {
     ];
     return (
       <Table
+        bordered={true}
         rowKey={record => record.id}
         dataSource={this.props.data}
         columns={columns}

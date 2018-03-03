@@ -102,6 +102,7 @@ class CurrenciesPage extends Component {
       <div className="content-wrapper">
         <div className="container-fluid">
           <Table
+            bordered={true}
             rowKey={record => record.short}
             dataSource={data}
             columns={columns}
