@@ -12,18 +12,18 @@ export default {
     exchangeRates: {
       url: 'https://api.fixer.io/latest?base=USD&symbols=<%= currencies %>',
       cache: true,
-      expiry: 86400
+      expiry: 86400000
     },
     priceHistorical: {
       url:
         'https://min-api.cryptocompare.com/data/pricehistorical?fsym=<%= fromSym %>&tsyms=<%= toSym %>&ts=<%= timestamp %>',
       cache: true,
-      expiry: 86400
+      expiry: 86400000
     },
     history: {
       url: 'https://coincap.io/history/<%= coin %>',
       cache: true,
-      expiry: 86400
+      expiry: 86400000
     }
   }
 };
