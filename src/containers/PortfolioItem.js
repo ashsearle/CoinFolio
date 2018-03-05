@@ -11,15 +11,13 @@ import {
 import TransactionForm from '../components/transactions/TransactionForm';
 import PortfolioCard from '../components/portfolio/PortfolioCard';
 import PortfolioCoins from '../components/portfolio/PortfolioCoins';
-import PortfolioChart from '../components/portfolio/PortfolioChart';
 import PortfolioTransactions from '../components/portfolio/PortfolioTransactions';
 import SectionHeader from '../components/utils/SectionHeader';
 
 import {
   getPortfolioTotalValue,
   getPortfolio24hChange,
-  getPortfolioCost,
-  getPortfolioChartData
+  getPortfolioCost
 } from '../selectors/portfolio';
 import { getPortfolioCoinsData } from '../selectors/coins';
 
@@ -146,9 +144,6 @@ class PortfolioItem extends Component {
                           this.props.portfolioCost
                         )}
                       />
-                      <section className="rechart-container col-12 mt-1">
-                        <PortfolioChart data={this.props.portfolioChartData} />
-                      </section>
                       <section className="col-12">
                         <Tabs defaultActiveKey="1" size={'large'}>
                           <TabPane tab="Transactions" key="1">
@@ -206,7 +201,6 @@ const mapStateToProps = (state, props) => {
     portfolio24hChange: getPortfolio24hChange(state, props),
     portfolioTotalValue: getPortfolioTotalValue(state, props),
     portfolioCost: getPortfolioCost(state, props),
-    portfolioChartData: getPortfolioChartData(state, props),
     portfolioCoinsData: getPortfolioCoinsData(state, props)
   };
 };
